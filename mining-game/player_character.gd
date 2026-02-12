@@ -1,6 +1,6 @@
 class_name PlayerCharacter extends CharacterBody2D
 
-const MOVE_SPEED:int = 30
+const MOVE_SPEED:int = 40
 
 func _physics_process(delta: float) -> void:
 	
