@@ -44,12 +44,12 @@ func _update_facing_direction() -> void:
 	# This puts our angle in the range (0, 2*PI), starting at PI on the unit circle, going counter-clockwise
 	var angle:float = self.velocity.angle() + PI
 	
-	# Slightly widen our left and right margins to force diagonal movement to be displayed horizontally
+	# Slightly widen our top and bottom margins to force diagonal movement to be displayed vertically
 	const WIDEN_MODIFIER:float = 0.0000001 # This value was derived through testing
-	const LEFT_MARGIN_START:float = SEVEN_PI_OVER_FOUR - WIDEN_MODIFIER
-	const DOWN_MARGIN_START:float = FIVE_PI_OVER_FOUR + WIDEN_MODIFIER
-	const RIGHT_MARGIN_START:float = THREE_PI_OVER_FOUR - WIDEN_MODIFIER
-	const UP_MARGIN_START:float = PI_OVER_FOUR + WIDEN_MODIFIER
+	const LEFT_MARGIN_START:float = SEVEN_PI_OVER_FOUR + WIDEN_MODIFIER
+	const DOWN_MARGIN_START:float = FIVE_PI_OVER_FOUR - WIDEN_MODIFIER
+	const RIGHT_MARGIN_START:float = THREE_PI_OVER_FOUR + WIDEN_MODIFIER
+	const UP_MARGIN_START:float = PI_OVER_FOUR - WIDEN_MODIFIER
 	
 	# Our angle calculation above makes it easy for us to check which direction we should face
 	if (angle > LEFT_MARGIN_START):
