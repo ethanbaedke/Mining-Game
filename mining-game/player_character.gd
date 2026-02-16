@@ -12,9 +12,6 @@ const MOVE_SPEED:int = 40
 enum FacingDirection { LEFT, RIGHT, UP, DOWN }
 var _face_dir:FacingDirection = FacingDirection.DOWN
 
-# Used to track whether the animated sprite 2d is currently playing an idle animation
-var _in_idle_anim:bool = true
-
 func _physics_process(delta: float) -> void:
 	
 	_set_velocity()
