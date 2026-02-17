@@ -12,16 +12,50 @@ const MOVE_SPEED:int = 40
 enum FacingDirection { LEFT, RIGHT, UP, DOWN }
 var _face_dir:FacingDirection = FacingDirection.DOWN
 
+var _using_pickaxe:bool = false
+var _pickaxe_swing_anim_frame:int = 0
+# How long the player holds the pickaxe above their head before swinging it
+var _pickaxe_load_time:float = 0.25
+# How long the player holds the pickaxe down after swinging it
+var _pickaxe_thrust_time:float = 0.25
+var _pickaxe_anim_time:float = 0.0
+
 func _physics_process(delta: float) -> void:
 	
 	_set_velocity()
 	_update_facing_direction()
+	
+	if (Input.is_action_just_pressed("use_pickaxe")):
+		_try_use_pickaxe()
+	
+	if (_using_pickaxe):
+		_handle_pickaxe_swing()
+	
 	_update_animation()
 
 	move_and_slide()
 
+# Makes the player swing their pickaxe if they're allowed to at the time this function is called
+func _try_use_pickaxe() -> void:
+	
+	# Cannot use our pickaxe if we're already using it
+	if (_using_pickaxe):
+		return
+	
+	# Success
+	_using_pickaxe = true
+
+func _handle_pickaxe_swing() -> void:
+	
+	pass
+
 # Set the velocity of the player using their input
 func _set_velocity() -> void:
+	
+	# The player cannot move if swinging their pickaxe
+	if (_using_pickaxe):
+		self.velocity = Vector2.ZERO
+		return
 	
 	# Inputs are only -1, 0, or 1. No partial movement (through joysticks).
 	var input:Vector2 = Vector2.ZERO
@@ -63,8 +97,24 @@ func _update_facing_direction() -> void:
 # Updates the animation playing for the character
 func _update_animation() -> void:
 	
+		# The player is using their pickaxe
+		if (_using_pickaxe):
+			match _face_dir:
+				FacingDirection.LEFT:
+					_animated_sprite_2d.play("swing_pickaxe_left")
+					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+				FacingDirection.RIGHT:
+					_animated_sprite_2d.play("swing_pickaxe_right")
+					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+				FacingDirection.UP:
+					_animated_sprite_2d.play("swing_pickaxe_up")
+					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+				FacingDirection.DOWN:
+					_animated_sprite_2d.play("swing_pickaxe_down")
+					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+
 		# The player is not moving, use an idle animation
-		if (velocity.is_zero_approx()):
+		elif (velocity.is_zero_approx()):
 			match _face_dir:
 				FacingDirection.LEFT:
 					_animated_sprite_2d.play("idle_left")
@@ -74,6 +124,7 @@ func _update_animation() -> void:
 					_animated_sprite_2d.play("idle_up")
 				FacingDirection.DOWN:
 					_animated_sprite_2d.play("idle_down")
+
 		# The player is moving, use a running animation
 		else:
 			match _face_dir:

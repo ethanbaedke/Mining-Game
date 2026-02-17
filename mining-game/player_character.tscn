@@ -54,6 +54,38 @@ region = Rect2(16, 16, 16, 16)
 atlas = ExtResource("2_5up26")
 region = Rect2(32, 16, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1g7m"]
+atlas = ExtResource("2_5up26")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pi6eu"]
+atlas = ExtResource("2_5up26")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ha3ud"]
+atlas = ExtResource("2_5up26")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bi50n"]
+atlas = ExtResource("2_5up26")
+region = Rect2(64, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_od4g1"]
+atlas = ExtResource("2_5up26")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_43oxn"]
+atlas = ExtResource("2_5up26")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1oirj"]
+atlas = ExtResource("2_5up26")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bgamr"]
+atlas = ExtResource("2_5up26")
+region = Rect2(64, 16, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_02ohv"]
 animations = [{
 "frames": [{
@@ -131,6 +163,50 @@ animations = [{
 "loop": true,
 "name": &"run_up",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1g7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pi6eu")
+}],
+"loop": false,
+"name": &"swing_pickaxe_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ha3ud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bi50n")
+}],
+"loop": false,
+"name": &"swing_pickaxe_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_od4g1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_43oxn")
+}],
+"loop": false,
+"name": &"swing_pickaxe_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1oirj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bgamr")
+}],
+"loop": true,
+"name": &"swing_pickaxe_up",
+"speed": 5.0
 }]
 
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=278383639]
@@ -143,4 +219,6 @@ shape = SubResource("RectangleShape2D_02ohv")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=934472963]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_02ohv")
-animation = &"idle_right"
+animation = &"swing_pickaxe_up"
+frame = 1
+frame_progress = 0.38696975
