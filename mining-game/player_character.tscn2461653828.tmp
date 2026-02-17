@@ -7,85 +7,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_02ohv"]
 size = Vector2(8, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4oir7"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vigrq"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fiymq"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(0, 48, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wjlx2"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(16, 48, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i6ts6"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(0, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0ddoo"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(16, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0j02f"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_eg15n"]
-atlas = ExtResource("3_4akcp")
-region = Rect2(16, 16, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_4dsce"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4oir7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vigrq")
-}],
-"loop": false,
-"name": &"swing_down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fiymq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wjlx2")
-}],
-"loop": false,
-"name": &"swing_left",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i6ts6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0ddoo")
-}],
-"loop": false,
-"name": &"swing_right",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0j02f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_eg15n")
-}],
-"loop": false,
-"name": &"swing_up",
-"speed": 5.0
-}]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_he2na"]
 atlas = ExtResource("2_5up26")
 region = Rect2(0, 0, 16, 16)
@@ -289,6 +210,85 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4oir7"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vigrq"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fiymq"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjlx2"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6ts6"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ddoo"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0j02f"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg15n"]
+atlas = ExtResource("3_4akcp")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4dsce"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4oir7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vigrq")
+}],
+"loop": false,
+"name": &"swing_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fiymq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjlx2")
+}],
+"loop": false,
+"name": &"swing_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6ts6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ddoo")
+}],
+"loop": false,
+"name": &"swing_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0j02f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eg15n")
+}],
+"loop": false,
+"name": &"swing_up",
+"speed": 5.0
+}]
+
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=278383639]
 motion_mode = 1
 script = ExtResource("1_5up26")
@@ -296,12 +296,15 @@ script = ExtResource("1_5up26")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1247501270]
 shape = SubResource("RectangleShape2D_02ohv")
 
-[node name="PickaxeSprite" type="AnimatedSprite2D" parent="." unique_id=769058532]
-visible = false
-sprite_frames = SubResource("SpriteFrames_4dsce")
-animation = &"swing_down"
-
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="." unique_id=934472963]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_02ohv")
 animation = &"idle_down"
+
+[node name="PickaxeSprite" type="AnimatedSprite2D" parent="." unique_id=769058532]
+visible = false
+position = Vector2(-9, -1)
+sprite_frames = SubResource("SpriteFrames_4dsce")
+animation = &"swing_left"
+frame = 1
+frame_progress = 1.0

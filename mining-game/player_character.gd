@@ -1,11 +1,21 @@
 class_name PlayerCharacter extends CharacterBody2D
 
-@onready var _animated_sprite_2d:AnimatedSprite2D = $AnimatedSprite2D
+@onready var _player_sprite:AnimatedSprite2D = $PlayerSprite
+@onready var _pickaxe_sprite:AnimatedSprite2D = $PickaxeSprite
 
 const PI_OVER_FOUR:float = PI * 0.25
 const THREE_PI_OVER_FOUR:float = (PI * 3.0) * 0.25
 const FIVE_PI_OVER_FOUR:float = (PI * 5.0) * 0.25
 const SEVEN_PI_OVER_FOUR:float = (PI * 7.0) * 0.25
+
+const PICKAXE_UP_F1_POS:Vector2 = Vector2(0.0, -15.0)
+const PICKAXE_UP_F2_POS:Vector2 = Vector2(0.0, -4.0)
+const PICKAXE_DOWN_F1_POS:Vector2 = Vector2(0.0, -12.0)
+const PICKAXE_DOWN_F2_POS:Vector2 = Vector2(0.0, -1.0)
+const PICKAXE_LEFT_F1_POS:Vector2 = Vector2(0.0, -12.0)
+const PICKAXE_LEFT_F2_POS:Vector2 = Vector2(-9.0, -1.0)
+const PICKAXE_RIGHT_F1_POS:Vector2 = Vector2(0.0, -12.0)
+const PICKAXE_RIGHT_F2_POS:Vector2 = Vector2(9.0, -1.0)
 
 const MOVE_SPEED:int = 40
 
@@ -14,13 +24,13 @@ var _face_dir:FacingDirection = FacingDirection.DOWN
 
 var _using_pickaxe:bool = false
 var _pickaxe_swing_anim_frame:int = 0
-# How long the player holds the pickaxe above their head before swinging it
-var _pickaxe_load_time:float = 0.25
-# How long the player holds the pickaxe down after swinging it
+# How long the player holds the pickaxe above their head before swinging it.
+var _pickaxe_load_time:float = 0.15
+# How long the player holds the pickaxe down after swinging it.
 var _pickaxe_thrust_time:float = 0.25
 var _pickaxe_anim_time:float = 0.0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta:float) -> void:
 	
 	_set_velocity()
 	_update_facing_direction()
@@ -29,13 +39,13 @@ func _physics_process(delta: float) -> void:
 		_try_use_pickaxe()
 	
 	if (_using_pickaxe):
-		_handle_pickaxe_swing()
+		_handle_pickaxe_swing(delta)
 	
 	_update_animation()
 
 	move_and_slide()
 
-# Makes the player swing their pickaxe if they're allowed to at the time this function is called
+# Makes the player swing their pickaxe if they're allowed to at the time this function is called.
 func _try_use_pickaxe() -> void:
 	
 	# Cannot use our pickaxe if we're already using it
@@ -44,15 +54,70 @@ func _try_use_pickaxe() -> void:
 	
 	# Success
 	_using_pickaxe = true
-
-func _handle_pickaxe_swing() -> void:
+	_pickaxe_swing_anim_frame = 0
+	_pickaxe_anim_time = 0.0
+	_pickaxe_sprite.set_visible(true)
+	_update_pickaxe_position()
 	
-	pass
+	# If swinging the pickaxe up, it should render behind the player sprite.
+	# This will happen if they're on the same z_index since the pickaxe sprite sits higher in the scene tree than the player sprite.
+	# We have to do it this way so the pickaxe doesn't render under the terrain (with a lower z_index).
+	if _face_dir == FacingDirection.UP:
+		_pickaxe_sprite.z_index = 0
+	# In all other cases it should render in front. We set the z_index to 1.
+	# It will always render in front of the terrain, but that is okay in this case. It looks fine.
+	else:
+		_pickaxe_sprite.z_index = 1
 
-# Set the velocity of the player using their input
+func _handle_pickaxe_swing(delta:float) -> void:
+		
+	# We're on the first frame of our animation.
+	if _pickaxe_swing_anim_frame == 0:
+		# It's time to move to the second frame.
+		if _pickaxe_anim_time > _pickaxe_load_time:
+			_pickaxe_swing_anim_frame = 1
+			_update_pickaxe_position()
+	
+	# We're on the second frame of our animation.
+	else:
+		# It's time to be finished with the animation.
+		if _pickaxe_anim_time > _pickaxe_load_time + _pickaxe_thrust_time:
+			_using_pickaxe = false
+			_pickaxe_sprite.set_visible(false)
+	
+	# Increment our animation timer.
+	_pickaxe_anim_time += delta
+
+# When the pickaxe sprite animates it's swing, it needs to physically move to be in the player's hands.
+# This function updates the pickaxe sprite position to fit it into the players hands.
+func _update_pickaxe_position() -> void:
+	
+	match _face_dir:
+		FacingDirection.LEFT:
+			if (_pickaxe_swing_anim_frame == 0):
+				_pickaxe_sprite.position = PICKAXE_LEFT_F1_POS
+			else:
+				_pickaxe_sprite.position = PICKAXE_LEFT_F2_POS
+		FacingDirection.RIGHT:
+			if (_pickaxe_swing_anim_frame == 0):
+				_pickaxe_sprite.position = PICKAXE_RIGHT_F1_POS
+			else:
+				_pickaxe_sprite.position = PICKAXE_RIGHT_F2_POS
+		FacingDirection.UP:
+			if (_pickaxe_swing_anim_frame == 0):
+				_pickaxe_sprite.position = PICKAXE_UP_F1_POS
+			else:
+				_pickaxe_sprite.position = PICKAXE_UP_F2_POS
+		FacingDirection.DOWN:
+			if (_pickaxe_swing_anim_frame == 0):
+				_pickaxe_sprite.position = PICKAXE_DOWN_F1_POS
+			else:
+				_pickaxe_sprite.position = PICKAXE_DOWN_F2_POS
+
+# Set the velocity of the player using their input.
 func _set_velocity() -> void:
 	
-	# The player cannot move if swinging their pickaxe
+	# The player cannot move if swinging their pickaxe.
 	if (_using_pickaxe):
 		self.velocity = Vector2.ZERO
 		return
@@ -62,27 +127,27 @@ func _set_velocity() -> void:
 	input.x = sign(Input.get_axis("move_left", "move_right"))
 	input.y = sign(Input.get_axis("move_up", "move_down"))
 	
-	# Normalize input to ensure diagonal movement is the same speed as lateral movement
+	# Normalize input to ensure diagonal movement is the same speed as lateral movement.
 	self.velocity = input.normalized() * MOVE_SPEED
 
-# Updates the direction the character is facing based on the players velocity
+# Updates the direction the character is facing based on the players velocity.
 func _update_facing_direction() -> void:
 	
-	# The player is not moving, so our direction cannot change
+	# The player is not moving, so our direction cannot change.
 	if (velocity.is_zero_approx()):
 		return
 	
-	# This puts our angle in the range (0, 2*PI), starting at PI on the unit circle, going counter-clockwise
+	# This puts our angle in the range (0, 2*PI), starting at PI on the unit circle, going counter-clockwise.
 	var angle:float = self.velocity.angle() + PI
 	
-	# Slightly widen our top and bottom margins to force diagonal movement to be displayed vertically
-	const WIDEN_MODIFIER:float = 0.0000001 # This value was derived through testing
+	# Slightly widen our top and bottom margins to force diagonal movement to be displayed vertically.
+	const WIDEN_MODIFIER:float = 0.0000001 # This value was derived through testing.
 	const LEFT_MARGIN_START:float = SEVEN_PI_OVER_FOUR + WIDEN_MODIFIER
 	const DOWN_MARGIN_START:float = FIVE_PI_OVER_FOUR - WIDEN_MODIFIER
 	const RIGHT_MARGIN_START:float = THREE_PI_OVER_FOUR + WIDEN_MODIFIER
 	const UP_MARGIN_START:float = PI_OVER_FOUR - WIDEN_MODIFIER
 	
-	# Our angle calculation above makes it easy for us to check which direction we should face
+	# Our angle calculation above makes it easy for us to check which direction we should face.
 	if (angle > LEFT_MARGIN_START):
 		_face_dir = FacingDirection.LEFT
 	elif (angle > DOWN_MARGIN_START):
@@ -94,45 +159,53 @@ func _update_facing_direction() -> void:
 	else:
 		_face_dir = FacingDirection.LEFT
 
-# Updates the animation playing for the character
+# Updates the animation playing for the character, and the pickaxe if it's being used.
 func _update_animation() -> void:
 	
-		# The player is using their pickaxe
+		# The player is using their pickaxe.
 		if (_using_pickaxe):
 			match _face_dir:
 				FacingDirection.LEFT:
-					_animated_sprite_2d.play("swing_pickaxe_left")
-					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_player_sprite.play("swing_pickaxe_left")
+					_player_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_pickaxe_sprite.play("swing_left")
+					_pickaxe_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
 				FacingDirection.RIGHT:
-					_animated_sprite_2d.play("swing_pickaxe_right")
-					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_player_sprite.play("swing_pickaxe_right")
+					_player_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_pickaxe_sprite.play("swing_right")
+					_pickaxe_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
 				FacingDirection.UP:
-					_animated_sprite_2d.play("swing_pickaxe_up")
-					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_player_sprite.play("swing_pickaxe_up")
+					_player_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_pickaxe_sprite.play("swing_up")
+					_pickaxe_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
 				FacingDirection.DOWN:
-					_animated_sprite_2d.play("swing_pickaxe_down")
-					_animated_sprite_2d.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_player_sprite.play("swing_pickaxe_down")
+					_player_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
+					_pickaxe_sprite.play("swing_down")
+					_pickaxe_sprite.set_frame_and_progress(_pickaxe_swing_anim_frame, 0.0)
 
-		# The player is not moving, use an idle animation
+		# The player is not moving, use an idle animation.
 		elif (velocity.is_zero_approx()):
 			match _face_dir:
 				FacingDirection.LEFT:
-					_animated_sprite_2d.play("idle_left")
+					_player_sprite.play("idle_left")
 				FacingDirection.RIGHT:
-					_animated_sprite_2d.play("idle_right")
+					_player_sprite.play("idle_right")
 				FacingDirection.UP:
-					_animated_sprite_2d.play("idle_up")
+					_player_sprite.play("idle_up")
 				FacingDirection.DOWN:
-					_animated_sprite_2d.play("idle_down")
+					_player_sprite.play("idle_down")
 
-		# The player is moving, use a running animation
+		# The player is moving, use a running animation.
 		else:
 			match _face_dir:
 				FacingDirection.LEFT:
-					_animated_sprite_2d.play("run_left")
+					_player_sprite.play("run_left")
 				FacingDirection.RIGHT:
-					_animated_sprite_2d.play("run_right")
+					_player_sprite.play("run_right")
 				FacingDirection.UP:
-					_animated_sprite_2d.play("run_up")
+					_player_sprite.play("run_up")
 				FacingDirection.DOWN:
-					_animated_sprite_2d.play("run_down")
+					_player_sprite.play("run_down")

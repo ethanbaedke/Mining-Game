@@ -15,7 +15,6 @@ zoom = Vector2(4, 4)
 tile_set = ExtResource("2_08n1b")
 
 [node name="WallVisualLayer" type="TileMapLayer" parent="." unique_id=1229092932]
-y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="WallPhysicalLayer" type="TileMapLayer" parent="." unique_id=865466753]
@@ -25,4 +24,3 @@ tile_map_data = PackedByteArray("AADw//f/AAADAAAAAADw//j/AAADAAEAAADw//n/AAADAAE
 tile_set = ExtResource("2_08n1b")
 
 [node name="PlayerCharacter" parent="." unique_id=824779425 instance=ExtResource("1_3x8yu")]
-y_sort_enabled = true
