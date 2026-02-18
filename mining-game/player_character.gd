@@ -3,6 +3,11 @@ class_name PlayerCharacter extends CharacterBody2D
 @onready var _player_sprite:AnimatedSprite2D = $PlayerSprite
 @onready var _pickaxe_sprite:AnimatedSprite2D = $PickaxeSprite
 
+@onready var _pickaxe_down_hitbox_shape:CollisionShape2D = $PickaxeDownHitbox/CollisionShape2D
+@onready var _pickaxe_up_hitbox_shape:CollisionShape2D = $PickaxeUpHitbox/CollisionShape2D
+@onready var _pickaxe_left_hitbox_shape:CollisionShape2D = $PickaxeLeftHitbox/CollisionShape2D
+@onready var _pickaxe_right_hitbox_shape:CollisionShape2D = $PickaxeRightHitbox/CollisionShape2D
+
 const PI_OVER_FOUR:float = PI * 0.25
 const THREE_PI_OVER_FOUR:float = (PI * 3.0) * 0.25
 const FIVE_PI_OVER_FOUR:float = (PI * 5.0) * 0.25
@@ -77,6 +82,8 @@ func _handle_pickaxe_swing(delta:float) -> void:
 		if _pickaxe_anim_time > _pickaxe_load_time:
 			_pickaxe_swing_anim_frame = 1
 			_update_pickaxe_position()
+			# The second frame is where our hitbox should become active.
+			_enable_pickaxe_hitbox()
 	
 	# We're on the second frame of our animation.
 	else:
@@ -84,6 +91,8 @@ func _handle_pickaxe_swing(delta:float) -> void:
 		if _pickaxe_anim_time > _pickaxe_load_time + _pickaxe_thrust_time:
 			_using_pickaxe = false
 			_pickaxe_sprite.set_visible(false)
+			# If the hitbox didn't hit anything, it will still be active at the end of the animation. Disable it.
+			_disable_pickaxe_hitbox()
 	
 	# Increment our animation timer.
 	_pickaxe_anim_time += delta
@@ -113,6 +122,34 @@ func _update_pickaxe_position() -> void:
 				_pickaxe_sprite.position = PICKAXE_DOWN_F1_POS
 			else:
 				_pickaxe_sprite.position = PICKAXE_DOWN_F2_POS
+
+# Enables the pickaxe hitbox in the direction the player is currently facing
+func _enable_pickaxe_hitbox() -> void:
+	
+	# Must use call_deferred on set_disable since the disabled state of collision shapes can't be changed while queries are being flushed.
+	match _face_dir:
+		FacingDirection.LEFT:
+			_pickaxe_left_hitbox_shape.set_disabled.call_deferred(false)
+		FacingDirection.RIGHT:
+			_pickaxe_right_hitbox_shape.set_disabled.call_deferred(false)
+		FacingDirection.UP:
+			_pickaxe_up_hitbox_shape.set_disabled.call_deferred(false)
+		FacingDirection.DOWN:
+			_pickaxe_down_hitbox_shape.set_disabled.call_deferred(false)
+	
+# Disables the pickaxe hitbox in the direction the player is currently facing
+func _disable_pickaxe_hitbox() -> void:
+	
+	# Must use call_deferred on set_disable since the disabled state of collision shapes can't be changed while queries are being flushed.
+	match _face_dir:
+		FacingDirection.LEFT:
+			_pickaxe_left_hitbox_shape.set_disabled.call_deferred(true)
+		FacingDirection.RIGHT:
+			_pickaxe_right_hitbox_shape.set_disabled.call_deferred(true)
+		FacingDirection.UP:
+			_pickaxe_up_hitbox_shape.set_disabled.call_deferred(true)
+		FacingDirection.DOWN:
+			_pickaxe_down_hitbox_shape.set_disabled.call_deferred(true)
 
 # Set the velocity of the player using their input.
 func _set_velocity() -> void:
@@ -209,3 +246,23 @@ func _update_animation() -> void:
 					_player_sprite.play("run_up")
 				FacingDirection.DOWN:
 					_player_sprite.play("run_down")
+
+func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
+	
+	if (body is TileMapLayer):
+		_disable_pickaxe_hitbox()
+
+func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
+	
+	if (body is TileMapLayer):
+		_disable_pickaxe_hitbox()
+
+func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
+	
+	if (body is TileMapLayer):
+		_disable_pickaxe_hitbox()
+
+func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
+	
+	if (body is TileMapLayer):
+		_disable_pickaxe_hitbox()

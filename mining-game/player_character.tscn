@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cd0gj7nfeds0e" path="res://pickaxe_spritesheet.png" id="3_4akcp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_02ohv"]
-size = Vector2(8, 4)
+size = Vector2(8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4oir7"]
 atlas = ExtResource("3_4akcp")
@@ -289,6 +289,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hvvw"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4akcp"]
+size = Vector2(8, 8)
+
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=278383639]
 motion_mode = 1
 script = ExtResource("1_5up26")
@@ -300,8 +306,56 @@ shape = SubResource("RectangleShape2D_02ohv")
 visible = false
 sprite_frames = SubResource("SpriteFrames_4dsce")
 animation = &"swing_down"
+frame = 1
+frame_progress = 1.0
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="." unique_id=934472963]
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_02ohv")
 animation = &"idle_down"
+
+[node name="PickaxeDownHitbox" type="Area2D" parent="." unique_id=858627360]
+position = Vector2(0, 8)
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickaxeDownHitbox" unique_id=1307029591]
+shape = SubResource("RectangleShape2D_0hvvw")
+disabled = true
+metadata/_edit_lock_ = true
+
+[node name="PickaxeUpHitbox" type="Area2D" parent="." unique_id=160433034]
+position = Vector2(0, -8)
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickaxeUpHitbox" unique_id=502559992]
+shape = SubResource("RectangleShape2D_4akcp")
+disabled = true
+metadata/_edit_lock_ = true
+
+[node name="PickaxeLeftHitbox" type="Area2D" parent="." unique_id=1314018661]
+position = Vector2(-8, 0)
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickaxeLeftHitbox" unique_id=2097452791]
+shape = SubResource("RectangleShape2D_4akcp")
+disabled = true
+metadata/_edit_lock_ = true
+
+[node name="PickaxeRightHitbox" type="Area2D" parent="." unique_id=412643170]
+position = Vector2(8, 0)
+collision_layer = 0
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickaxeRightHitbox" unique_id=1526958358]
+shape = SubResource("RectangleShape2D_4akcp")
+disabled = true
+metadata/_edit_lock_ = true
+
+[connection signal="body_entered" from="PickaxeDownHitbox" to="." method="_on_pickaxe_down_hitbox_body_entered"]
+[connection signal="body_shape_entered" from="PickaxeDownHitbox" to="." method="_on_pickaxe_down_hitbox_body_shape_entered"]
+[connection signal="body_entered" from="PickaxeUpHitbox" to="." method="_on_pickaxe_up_hitbox_body_entered"]
+[connection signal="body_entered" from="PickaxeLeftHitbox" to="." method="_on_pickaxe_left_hitbox_body_entered"]
+[connection signal="body_entered" from="PickaxeRightHitbox" to="." method="_on_pickaxe_right_hitbox_body_entered"]
