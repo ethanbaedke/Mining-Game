@@ -247,22 +247,42 @@ func _update_animation() -> void:
 				FacingDirection.DOWN:
 					_player_sprite.play("run_down")
 
+# Handles a tilemap being hit at a certain point. The hit_point parameter is in global coordinates.
+func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, hit_point:Vector2) -> void:
+	
+	# Hit tilemap must be part of the mine level
+	var tilemap_parent:Node = tilemap.get_parent()
+	if (tilemap_parent is MineLevel):
+	
+		# Get the hit point coordinates in the tilemap's local coordinate system.
+		var tilemap_local_hit_point:Vector2 = tilemap.to_local(hit_point)
+		
+		# Get the coordinates of the cell that was hit.
+		var hit_cell_coords:Vector2i = tilemap.local_to_map(tilemap_local_hit_point)
+		
+		# Call function on MineLevel to remove the tile at the hit cell.
+		tilemap_parent.remove_tile(hit_cell_coords)
+
 func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
+		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_down_hitbox_shape.global_position)
 
 func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
+		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_up_hitbox_shape.global_position)
 
 func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
+		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_left_hitbox_shape.global_position)
 
 func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
+		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_right_hitbox_shape.global_position)
