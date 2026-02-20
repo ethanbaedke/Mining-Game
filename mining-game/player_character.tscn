@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cd0gj7nfeds0e" path="res://pickaxe_spritesheet.png" id="3_4akcp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_02ohv"]
-size = Vector2(8, 8)
+size = Vector2(10, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4oir7"]
 atlas = ExtResource("3_4akcp")
@@ -300,6 +300,7 @@ motion_mode = 1
 script = ExtResource("1_5up26")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1247501270]
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_02ohv")
 
 [node name="PickaxeSprite" type="AnimatedSprite2D" parent="." unique_id=769058532]
