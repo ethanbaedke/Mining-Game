@@ -6,6 +6,7 @@ class_name MineLevel extends Node2D
 @onready var floor_sprite:Sprite2D = $FloorSprite
 
 @onready var player_character:PlayerCharacter = $PlayerCharacter
+@onready var player_camera:Camera2D = $PlayerCharacter/Camera2D
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
@@ -43,6 +44,12 @@ func _ready() -> void:
 		_update_visual_tilemap_cell(cell_coords)
 		
 	_set_player_starting_position()
+	
+	# Set the player camera's bounds
+	player_camera.limit_left = -1 * 16
+	player_camera.limit_right = (MAP_WIDTH + 1) * 16
+	player_camera.limit_top = -1 * 16
+	player_camera.limit_bottom = (MAP_HEIGHT + 1) * 16
 
 # Set the player's position to the open tile closest to the center of the map.
 func _set_player_starting_position() -> void:
