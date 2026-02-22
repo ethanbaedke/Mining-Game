@@ -16,6 +16,7 @@ y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="WallPhysicalLayer" type="TileMapLayer" parent="." unique_id=865466753]
+visible = false
 z_index = 1
 tile_set = ExtResource("2_08n1b")
 
@@ -23,7 +24,7 @@ tile_set = ExtResource("2_08n1b")
 tile_set = ExtResource("2_08n1b")
 
 [node name="PlayerCharacter" parent="." unique_id=824779425 instance=ExtResource("1_3x8yu")]
-position = Vector2(5, 6)
+position = Vector2(-21, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
 zoom = Vector2(2.7, 2.7)

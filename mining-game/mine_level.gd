@@ -4,6 +4,8 @@ class_name MineLevel extends Node2D
 @onready var wall_physical_layer:TileMapLayer = $WallPhysicalLayer
 @onready var wall_visual_layer:TileMapLayer = $WallVisualLayer
 
+@onready var player_character:PlayerCharacter = $PlayerCharacter
+
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
 
@@ -38,6 +40,39 @@ func _ready() -> void:
 	var used_cell_coords:Array[Vector2i] = wall_physical_layer.get_used_cells()
 	for cell_coords:Vector2i in used_cell_coords:
 		_update_visual_tilemap_cell(cell_coords)
+		
+	_set_player_starting_position()
+
+# Set the player's position to the open tile closest to the center of the map.
+func _set_player_starting_position() -> void:
+	
+	# Start at the center of the map and breadth first search for an open cell.
+	var cell_queue:Array[Vector2i] = [Vector2i(MAP_WIDTH * 0.5, MAP_HEIGHT * 0.5)]
+	var processed_set:Dictionary[Vector2i, bool] = {}
+	while (!cell_queue.is_empty()):
+		
+		# Get the next cell from the queue.
+		var current:Vector2i = cell_queue.pop_front()
+		processed_set[current] = true
+		
+		# If this cell is empty, move the player there and return.
+		if (wall_physical_layer.get_cell_source_id(current) == -1):
+			player_character.global_position = wall_physical_layer.map_to_local(current)
+			return
+		# Otherwise, add its surrounding cells to the queue to be checked against.
+		else:
+			var left:Vector2i = Vector2i(current.x - 1, current.y)
+			if (processed_set.get(left) == null):
+				cell_queue.append(left)
+			var right:Vector2i = Vector2i(current.x + 1, current.y)
+			if (processed_set.get(right) == null):
+				cell_queue.append(right)
+			var top:Vector2i = Vector2i(current.x, current.y + 1)
+			if (processed_set.get(top) == null):
+				cell_queue.append(top)
+			var bottom:Vector2i = Vector2i(current.x, current.y - 1)
+			if (processed_set.get(bottom) == null):
+				cell_queue.append(bottom)
 
 # Generates the map. Places the physical tiles on the map.
 func _generate_map() -> void:
