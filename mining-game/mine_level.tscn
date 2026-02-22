@@ -3,13 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://c3udix1j1wkol" path="res://player_character.tscn" id="1_3x8yu"]
 [ext_resource type="Script" uid="uid://b76s3usqsbv7e" path="res://mine_level.gd" id="1_ksevt"]
 [ext_resource type="TileSet" uid="uid://cedbq7dlya52b" path="res://mine_tile_set.tres" id="2_08n1b"]
+[ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="4_dv24s"]
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
 y_sort_enabled = true
 script = ExtResource("1_ksevt")
-
-[node name="FloorLayer" type="TileMapLayer" parent="." unique_id=319265561]
-tile_set = ExtResource("2_08n1b")
 
 [node name="WallVisualLayer" type="TileMapLayer" parent="." unique_id=1229092932]
 y_sort_enabled = true
@@ -21,6 +19,7 @@ z_index = 1
 tile_set = ExtResource("2_08n1b")
 
 [node name="MapOutlineLayer" type="TileMapLayer" parent="." unique_id=1579735637]
+y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="PlayerCharacter" parent="." unique_id=824779425 instance=ExtResource("1_3x8yu")]
@@ -28,3 +27,10 @@ position = Vector2(-21, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
 zoom = Vector2(2.7, 2.7)
+
+[node name="FloorSprite" type="Sprite2D" parent="." unique_id=898848134]
+z_index = -1
+texture_repeat = 2
+texture = ExtResource("4_dv24s")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)

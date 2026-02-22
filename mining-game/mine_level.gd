@@ -3,6 +3,7 @@ class_name MineLevel extends Node2D
 @onready var map_outline_layer:TileMapLayer = $MapOutlineLayer
 @onready var wall_physical_layer:TileMapLayer = $WallPhysicalLayer
 @onready var wall_visual_layer:TileMapLayer = $WallVisualLayer
+@onready var floor_sprite:Sprite2D = $FloorSprite
 
 @onready var player_character:PlayerCharacter = $PlayerCharacter
 
@@ -78,6 +79,9 @@ func _set_player_starting_position() -> void:
 func _generate_map() -> void:
 	
 	_place_map_outline()
+	
+	floor_sprite.position = Vector2(MAP_WIDTH * 16 * 0.5, MAP_HEIGHT * 16 * 0.5)
+	floor_sprite.region_rect.size = Vector2((MAP_WIDTH + 1) * 16, (MAP_HEIGHT + 1) * 16)
 	
 	# Use FastNoiseLite for our noise algorithm.
 	var noise:FastNoiseLite = FastNoiseLite.new()
