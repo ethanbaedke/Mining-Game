@@ -1,5 +1,6 @@
 class_name MineLevel extends Node2D
 
+@onready var map_outline_layer:TileMapLayer = $MapOutlineLayer
 @onready var wall_physical_layer:TileMapLayer = $WallPhysicalLayer
 @onready var wall_visual_layer:TileMapLayer = $WallVisualLayer
 
@@ -41,6 +42,8 @@ func _ready() -> void:
 # Generates the map. Places the physical tiles on the map.
 func _generate_map() -> void:
 	
+	_place_map_outline()
+	
 	# Use FastNoiseLite for our noise algorithm.
 	var noise:FastNoiseLite = FastNoiseLite.new()
 	noise.noise_type = FastNoiseLite.TYPE_CELLULAR
@@ -56,6 +59,25 @@ func _generate_map() -> void:
 		for x:int in range(MAP_WIDTH):
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
+
+# Outlines the map with unbreakable physical and visual tiles.
+func _place_map_outline() -> void:
+	
+	# Horizontal borders on the top and bottom.
+	for x:int in range(0, MAP_WIDTH):
+		map_outline_layer.set_cell(Vector2i(x, -1), 2, Vector2i(4, 2))
+		map_outline_layer.set_cell(Vector2i(x, MAP_HEIGHT), 2, Vector2i(4, 0))
+		
+	# Vertical borders on the left and right.
+	for y:int in range(0, MAP_HEIGHT):
+		map_outline_layer.set_cell(Vector2i(-1, y), 2, Vector2i(5, 1))
+		map_outline_layer.set_cell(Vector2i(MAP_WIDTH, y), 2, Vector2i(3, 1))
+		
+	# Corners.
+	map_outline_layer.set_cell(Vector2i(-1, -1), 2, Vector2i(1, 4))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, -1), 2, Vector2i(0, 4))
+	map_outline_layer.set_cell(Vector2i(-1, MAP_HEIGHT), 2, Vector2i(1, 3))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, MAP_HEIGHT), 2, Vector2i(0, 3))
 
 # Updates a cell on the visual tilemap to match the cooresponding cell on the physical tilemap.
 func _update_visual_tilemap_cell(cell_coordinates:Vector2i) -> void:
