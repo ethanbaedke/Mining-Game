@@ -8,6 +8,8 @@ class_name MineLevel extends Node2D
 @onready var player_character:PlayerCharacter = $PlayerCharacter
 @onready var player_camera:Camera2D = $PlayerCharacter/Camera2D
 
+const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
+
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
 
@@ -36,14 +38,14 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 
 func _ready() -> void:
 	
-	_generate_map()
+	var map:PackedByteArray = _generate_map()
 	
 	# Place visual tiles for all physical tiles present in the wall_physical_layer.
 	var used_cell_coords:Array[Vector2i] = wall_physical_layer.get_used_cells()
 	for cell_coords:Vector2i in used_cell_coords:
 		_update_visual_tilemap_cell(cell_coords)
 		
-	_set_player_starting_position()
+	_set_player_starting_position(map)
 	
 	# Set the player camera's bounds
 	player_camera.limit_left = -1 * 16
@@ -52,7 +54,7 @@ func _ready() -> void:
 	player_camera.limit_bottom = (MAP_HEIGHT + 1) * 16
 
 # Set the player's position to the open tile closest to the center of the map.
-func _set_player_starting_position() -> void:
+func _set_player_starting_position(map:PackedByteArray) -> void:
 	
 	# Start at the center of the map and breadth first search for an open cell.
 	var cell_queue:Array[Vector2i] = [Vector2i(MAP_WIDTH * 0.5, MAP_HEIGHT * 0.5)]
@@ -64,8 +66,8 @@ func _set_player_starting_position() -> void:
 		processed_set[current] = true
 		
 		# If this cell is empty, move the player there and return.
-		if (wall_physical_layer.get_cell_source_id(current) == -1):
-			player_character.global_position = wall_physical_layer.map_to_local(current)
+		if (map[current.x + (current.y * MAP_WIDTH)] == 0):
+			player_character.global_position = current * 16
 			return
 		# Otherwise, add its surrounding cells to the queue to be checked against.
 		else:
@@ -82,11 +84,23 @@ func _set_player_starting_position() -> void:
 			if (processed_set.get(bottom) == null):
 				cell_queue.append(bottom)
 
-# Generates the map. Places the physical tiles on the map.
-func _generate_map() -> void:
+# Generates the map and returns a row major PackedByteArray representing the 2d grid holding 1's in area's that are filled with objects.
+func _generate_map() -> PackedByteArray:
+	
+	# A row major representation of where objects are on the map. As things are placed, 1's should be filled in their locations to say that those areas are reserved.
+	var map:PackedByteArray = []
+	map.resize(MAP_WIDTH * MAP_HEIGHT)
 	
 	_place_map_outline()
 	
+	# Create a RandomNumberGenerator object to handle randomness during generation.
+	var rng:RandomNumberGenerator = RandomNumberGenerator.new()
+	
+	# Place holes.
+	for i:int in range(8):
+		_place_hole(map, rng)
+	
+	# Stretch the floor sprite to cover the entire map.
 	floor_sprite.position = Vector2(MAP_WIDTH * 16 * 0.5, MAP_HEIGHT * 16 * 0.5)
 	floor_sprite.region_rect.size = Vector2((MAP_WIDTH + 1) * 16, (MAP_HEIGHT + 1) * 16)
 	
@@ -97,7 +111,6 @@ func _generate_map() -> void:
 	noise.frequency = 0.04
 	
 	# Generate a random seed for the noise alogirithm.
-	var rng:RandomNumberGenerator = RandomNumberGenerator.new()
 	noise.seed = rng.randi()
 	
 	# Place physical tiles.
@@ -105,6 +118,31 @@ func _generate_map() -> void:
 		for x:int in range(MAP_WIDTH):
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
+				map[x + (y * MAP_WIDTH)] = 1
+				
+	return map
+
+# Places a hole.
+func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
+	
+	# Find an open position to place the hole.
+	# Random selection here is fine since holes are placed before anything else. It should only have to retry if another hole is already there.
+	var hole_pos:Vector2i = Vector2i.ZERO
+	while (true):
+		hole_pos = Vector2(rng.randi_range(1, (MAP_WIDTH - 2)), rng.randi_range(1, (MAP_HEIGHT - 2)))
+		if (map[hole_pos.x + (hole_pos.y * MAP_WIDTH)] == 0):
+			break
+
+	map[hole_pos.x + (hole_pos.y * MAP_WIDTH)] = 1
+	var hole:Area2D = CAVE_HOLE_SCENE.instantiate()
+	hole.position = hole_pos * 16
+	self.add_child(hole)
+	
+	# If the player touches the hole, reload the scene.
+	hole.body_entered.connect(func(body:Node2D) -> void:
+		if (body == player_character):
+			get_tree().reload_current_scene.call_deferred()
+	)
 
 # Outlines the map with unbreakable physical and visual tiles.
 func _place_map_outline() -> void:

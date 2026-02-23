@@ -29,7 +29,7 @@ position = Vector2(-21, -20)
 zoom = Vector2(2.7, 2.7)
 
 [node name="FloorSprite" type="Sprite2D" parent="." unique_id=898848134]
-z_index = -1
+z_index = -2
 texture_repeat = 2
 texture = ExtResource("4_dv24s")
 region_enabled = true

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://1gys5m0t2gyl"]
+
+[ext_resource type="Texture2D" uid="uid://cuknh8xksliy" path="res://cave_hole_sprite.png" id="1_5xmih"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e5lqi"]
+radius = 5.0
+
+[node name="CaveHole" type="Area2D" unique_id=1440773]
+collision_layer = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1511374079]
+z_index = -1
+position = Vector2(8, 8)
+texture = ExtResource("1_5xmih")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=506784884]
+position = Vector2(8, 8)
+shape = SubResource("CircleShape2D_e5lqi")
