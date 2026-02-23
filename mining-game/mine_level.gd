@@ -24,6 +24,9 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 	TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_RIGHT_CORNER
 ]
 
+# Reference retrieved on ready.
+var _game_manager:GameManager = null
+
 func remove_tile(cell_coordinates:Vector2i) -> void:
 	
 	# This call removes the tile at the input cell coordinates and updates the tiles of the surrounding cells using their terrain.
@@ -37,6 +40,9 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 			_update_visual_tilemap_cell(neighbor_coords)
 
 func _ready() -> void:
+	
+	# Grab a reference to the game manager, which should be this nodes parent.
+	_game_manager = get_parent()
 	
 	var map:PackedByteArray = _generate_map()
 	
@@ -138,10 +144,10 @@ func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	hole.position = hole_pos * 16
 	self.add_child(hole)
 	
-	# If the player touches the hole, reload the scene.
+	# If the player touches the hole, move to the next floor.
 	hole.body_entered.connect(func(body:Node2D) -> void:
 		if (body == player_character):
-			get_tree().reload_current_scene.call_deferred()
+			_game_manager.move_to_next_floor()
 	)
 
 # Outlines the map with unbreakable physical and visual tiles.

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b76s3usqsbv7e" path="res://mine_level.gd" id="1_ksevt"]
 [ext_resource type="TileSet" uid="uid://cedbq7dlya52b" path="res://mine_tile_set.tres" id="2_08n1b"]
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="4_dv24s"]
+[ext_resource type="Script" uid="uid://dydy3icdelc1b" path="res://mine_level_hud.gd" id="5_p3d05"]
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
 y_sort_enabled = true
@@ -34,3 +35,12 @@ texture_repeat = 2
 texture = ExtResource("4_dv24s")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=158249267]
+script = ExtResource("5_p3d05")
+
+[node name="FloorLabel" type="Label" parent="HUD" unique_id=1318654353]
+offset_left = 5.0
+offset_right = 63.0
+offset_bottom = 23.0
+text = "Floor: 0"
