@@ -24,6 +24,8 @@ const PICKAXE_RIGHT_F2_POS:Vector2 = Vector2(9.0, -1.0)
 
 const MOVE_SPEED:int = 40
 
+signal player_killed
+
 enum FacingDirection { LEFT, RIGHT, UP, DOWN }
 var _face_dir:FacingDirection = FacingDirection.DOWN
 
@@ -34,6 +36,9 @@ var _pickaxe_load_time:float = 0.15
 # How long the player holds the pickaxe down after swinging it.
 var _pickaxe_thrust_time:float = 0.25
 var _pickaxe_anim_time:float = 0.0
+
+func kill_player() -> void:
+	player_killed.emit()
 
 func _physics_process(delta:float) -> void:
 	

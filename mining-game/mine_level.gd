@@ -9,6 +9,7 @@ class_name MineLevel extends Node2D
 @onready var player_camera:Camera2D = $PlayerCharacter/Camera2D
 
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
+const DASHING_ENEMY_SCENE:PackedScene = preload("res://dashing_enemy.tscn")
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
@@ -23,6 +24,9 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 	TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE,
 	TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_RIGHT_CORNER
 ]
+
+signal level_cleared
+signal player_killed
 
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
@@ -44,6 +48,7 @@ func _ready() -> void:
 	# Grab a reference to the game manager, which should be this nodes parent.
 	_game_manager = get_parent()
 	
+	# Generate the map
 	var map:PackedByteArray = _generate_map()
 	
 	# Place visual tiles for all physical tiles present in the wall_physical_layer.
@@ -51,9 +56,15 @@ func _ready() -> void:
 	for cell_coords:Vector2i in used_cell_coords:
 		_update_visual_tilemap_cell(cell_coords)
 		
+	# Set the starting position of the player.
 	_set_player_starting_position(map)
 	
-	# Set the player camera's bounds
+	# Listen for the player dying so we can fire our own event.
+	player_character.player_killed.connect(func() -> void:
+		player_killed.emit()
+	)
+	
+	# Set the player camera's bounds.
 	player_camera.limit_left = -1 * 16
 	player_camera.limit_right = (MAP_WIDTH + 1) * 16
 	player_camera.limit_top = -1 * 16
@@ -125,8 +136,25 @@ func _generate_map() -> PackedByteArray:
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
 				map[x + (y * MAP_WIDTH)] = 1
-				
+	
+	_place_enemies(map, rng)
+	
 	return map
+
+# Places enemies around the map.
+func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
+	
+	# Iterate over the map.
+	for y:int in range(MAP_HEIGHT):
+		for x:int in range(MAP_WIDTH):
+			
+			# For each empty cell, there is a 1% chance to spawn a dashing enemy.
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
+				
+				# Spawn the dashing enemy.
+				var enemy:DashingEnemy = DASHING_ENEMY_SCENE.instantiate()
+				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+				self.add_child(enemy)
 
 # Places a hole.
 func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
@@ -147,7 +175,7 @@ func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	# If the player touches the hole, move to the next floor.
 	hole.body_entered.connect(func(body:Node2D) -> void:
 		if (body == player_character):
-			_game_manager.move_to_next_floor()
+			level_cleared.emit()
 	)
 
 # Outlines the map with unbreakable physical and visual tiles.
