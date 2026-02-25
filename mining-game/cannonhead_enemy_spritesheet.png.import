@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8ph8ofod4sta"
-path="res://.godot/imported/dashing_enemy_spritesheet.png-66eda7c4e404af4892a2006b339c24bf.ctex"
+path="res://.godot/imported/cannonhead_enemy_spritesheet.png-9f8736462535fd85e23fb9243932a5fe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://dashing_enemy_spritesheet.png"
-dest_files=["res://.godot/imported/dashing_enemy_spritesheet.png-66eda7c4e404af4892a2006b339c24bf.ctex"]
+source_file="res://cannonhead_enemy_spritesheet.png"
+dest_files=["res://.godot/imported/cannonhead_enemy_spritesheet.png-9f8736462535fd85e23fb9243932a5fe.ctex"]
 
 [params]
 

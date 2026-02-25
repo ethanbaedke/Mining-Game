@@ -9,7 +9,7 @@ class_name MineLevel extends Node2D
 @onready var player_camera:Camera2D = $PlayerCharacter/Camera2D
 
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
-const DASHING_ENEMY_SCENE:PackedScene = preload("res://dashing_enemy.tscn")
+const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
@@ -148,11 +148,11 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	for y:int in range(MAP_HEIGHT):
 		for x:int in range(MAP_WIDTH):
 			
-			# For each empty cell, there is a 1% chance to spawn a dashing enemy.
+			# For each empty cell, there is a 1% chance to spawn a cannonhead enemy.
 			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
 				
-				# Spawn the dashing enemy.
-				var enemy:DashingEnemy = DASHING_ENEMY_SCENE.instantiate()
+				# Spawn the cannonhead enemy.
+				var enemy:CannonheadEnemy = CANNONHEAD_ENEMY_SCENE.instantiate()
 				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 				self.add_child(enemy)
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cdntrlsbstvpm"]
 
-[ext_resource type="Texture2D" uid="uid://c8ph8ofod4sta" path="res://dashing_enemy_spritesheet.png" id="1_5r41k"]
-[ext_resource type="Script" uid="uid://btysxomk4twwq" path="res://dashing_enemy.gd" id="1_yl63k"]
+[ext_resource type="Script" uid="uid://btysxomk4twwq" path="res://cannonhead_enemy.gd" id="1_areo8"]
+[ext_resource type="Texture2D" uid="uid://c8ph8ofod4sta" path="res://cannonhead_enemy_spritesheet.png" id="2_w12mx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl63k"]
 size = Vector2(12, 5)
@@ -9,8 +9,8 @@ size = Vector2(12, 5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r41k"]
 size = Vector2(10, 3)
 
-[node name="DashingEnemy" type="Node2D" unique_id=1273210817]
-script = ExtResource("1_yl63k")
+[node name="CannonheadEnemy" type="Node2D" unique_id=1273210817]
+script = ExtResource("1_areo8")
 
 [node name="Head" type="Area2D" parent="." unique_id=1132862508]
 position = Vector2(0, -6)
@@ -19,7 +19,7 @@ monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Head" unique_id=1117944061]
 position = Vector2(0, 1)
-texture = ExtResource("1_5r41k")
+texture = ExtResource("2_w12mx")
 region_enabled = true
 region_rect = Rect2(16, 0, 16, 16)
 
@@ -33,7 +33,7 @@ monitorable = false
 
 [node name="BodySprite" type="Sprite2D" parent="Body" unique_id=1154763131]
 position = Vector2(0, -5)
-texture = ExtResource("1_5r41k")
+texture = ExtResource("2_w12mx")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
