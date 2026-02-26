@@ -10,13 +10,13 @@ const HEAD_THROW_RIGHT_FAR_OFFSET:Vector2 = Vector2(HEAD_THROW_MAX_DISTANCE * 16
 const HEAD_THROW_UP_FAR_OFFSET:Vector2 = Vector2(0.0, -HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_DOWN_FAR_OFFSET:Vector2 = Vector2(0.0, HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_COOLDOWN:float = 1.0
-const HEAD_THROW_TIME:float = 2.0
 
 enum ThrowingDirection { LEFT, RIGHT, UP, DOWN }
 
 var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
 var _throwing_head:bool = false
 var _head_throw_cooldown_timer:float = HEAD_THROW_COOLDOWN
+var _head_throw_total_time:float = 1.0
 var _head_throw_timer:float = 0.0
 # These two positions are in global coordinates.
 var _head_throw_start_pos:Vector2 = Vector2.ZERO
@@ -46,9 +46,13 @@ func _update_head_throw(delta:float) -> void:
 	
 	_head_throw_timer += delta
 	
-	if _head_throw_timer < HEAD_THROW_TIME:
-		# TODO: Implement head throwing
-		pass
+	# Plug the following into desmos exactly to see the function used for head throwing: y\ =\ -\left(\left(\frac{x}{0.5t}\right)\ -\ 1\right)^{2}\ +\ 1
+	# x: the amount of time that has passed.
+	# y: the percent the head should be between the start and end positions.
+	# t: the total amount of time for the head throw.
+	if (_head_throw_timer < _head_throw_total_time):
+		var weight:float = -pow(((_head_throw_timer / (_head_throw_total_time * 0.5)) - 1), 2) + 1
+		_head.global_position = _head_throw_start_pos.lerp(_head_throw_end_pos, weight)
 	else:
 		_finish_head_throw()
 
@@ -58,7 +62,7 @@ func _finish_head_throw() -> void:
 	_head_throw_cooldown_timer = HEAD_THROW_COOLDOWN
 	_throwing_head = false
 	
-	# TESTING: Here to turn of throw path visualization. This will likely change after full head throw implementation.
+	# Here to turn of throw path visualization.
 	queue_redraw()
 
 func _start_head_throw() -> void:
@@ -107,8 +111,11 @@ func _start_head_throw() -> void:
 				_head_throw_end_pos = result.position + Vector2(0.0, -8.0)
 			else:
 				_head_throw_end_pos = _head_throw_start_pos + HEAD_THROW_DOWN_FAR_OFFSET
+	
+	# Scale the head throw time linearly with distance.
+	_head_throw_total_time = _head_throw_start_pos.distance_to(_head_throw_end_pos) * .02
 				
-	# TESTING: Here to visualize throw path since redrawing is not happening automatically. This will likely change after full head throw implementation.
+	# Here to visualize throw path.
 	queue_redraw()
 
 # This handles another body enetering the head or body area's of this enemy.
