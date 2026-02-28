@@ -1,6 +1,7 @@
 class_name CannonheadEnemy extends Node2D
 
 @onready var _head:Area2D = $Head
+@onready var _head_sprite:Sprite2D = $Head/Sprite2D
 @onready var _body:Area2D = $Body
 
 # This distance is measured in cells.
@@ -10,12 +11,15 @@ const HEAD_THROW_RIGHT_FAR_OFFSET:Vector2 = Vector2(HEAD_THROW_MAX_DISTANCE * 16
 const HEAD_THROW_UP_FAR_OFFSET:Vector2 = Vector2(0.0, -HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_DOWN_FAR_OFFSET:Vector2 = Vector2(0.0, HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_COOLDOWN:float = 1.0
+const HEAD_THROW_TELEGRAPH_TIME:float = 1.0
 
 enum ThrowingDirection { LEFT, RIGHT, UP, DOWN }
 
 var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
 var _throwing_head:bool = false
+var _telegraphing:bool = false
 var _head_throw_cooldown_timer:float = HEAD_THROW_COOLDOWN
+var _telegraph_timer:float = HEAD_THROW_TELEGRAPH_TIME
 var _head_throw_total_time:float = 1.0
 var _head_throw_timer:float = 0.0
 # These two positions are in global coordinates.
@@ -26,6 +30,10 @@ func _physics_process(delta: float) -> void:
 	
 	if (_head_throw_cooldown_timer > 0.0):
 		_head_throw_cooldown_timer -= delta
+	elif (!_telegraphing && !_throwing_head):
+		_telegraph_head_throw()
+	elif (_telegraph_timer > 0.0):
+		_telegraph_timer -= delta
 	elif (!_throwing_head):
 		_start_head_throw()
 	else:
@@ -41,6 +49,25 @@ func _draw() -> void:
 		draw_line(_head.position, _head.position + HEAD_THROW_DOWN_FAR_OFFSET, Color.RED, 1.0)
 		if (_throwing_head):
 			draw_line(self.to_local(_head_throw_start_pos), self.to_local(_head_throw_end_pos), Color.ORANGE, 2.0)
+
+func _telegraph_head_throw() -> void:
+	
+	_telegraphing = true
+	_telegraph_timer = HEAD_THROW_TELEGRAPH_TIME
+	
+	# Select a random direction to throw the head.
+	_head_throwing_direction = randi_range(0, 3) as ThrowingDirection
+	
+	# Update the head sprite to telegraph this direction.
+	match (_head_throwing_direction):
+		ThrowingDirection.LEFT:
+			_head_sprite.region_rect.position.x = 48.0
+		ThrowingDirection.RIGHT:
+			_head_sprite.region_rect.position.x = 64.0
+		ThrowingDirection.UP:
+			_head_sprite.region_rect.position.x = 80.0
+		ThrowingDirection.DOWN:
+			_head_sprite.region_rect.position.x = 96.0
 
 func _update_head_throw(delta:float) -> void:
 	
@@ -62,18 +89,23 @@ func _finish_head_throw() -> void:
 	_head_throw_cooldown_timer = HEAD_THROW_COOLDOWN
 	_throwing_head = false
 	
+	# Set our head sprite back to default.
+	_head_sprite.region_rect.position.x = 16.0
+	
 	# Here to turn of throw path visualization.
 	queue_redraw()
 
 func _start_head_throw() -> void:
+	
+	_telegraphing = false
 	
 	# Setup head throw variables.
 	_throwing_head = true
 	_head_throw_timer = 0.0
 	_head_throw_start_pos = _head.global_position
 	
-	# Select a random direction to throw the head.
-	_head_throwing_direction = randi_range(0, 3) as ThrowingDirection
+	# Update the head sprite to the throwing head sprite.
+	_head_sprite.region_rect.position.x = 32.0
 	
 	# Raycast in the direction of the head throw to see if a wall is between the enemy and its max throw distance.
 	# We set the end position of the throw to the cell in front of any wall we hit, or the cell at our max distance if no wall is in the way.
