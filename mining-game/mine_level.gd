@@ -31,6 +31,9 @@ signal player_killed
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
 
+# Navigation
+var _astar:AStarGrid2D = AStarGrid2D.new()
+
 func remove_tile(cell_coordinates:Vector2i) -> void:
 	
 	# This call removes the tile at the input cell coordinates and updates the tiles of the surrounding cells using their terrain.
@@ -136,6 +139,17 @@ func _generate_map() -> PackedByteArray:
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
 				map[x + (y * MAP_WIDTH)] = 1
+				
+	# Setup our navigation here, since it should see physical tiles and holes.
+	_astar.region = Rect2i(0, 0, MAP_WIDTH, MAP_HEIGHT)
+	_astar.cell_size = Vector2(16.0, 16.0)
+	_astar.offset = Vector2(8.0, 8.0)
+	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
+	_astar.update()
+	for y:int in range(MAP_HEIGHT):
+		for x:int in range(MAP_WIDTH):
+			if (map[x + (y * MAP_WIDTH)] == 1):
+				_astar.set_point_solid(Vector2i(x, y))
 	
 	_place_enemies(map, rng)
 	
@@ -154,6 +168,8 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 				# Spawn the cannonhead enemy.
 				var enemy:CannonheadEnemy = CANNONHEAD_ENEMY_SCENE.instantiate()
 				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+				# Pass pathfinding for this mine level to the enemy.
+				enemy.astar = _astar
 				self.add_child(enemy)
 
 # Places a hole.

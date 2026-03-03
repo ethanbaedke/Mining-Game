@@ -4,17 +4,25 @@ class_name CannonheadEnemy extends Node2D
 @onready var _head_sprite:Sprite2D = $Head/Sprite2D
 @onready var _body:Area2D = $Body
 
+# The distance squared away from the next point (in pixels) we have to be to consider ourselves at that point.
+const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
+const MOVE_SPEED:float = 16
 # This distance is measured in cells.
 const HEAD_THROW_MAX_DISTANCE:int = 10
 const HEAD_THROW_LEFT_FAR_OFFSET:Vector2 = Vector2(-HEAD_THROW_MAX_DISTANCE * 16.0, 0.0)
 const HEAD_THROW_RIGHT_FAR_OFFSET:Vector2 = Vector2(HEAD_THROW_MAX_DISTANCE * 16.0, 0.0)
 const HEAD_THROW_UP_FAR_OFFSET:Vector2 = Vector2(0.0, -HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_DOWN_FAR_OFFSET:Vector2 = Vector2(0.0, HEAD_THROW_MAX_DISTANCE * 16.0)
-const HEAD_THROW_COOLDOWN:float = 1.0
+const HEAD_THROW_COOLDOWN:float = 2.0
 const HEAD_THROW_TELEGRAPH_TIME:float = 1.0
 
 enum ThrowingDirection { LEFT, RIGHT, UP, DOWN }
 
+# Should be set by the instantiator. Used for pathfinding.
+var astar:AStarGrid2D = null
+
+var _movement_point_path:PackedVector2Array = []
+var _point_path_index:int = -1
 var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
 var _throwing_head:bool = false
 var _telegraphing:bool = false
@@ -30,6 +38,7 @@ func _physics_process(delta: float) -> void:
 	
 	if (_head_throw_cooldown_timer > 0.0):
 		_head_throw_cooldown_timer -= delta
+		_handle_movement(delta)
 	elif (!_telegraphing && !_throwing_head):
 		_telegraph_head_throw()
 	elif (_telegraph_timer > 0.0):
@@ -41,7 +50,12 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	
-	# Only draw if we have visible collision shapes checked in the editor.
+	# Draw pathfinding if visible paths is checked in the editor.
+	if (get_tree().debug_paths_hint):
+		for i:int in range(_movement_point_path.size() - 1):
+			draw_line(to_local(_movement_point_path[i]), to_local(_movement_point_path[i + 1]), Color.GREEN, 1.0)
+	
+	# Only draw collision if we have visible collision shapes checked in the editor.
 	if (get_tree().debug_collisions_hint):
 		draw_line(_head.position, _head.position + HEAD_THROW_LEFT_FAR_OFFSET, Color.RED, 1.0)
 		draw_line(_head.position, _head.position + HEAD_THROW_RIGHT_FAR_OFFSET, Color.RED, 1.0)
@@ -49,6 +63,47 @@ func _draw() -> void:
 		draw_line(_head.position, _head.position + HEAD_THROW_DOWN_FAR_OFFSET, Color.RED, 1.0)
 		if (_throwing_head):
 			draw_line(self.to_local(_head_throw_start_pos), self.to_local(_head_throw_end_pos), Color.ORANGE, 2.0)
+
+func _handle_movement(delta:float) -> void:
+	
+	# If we're at our destination, calculate a new path.
+	if (_point_path_index >= _movement_point_path.size() - 1):
+		_calculate_new_movement_path()
+		return
+	
+	# Grab info about our next point.
+	var next_point:Vector2 = _movement_point_path[_point_path_index + 1]
+	var vec_to_next_point:Vector2 = next_point - self.global_position
+	
+	# If we're at our next point, increment our point index
+	if (vec_to_next_point.length_squared() < MOVEMENT_PATH_POINT_REACHED_MARGIN):
+		_point_path_index += 1
+	# Otherwise, move towards our next point.
+	else:
+		position += vec_to_next_point.normalized() * MOVE_SPEED * delta
+		
+		# Update path visualization.
+		queue_redraw()
+
+func _calculate_new_movement_path() -> void:
+	
+	# Get the tile this enemy is on.
+	var cur_tile:Vector2i = (self.global_position * 0.0625) as Vector2i
+	
+	# Select a random tile in a 5x5 grid centered on this enemy.
+	var x_off:int = randi_range(-2, 2)
+	var y_off:int = randi_range(-2, 2)
+	var new_tile:Vector2i = Vector2i(cur_tile.x + x_off, cur_tile.y + y_off)
+	new_tile.x = clampi(new_tile.x, 0, astar.region.size.x - 1)
+	new_tile.y = clampi(new_tile.y, 0, astar.region.size.y - 1)
+	
+	# Try and calculate the movement path.
+	_movement_point_path = astar.get_point_path(cur_tile, new_tile)
+	
+	_point_path_index = -1
+	
+	# Update path visualization.
+	queue_redraw()
 
 func _telegraph_head_throw() -> void:
 	

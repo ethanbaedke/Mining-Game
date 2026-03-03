@@ -15,6 +15,7 @@ y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="WallPhysicalLayer" type="TileMapLayer" parent="." unique_id=865466753]
+visible = false
 z_index = 1
 tile_set = ExtResource("2_08n1b")
 
