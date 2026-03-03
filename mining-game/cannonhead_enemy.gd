@@ -169,6 +169,7 @@ func _start_head_throw() -> void:
 		ThrowingDirection.LEFT:
 			var query:PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(_head_throw_start_pos, _head_throw_start_pos + HEAD_THROW_LEFT_FAR_OFFSET)
 			query.exclude = [_head.get_rid(), _body.get_rid()]
+			query.collision_mask = 1
 			var result:Dictionary = space_state.intersect_ray(query)
 			if (result):
 				_head_throw_end_pos = result.position + Vector2(8.0, 0.0)
@@ -177,6 +178,7 @@ func _start_head_throw() -> void:
 		ThrowingDirection.RIGHT:
 			var query:PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(_head_throw_start_pos, _head_throw_start_pos + HEAD_THROW_RIGHT_FAR_OFFSET)
 			query.exclude = [_head.get_rid(), _body.get_rid()]
+			query.collision_mask = 1
 			var result:Dictionary = space_state.intersect_ray(query)
 			if (result):
 				_head_throw_end_pos = result.position + Vector2(-8.0, 0.0)
@@ -185,6 +187,7 @@ func _start_head_throw() -> void:
 		ThrowingDirection.UP:
 			var query:PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(_head_throw_start_pos, _head_throw_start_pos + HEAD_THROW_UP_FAR_OFFSET)
 			query.exclude = [_head.get_rid(), _body.get_rid()]
+			query.collision_mask = 1
 			var result:Dictionary = space_state.intersect_ray(query)
 			if (result):
 				_head_throw_end_pos = result.position + Vector2(0.0, 8.0)
@@ -193,6 +196,7 @@ func _start_head_throw() -> void:
 		ThrowingDirection.DOWN:
 			var query:PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(_head_throw_start_pos, _head_throw_start_pos + HEAD_THROW_DOWN_FAR_OFFSET)
 			query.exclude = [_head.get_rid(), _body.get_rid()]
+			query.collision_mask = 1
 			var result:Dictionary = space_state.intersect_ray(query)
 			if (result):
 				_head_throw_end_pos = result.position + Vector2(0.0, -8.0)

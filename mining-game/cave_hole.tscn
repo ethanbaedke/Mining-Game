@@ -7,6 +7,8 @@ radius = 5.0
 
 [node name="CaveHole" type="Area2D" unique_id=1440773]
 collision_layer = 0
+collision_mask = 2
+monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1511374079]
 z_index = -1
