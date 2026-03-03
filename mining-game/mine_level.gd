@@ -87,7 +87,7 @@ func _set_player_starting_position(map:PackedByteArray) -> void:
 		
 		# If this cell is empty, move the player there and return.
 		if (map[current.x + (current.y * MAP_WIDTH)] == 0):
-			player_character.global_position = current * 16
+			player_character.global_position = (current * 16.0) + Vector2(8.0, 8.0)
 			return
 		# Otherwise, add its surrounding cells to the queue to be checked against.
 		else:
@@ -163,9 +163,10 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 		for x:int in range(MAP_WIDTH):
 			
 			# For each empty cell, there is a 1% chance to spawn a cannonhead enemy.
-			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 1) == 0):
 				
 				# Spawn the cannonhead enemy.
+				map[x + (y * MAP_WIDTH)] = 1
 				var enemy:CannonheadEnemy = CANNONHEAD_ENEMY_SCENE.instantiate()
 				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 				# Pass pathfinding for this mine level to the enemy.
