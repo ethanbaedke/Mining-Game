@@ -48,6 +48,9 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 		var neighbor_coords:Vector2i = wall_visual_layer.get_neighbor_cell(cell_coordinates, neighbor)
 		if (wall_visual_layer.get_cell_source_id(neighbor_coords) != -1):
 			_update_visual_tilemap_cell(neighbor_coords)
+			
+	# Update navigation so enemies can move into the newely empty space.
+	_astar.set_point_solid(cell_coordinates, false)
 
 func _ready() -> void:
 	
@@ -73,8 +76,61 @@ func _ready() -> void:
 	player_camera.limit_top = -1 * 16
 	player_camera.limit_bottom = (MAP_HEIGHT + 1) * 16
 
+# Generates the map and returns a row major PackedByteArray representing the 2d grid holding 1's in area's that are filled with objects.
+func _generate_map() -> PackedByteArray:
+	
+	# A row major representation of where objects are on the map. This is filled out as the map is generated.
+	# 0 -> An empty cell.
+	# 1 -> A cell taken up by a static object (removed from navigation)
+	# 2 -> A cell taken up by a non-static object (kept in navigation)
+	var map:PackedByteArray = []
+	map.resize(MAP_WIDTH * MAP_HEIGHT)
+	
+	# Create a RandomNumberGenerator object to handle randomness during generation.
+	var rng:RandomNumberGenerator = RandomNumberGenerator.new()
+	
+	# This is the first things we do since our navigation grid may be affected by things during generation, and needs to have valid properties.
+	_setup_navigation()
+	
+	# These have NO EFFECT on the map.
+	_place_map_outline()
+	_place_floor()
+	
+	_place_walls(map, rng)
+	
+	# After placing walls but before placing secret rooms, so the player doesn't spawn inside of one.
+	_place_player(map)
+	
+	_place_secret_rooms(map)
+	
+	_place_holes(map, rng)
+	
+	_place_enemies(map, rng)
+	
+	# This is the last thing we do so it can look at the final state of our map as it updates.
+	_update_navigation(map)
+	
+	return map
+
+# Sets up navigation without setting any points as solid.
+func _setup_navigation() -> void:
+	
+	_astar.region = Rect2i(0, 0, MAP_WIDTH, MAP_HEIGHT)
+	_astar.cell_size = Vector2(16.0, 16.0)
+	_astar.offset = Vector2(8.0, 8.0)
+	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
+	_astar.update()
+
+# Fills in solid points.
+func _update_navigation(map:PackedByteArray) -> void:
+	
+	for y:int in range(MAP_HEIGHT):
+		for x:int in range(MAP_WIDTH):
+			if (map[x + (y * MAP_WIDTH)] == 1):
+				_astar.set_point_solid(Vector2i(x, y))
+
 # Set the player's position to the open tile closest to the center of the map.
-func _set_player_starting_position(map:PackedByteArray) -> void:
+func _place_player(map:PackedByteArray) -> void:
 	
 	# Start at the center of the map and breadth first search for an open cell.
 	var cell_queue:Array[Vector2i] = [Vector2i(MAP_WIDTH * 0.5, MAP_HEIGHT * 0.5)]
@@ -88,7 +144,7 @@ func _set_player_starting_position(map:PackedByteArray) -> void:
 		# If this cell is empty, move the player there and return.
 		if (map[current.x + (current.y * MAP_WIDTH)] == 0):
 			player_character.global_position = (current * 16.0) + Vector2(8.0, 8.0)
-			map[current.x + (current.y * MAP_WIDTH)] = 1
+			map[current.x + (current.y * MAP_WIDTH)] = 2
 			return
 		# Otherwise, add its surrounding cells to the queue to be checked against.
 		else:
@@ -105,25 +161,13 @@ func _set_player_starting_position(map:PackedByteArray) -> void:
 			if (processed_set.get(bottom) == null):
 				cell_queue.append(bottom)
 
-# Generates the map and returns a row major PackedByteArray representing the 2d grid holding 1's in area's that are filled with objects.
-func _generate_map() -> PackedByteArray:
-	
-	# A row major representation of where objects are on the map. As things are placed, 1's should be filled in their locations to say that those areas are reserved.
-	var map:PackedByteArray = []
-	map.resize(MAP_WIDTH * MAP_HEIGHT)
-	
-	_place_map_outline()
-	
-	# Create a RandomNumberGenerator object to handle randomness during generation.
-	var rng:RandomNumberGenerator = RandomNumberGenerator.new()
-	
-	# Place holes.
-	for i:int in range(8):
-		_place_hole(map, rng)
+func _place_floor() -> void:
 	
 	# Stretch the floor sprite to cover the entire map.
 	floor_sprite.position = Vector2(MAP_WIDTH * 16 * 0.5, MAP_HEIGHT * 16 * 0.5)
 	floor_sprite.region_rect.size = Vector2((MAP_WIDTH + 1) * 16, (MAP_HEIGHT + 1) * 16)
+
+func _place_walls(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
 	# Use FastNoiseLite for our noise algorithm.
 	var noise:FastNoiseLite = FastNoiseLite.new()
@@ -140,26 +184,6 @@ func _generate_map() -> PackedByteArray:
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
 				map[x + (y * MAP_WIDTH)] = 1
-	
-	# Set the starting position of the player here, before placing secret rooms, so they don't spawn in one.
-	_set_player_starting_position(map)
-	
-	_place_secret_rooms(map)
-	
-	# Setup our navigation here, since it should see physical tiles and holes.
-	_astar.region = Rect2i(0, 0, MAP_WIDTH, MAP_HEIGHT)
-	_astar.cell_size = Vector2(16.0, 16.0)
-	_astar.offset = Vector2(8.0, 8.0)
-	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
-	_astar.update()
-	for y:int in range(MAP_HEIGHT):
-		for x:int in range(MAP_WIDTH):
-			if (map[x + (y * MAP_WIDTH)] == 1):
-				_astar.set_point_solid(Vector2i(x, y))
-	
-	_place_enemies(map, rng)
-	
-	return map
 
 # Hollows wall sections and replaces them with secret rooms.
 func _place_secret_rooms(map:PackedByteArray) -> void:
@@ -178,10 +202,10 @@ func _place_secret_rooms(map:PackedByteArray) -> void:
 			return
 		
 		var clipped_rect:Rect2i = Rect2i(rect.position + Vector2i(2, 2), rect.size - Vector2i(4, 4))
-		_setup_secret_room(map, clipped_rect)
+		_place_secret_room(map, clipped_rect)
 
 # Sets up one secret room over the input rect, which is considered to be in cell coordinates.
-func _setup_secret_room(map:PackedByteArray, room_rect:Rect2i) -> void:
+func _place_secret_room(map:PackedByteArray, room_rect:Rect2i) -> void:
 	
 	# Remove all cells from the secret rooms area.
 	var start:Vector2i = room_rect.position
@@ -280,18 +304,22 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
 				
 				# Spawn the cannonhead enemy.
-				map[x + (y * MAP_WIDTH)] = 1
+				map[x + (y * MAP_WIDTH)] = 2
 				var enemy:CannonheadEnemy = CANNONHEAD_ENEMY_SCENE.instantiate()
 				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 				# Pass pathfinding for this mine level to the enemy.
 				enemy.astar = _astar
 				self.add_child(enemy)
 
-# Places a hole.
+func _place_holes(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
+	
+	for i:int in range(4):
+		_place_hole(map, rng)
+
 func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
 	# Find an open position to place the hole.
-	# Random selection here is fine since holes are placed before anything else. It should only have to retry if another hole is already there.
+	# WARNING: This could take a LONG time.
 	var hole_pos:Vector2i = Vector2i.ZERO
 	while (true):
 		hole_pos = Vector2(rng.randi_range(1, (MAP_WIDTH - 2)), rng.randi_range(1, (MAP_HEIGHT - 2)))

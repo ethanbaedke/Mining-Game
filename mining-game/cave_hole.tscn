@@ -12,7 +12,6 @@ collision_mask = 2
 monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1511374079]
-z_index = -1
 position = Vector2(8, 8)
 texture = ExtResource("1_5xmih")
 
