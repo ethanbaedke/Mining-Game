@@ -2,7 +2,13 @@ class_name GameManager extends Node
 
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 
+const SCORE_FROM_GOLD_ROCK_BROKEN:int = 1
+const SCORE_FROM_PLAYER_KILLED:int = -10
+
+signal current_score_changed
+
 var current_floor:int = 0
+var current_score:int = 0
 
 var _mine_level:MineLevel = null
 
@@ -19,6 +25,7 @@ func _instantiate_mine_level() -> void:
 	_mine_level = MINE_LEVEL_SCENE.instantiate()
 	_mine_level.level_cleared.connect(_on_mine_level_level_cleared)
 	_mine_level.player_killed.connect(_on_mine_level_player_killed)
+	_mine_level.gold_rock_broken.connect(_on_mine_level_gold_rock_broken)
 	self.add_child(_mine_level)
 
 func _free_mine_level() -> void:
@@ -26,6 +33,14 @@ func _free_mine_level() -> void:
 	# Free the mine level and wait for it to be freed (end of the frame).
 	_mine_level.queue_free()
 	await get_tree().process_frame
+
+func _modify_current_score(amount:int) -> void:
+	
+	current_score += amount
+	current_score = max(0, current_score)
+	current_score = min(999, current_score)
+	
+	current_score_changed.emit()
 
 func _on_mine_level_level_cleared() -> void:
 	
@@ -37,5 +52,11 @@ func _on_mine_level_level_cleared() -> void:
 
 func _on_mine_level_player_killed() -> void:
 	
+	_modify_current_score(SCORE_FROM_PLAYER_KILLED)
+	
 	await _free_mine_level()
 	_instantiate_mine_level()
+	
+func _on_mine_level_gold_rock_broken() -> void:
+	
+	_modify_current_score(SCORE_FROM_GOLD_ROCK_BROKEN)

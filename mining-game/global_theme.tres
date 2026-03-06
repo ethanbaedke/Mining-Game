@@ -1,0 +1,16 @@
+[gd_resource type="Theme" format=3 uid="uid://74k1qh542cpk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tccg3"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+Label/font_sizes/font_size = 20
+MarginContainer/constants/margin_bottom = 8
+MarginContainer/constants/margin_left = 8
+MarginContainer/constants/margin_right = 8
+MarginContainer/constants/margin_top = 8
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_tccg3")

@@ -1,6 +1,7 @@
 class_name MineLevelHud extends CanvasLayer
 
-@onready var _floor_label:Label = $FloorLabel
+@onready var _floor_label:Label = $MarginContainer/Control/FloorPanelContainer/FloorLabel
+@onready var _score_label:Label = $MarginContainer/Control/PanelContainer/ScoreLabel
 
 # References retrieved on ready.
 var _mine_level:MineLevel = null
@@ -16,3 +17,13 @@ func _ready() -> void:
 	
 	# Set the floor label to reflect the current floor the player is on.
 	_floor_label.text = "Floor: " + str(_game_manager.current_floor)
+	
+	# Set score (since the UI will reset every new level)
+	_update_score_label()
+	
+	# Listen for score changes.
+	_game_manager.current_score_changed.connect(_update_score_label)
+
+func _update_score_label() -> void:
+	
+	_score_label.text = "Score: " + str(_game_manager.current_score)

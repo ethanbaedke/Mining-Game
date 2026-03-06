@@ -31,6 +31,7 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 
 signal level_cleared
 signal player_killed
+signal gold_rock_broken
 
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
@@ -54,6 +55,8 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 	_astar.set_point_solid(cell_coordinates, false)
 	
 func remove_gold_rock(rock:GoldRock) -> void:
+	
+	gold_rock_broken.emit()
 	
 	# Update navigation so enemies can move into the newely empty space.
 	var cell_coords:Vector2i = rock.position * 0.0625
