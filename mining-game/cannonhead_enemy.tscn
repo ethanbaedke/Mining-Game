@@ -10,6 +10,7 @@ size = Vector2(12, 5)
 size = Vector2(10, 3)
 
 [node name="CannonheadEnemy" type="Node2D" unique_id=1273210817]
+z_index = -2
 script = ExtResource("1_areo8")
 
 [node name="Head" type="Area2D" parent="." unique_id=1132862508]

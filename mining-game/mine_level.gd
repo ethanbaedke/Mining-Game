@@ -10,9 +10,12 @@ class_name MineLevel extends Node2D
 
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
+const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
+# The width and height of a secret area use the same minimum size.
+const MIN_SECRET_AREA_SIZE:int = 3
 
 const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 	TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE,
@@ -52,15 +55,12 @@ func _ready() -> void:
 	_game_manager = get_parent()
 	
 	# Generate the map
-	var map:PackedByteArray = _generate_map()
+	_generate_map()
 	
 	# Place visual tiles for all physical tiles present in the wall_physical_layer.
 	var used_cell_coords:Array[Vector2i] = wall_physical_layer.get_used_cells()
 	for cell_coords:Vector2i in used_cell_coords:
 		_update_visual_tilemap_cell(cell_coords)
-		
-	# Set the starting position of the player.
-	_set_player_starting_position(map)
 	
 	# Listen for the player dying so we can fire our own event.
 	player_character.player_killed.connect(func() -> void:
@@ -88,6 +88,7 @@ func _set_player_starting_position(map:PackedByteArray) -> void:
 		# If this cell is empty, move the player there and return.
 		if (map[current.x + (current.y * MAP_WIDTH)] == 0):
 			player_character.global_position = (current * 16.0) + Vector2(8.0, 8.0)
+			map[current.x + (current.y * MAP_WIDTH)] = 1
 			return
 		# Otherwise, add its surrounding cells to the queue to be checked against.
 		else:
@@ -139,7 +140,12 @@ func _generate_map() -> PackedByteArray:
 			if (noise.get_noise_2d(x, y) < -0.7):
 				wall_physical_layer.set_cells_terrain_connect([Vector2i(x, y)], 0, 0)
 				map[x + (y * MAP_WIDTH)] = 1
-				
+	
+	# Set the starting position of the player here, before placing secret rooms, so they don't spawn in one.
+	_set_player_starting_position(map)
+	
+	_place_secret_rooms(map)
+	
 	# Setup our navigation here, since it should see physical tiles and holes.
 	_astar.region = Rect2i(0, 0, MAP_WIDTH, MAP_HEIGHT)
 	_astar.cell_size = Vector2(16.0, 16.0)
@@ -155,6 +161,114 @@ func _generate_map() -> PackedByteArray:
 	
 	return map
 
+# Hollows wall sections and replaces them with secret rooms.
+func _place_secret_rooms(map:PackedByteArray) -> void:
+	
+	# Place secret rooms until the largest available area doesn't meet our size requirement.
+	# NOTE: One issue here is that the largest rectangular area could be long and really thin. By having one dimension that doesn't meet our minimum size requirements,
+	#        we will return even though there are many other spaces to put secret rooms. This is okay for now, since it adds some randomness to how many secret rooms will spawn.
+	#         However, this issue should be noted and possibly ammended later.
+	while (true):
+		
+		# Find largest filled rectangular area on map for secret room.
+		var rect:Rect2i = _get_largest_wall_rect()
+		
+		# Ensure the area is big enough to fit a secret room. We -4 here since we leave two filled cells of space around the edges of the secret room.
+		if (rect.size.x - 4 < MIN_SECRET_AREA_SIZE || rect.size.y - 4 < MIN_SECRET_AREA_SIZE):
+			return
+		
+		var clipped_rect:Rect2i = Rect2i(rect.position + Vector2i(2, 2), rect.size - Vector2i(4, 4))
+		_setup_secret_room(map, clipped_rect)
+
+# Sets up one secret room over the input rect, which is considered to be in cell coordinates.
+func _setup_secret_room(map:PackedByteArray, room_rect:Rect2i) -> void:
+	
+	# Remove all cells from the secret rooms area.
+	var start:Vector2i = room_rect.position
+	var end:Vector2i = room_rect.position + room_rect.size
+	for y:int in range(start.y, end.y):
+		for x:int in range(start.x, end.x):
+			remove_tile(Vector2i(x, y))
+			map[x + (y * MAP_WIDTH)] = 0
+			
+	# Spawn the secret room.
+	var room:SecretRoom = SECRET_ROOM_SCENE.instantiate()
+	self.add_child(room)
+	room.position = start * 16
+	room.set_size(room_rect.size)
+
+# Returns a rect, in cell coordinates, representing the largest wall rectangle in the map.
+func _get_largest_wall_rect() -> Rect2i:
+	
+	var max_area:int = 0
+	var best_rect:Rect2i = Rect2i(0, 0, 0, 0)
+	
+	# Tracks the amount of walls in each column of the map.
+	var heights:Array[int] = []
+	heights.resize(MAP_WIDTH)
+	
+	for y:int in range(MAP_HEIGHT):
+		
+		# Loop over every cell in the row, adding to it's height if a wall exists there and resetting it's height if not.
+		for x:int in range(MAP_WIDTH):
+			if (wall_physical_layer.get_cell_source_id(Vector2i(x, y)) != -1):
+				heights[x] += 1
+			else:
+				heights[x] = 0
+		
+		# Find the largest wall rect within our currently processed rows.
+		var rect:Rect2i = _get_largest_wall_rect_from_sub_histogram(heights, y)
+		
+		# Update the largest found rectangle if this one beats our previous.
+		var area:int = rect.size.x * rect.size.y
+		if (area > max_area):
+			max_area = area
+			best_rect = rect
+			
+	return best_rect
+
+# Should only be called by _get_largest_wall_rect
+func _get_largest_wall_rect_from_sub_histogram(heights:Array[int], current_row:int) -> Rect2i:
+	
+	# Each entry in left/right holds the location of the closest left/right height that is smaller than itself.
+	var left:Array[int] = []
+	left.resize(MAP_WIDTH)
+	var right:Array[int] = []
+	right.resize(MAP_WIDTH)
+	var stack:Array[int] = []
+	
+	# Fill out the left array.
+	for i:int in range(MAP_WIDTH):
+		while (!stack.is_empty() && heights[stack[stack.size() - 1]] >= heights[i]):
+			stack.remove_at(stack.size() - 1)
+		if (stack.is_empty()):
+			left[i] = -1
+		else:
+			left[i] = stack[stack.size() - 1]
+		stack.append(i)
+		
+	# Fill out the right array.
+	for i:int in range(MAP_WIDTH - 1, -1, -1):
+		while (!stack.is_empty() && heights[stack[stack.size() - 1]] >= heights[i]):
+			stack.remove_at(stack.size() - 1)
+		if (stack.is_empty()):
+			right[i] = MAP_WIDTH
+		else:
+			right[i] = stack[stack.size() - 1]
+		stack.append(i)
+		
+	# Find the max rect
+	var max_area:int = 0
+	var best_rect:Rect2i = Rect2i(0, 0, 0, 0)
+	for i:int in range(MAP_WIDTH):
+		var width:int = right[i] - left[i] - 1
+		var area:int = heights[i] * width
+		if (area > max_area):
+			max_area = area
+			best_rect = Rect2i(left[i] + 1, (current_row - heights[i]) + 1, width, heights[i])
+			
+	return best_rect
+
 # Places enemies around the map.
 func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
@@ -163,7 +277,7 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 		for x:int in range(MAP_WIDTH):
 			
 			# For each empty cell, there is a 1% chance to spawn a cannonhead enemy.
-			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 1) == 0):
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
 				
 				# Spawn the cannonhead enemy.
 				map[x + (y * MAP_WIDTH)] = 1

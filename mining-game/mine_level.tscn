@@ -11,12 +11,13 @@ y_sort_enabled = true
 script = ExtResource("1_ksevt")
 
 [node name="WallVisualLayer" type="TileMapLayer" parent="." unique_id=1229092932]
+z_index = -2
 y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="WallPhysicalLayer" type="TileMapLayer" parent="." unique_id=865466753]
 visible = false
-z_index = 1
+z_index = -1
 tile_set = ExtResource("2_08n1b")
 
 [node name="MapOutlineLayer" type="TileMapLayer" parent="." unique_id=1579735637]
@@ -24,13 +25,14 @@ y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="PlayerCharacter" parent="." unique_id=824779425 instance=ExtResource("1_3x8yu")]
-position = Vector2(-21, -20)
+z_index = -2
+position = Vector2(-20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
 zoom = Vector2(2.7, 2.7)
 
 [node name="FloorSprite" type="Sprite2D" parent="." unique_id=898848134]
-z_index = -2
+z_index = -4
 texture_repeat = 2
 texture = ExtResource("4_dv24s")
 region_enabled = true
