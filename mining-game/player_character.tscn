@@ -296,6 +296,7 @@ size = Vector2(8, 8)
 size = Vector2(8, 8)
 
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=278383639]
+z_index = -2
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_5up26")

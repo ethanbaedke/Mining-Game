@@ -25,7 +25,6 @@ y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
 [node name="PlayerCharacter" parent="." unique_id=824779425 instance=ExtResource("1_3x8yu")]
-z_index = -2
 position = Vector2(-20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]

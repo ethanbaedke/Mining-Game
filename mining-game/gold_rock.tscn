@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://48bmgvw8iuhs"]
 
+[ext_resource type="Script" uid="uid://crb3mm4qt57mp" path="res://gold_rock.gd" id="1_3ohu8"]
 [ext_resource type="Texture2D" uid="uid://ceholrdhk306x" path="res://gold_rock.png" id="1_d01ql"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d01ql"]
-size = Vector2(16, 8)
+size = Vector2(14, 8)
 
-[node name="GoldRock" type="Area2D" unique_id=1545807004]
+[node name="GoldRock" type="StaticBody2D" unique_id=1019070247]
+z_index = -2
 collision_mask = 0
-monitoring = false
+script = ExtResource("1_3ohu8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]
 position = Vector2(0, -2)

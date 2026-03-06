@@ -11,6 +11,7 @@ class_name MineLevel extends Node2D
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
+const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
@@ -51,6 +52,15 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 			
 	# Update navigation so enemies can move into the newely empty space.
 	_astar.set_point_solid(cell_coordinates, false)
+	
+func remove_gold_rock(rock:GoldRock) -> void:
+	
+	# Update navigation so enemies can move into the newely empty space.
+	var cell_coords:Vector2i = rock.position * 0.0625
+	_astar.set_point_solid(cell_coords, false)
+	
+	# Let the rock handle removal itself.
+	rock.break_rock()
 
 func _ready() -> void:
 	
@@ -103,14 +113,34 @@ func _generate_map() -> PackedByteArray:
 	
 	_place_secret_rooms(map)
 	
+	# NOTE: Prefereably, this goes right after secret rooms are placed. The algorithm to place holes can be slow if they must avoid many objects, so having this happen
+	#  after secret rooms are carved out but before other entities are placed helps performance.
 	_place_holes(map, rng)
 	
+	# NOTE: The spawn rates for the below entities are per-cell, so the higher-up calls will often have more of their entities placed in the overall level than lower-down calls.
+	# In the future, an entity spawn chance table should be created that is parsed for each cell, with a high chance of it being empty.
 	_place_enemies(map, rng)
+	_place_gold_rocks(map, rng)
 	
 	# This is the last thing we do so it can look at the final state of our map as it updates.
 	_update_navigation(map)
 	
 	return map
+
+func _place_gold_rocks(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
+	
+	# Iterate over the map.
+	for y:int in range(MAP_HEIGHT):
+		for x:int in range(MAP_WIDTH):
+			
+			# For each empty cell, there is a 2% chance to spawn a gold rock.
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 49) == 0):
+				
+				# Spawn the gold rock.
+				map[x + (y * MAP_WIDTH)] = 1
+				var rock:GoldRock = GOLD_ROCK_SCENE.instantiate()
+				rock.position = Vector2((x * 16) + 8, (y * 16) + 8)
+				self.add_child(rock)
 
 # Sets up navigation without setting any points as solid.
 func _setup_navigation() -> void:
