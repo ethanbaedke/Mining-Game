@@ -10,7 +10,7 @@ size = Vector2(14, 8)
 z_index = -2
 collision_mask = 0
 script = ExtResource("1_fqmwq")
-score_for_breaking = 3
+score_for_breaking = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]
 position = Vector2(0, -2)

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cpup0fxdp367"]
+
+[ext_resource type="Script" uid="uid://crb3mm4qt57mp" path="res://rock.gd" id="1_eu8h0"]
+[ext_resource type="Texture2D" uid="uid://dgpp2u4wlc68a" path="res://coal_rock.png" id="2_eu8h0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d01ql"]
+size = Vector2(14, 8)
+
+[node name="CoalRock" type="StaticBody2D" unique_id=1019070247]
+z_index = -2
+collision_mask = 0
+script = ExtResource("1_eu8h0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]
+position = Vector2(0, -2)
+texture = ExtResource("2_eu8h0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1479354802]
+shape = SubResource("RectangleShape2D_d01ql")

@@ -11,6 +11,7 @@ class_name MineLevel extends Node2D
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
+const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
 const DIAMOND_ROCK_SCENE:PackedScene = preload("res://diamond_rock.tscn")
 
@@ -124,6 +125,7 @@ func _generate_map() -> PackedByteArray:
 	# NOTE: The spawn rates for the below entities are per-cell, so the higher-up calls will often have more of their entities placed in the overall level than lower-down calls.
 	# In the future, an entity spawn chance table should be created that is parsed for each cell, with a high chance of it being empty.
 	_place_enemies(map, rng)
+	_place_coal_rocks(map, rng)
 	_place_gold_rocks(map, rng)
 	
 	# This is the last thing we do so it can look at the final state of our map as it updates.
@@ -131,14 +133,29 @@ func _generate_map() -> PackedByteArray:
 	
 	return map
 
+func _place_coal_rocks(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
+
+	# Iterate over the map.
+		for y:int in range(MAP_HEIGHT):
+			for x:int in range(MAP_WIDTH):
+				
+				# For each empty cell, there is a 2% chance to spawn a coal rock.
+				if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 49) == 0):
+					
+					# Spawn the coal rock.
+					map[x + (y * MAP_WIDTH)] = 1
+					var rock:Rock = COAL_ROCK_SCENE.instantiate()
+					rock.position = Vector2((x * 16) + 8, (y * 16) + 8)
+					self.add_child(rock)
+
 func _place_gold_rocks(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
 	# Iterate over the map.
 	for y:int in range(MAP_HEIGHT):
 		for x:int in range(MAP_WIDTH):
 			
-			# For each empty cell, there is a 2% chance to spawn a gold rock.
-			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 49) == 0):
+			# For each empty cell, there is a 1% chance to spawn a gold rock.
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
 				
 				# Spawn the gold rock.
 				map[x + (y * MAP_WIDTH)] = 1
