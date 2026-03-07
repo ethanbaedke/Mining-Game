@@ -6,7 +6,6 @@ class_name CannonheadEnemy extends Node2D
 
 # The distance squared away from the next point (in pixels) we have to be to consider ourselves at that point.
 const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
-const MOVE_SPEED:float = 16
 # This distance is measured in cells.
 const HEAD_THROW_MAX_DISTANCE:int = 10
 const HEAD_THROW_LEFT_FAR_OFFSET:Vector2 = Vector2(-HEAD_THROW_MAX_DISTANCE * 16.0, 0.0)
@@ -14,7 +13,10 @@ const HEAD_THROW_RIGHT_FAR_OFFSET:Vector2 = Vector2(HEAD_THROW_MAX_DISTANCE * 16
 const HEAD_THROW_UP_FAR_OFFSET:Vector2 = Vector2(0.0, -HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_DOWN_FAR_OFFSET:Vector2 = Vector2(0.0, HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_COOLDOWN:float = 2.0
-const HEAD_THROW_TELEGRAPH_TIME:float = 1.0
+
+@export var _move_speed:int = 16
+@export var _head_throw_telegraph_time:float = 1.0
+@export var _head_throw_total_time_multiplier:float = 1.0
 
 enum ThrowingDirection { LEFT, RIGHT, UP, DOWN }
 
@@ -27,7 +29,7 @@ var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
 var _throwing_head:bool = false
 var _telegraphing:bool = false
 var _head_throw_cooldown_timer:float = HEAD_THROW_COOLDOWN
-var _telegraph_timer:float = HEAD_THROW_TELEGRAPH_TIME
+var _telegraph_timer:float = _head_throw_telegraph_time
 var _head_throw_total_time:float = 1.0
 var _head_throw_timer:float = 0.0
 # These two positions are in global coordinates.
@@ -80,7 +82,7 @@ func _handle_movement(delta:float) -> void:
 		_point_path_index += 1
 	# Otherwise, move towards our next point.
 	else:
-		position += vec_to_next_point.normalized() * MOVE_SPEED * delta
+		position += vec_to_next_point.normalized() * _move_speed * delta
 		
 		# Update path visualization.
 		queue_redraw()
@@ -108,7 +110,7 @@ func _calculate_new_movement_path() -> void:
 func _telegraph_head_throw() -> void:
 	
 	_telegraphing = true
-	_telegraph_timer = HEAD_THROW_TELEGRAPH_TIME
+	_telegraph_timer = _head_throw_telegraph_time
 	
 	# Select a random direction to throw the head.
 	_head_throwing_direction = randi_range(0, 3) as ThrowingDirection
@@ -204,7 +206,7 @@ func _start_head_throw() -> void:
 				_head_throw_end_pos = _head_throw_start_pos + HEAD_THROW_DOWN_FAR_OFFSET
 	
 	# Scale the head throw time linearly with distance.
-	_head_throw_total_time = _head_throw_start_pos.distance_to(_head_throw_end_pos) * .02
+	_head_throw_total_time = _head_throw_start_pos.distance_to(_head_throw_end_pos) * .02 * _head_throw_total_time_multiplier
 				
 	# Here to visualize throw path.
 	queue_redraw()

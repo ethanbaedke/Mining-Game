@@ -10,6 +10,7 @@ class_name MineLevel extends Node2D
 
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
+const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_fast.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
@@ -377,7 +378,12 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 				
 				# Spawn the cannonhead enemy.
 				map[x + (y * MAP_WIDTH)] = 2
-				var enemy:CannonheadEnemy = CANNONHEAD_ENEMY_SCENE.instantiate()
+				# There is a 10% chance for it to be the fast variant.
+				var enemy:CannonheadEnemy = null
+				if (rng.randi_range(0, 9) == 0):
+					enemy = CANNONHEAD_ENEMY_FAST_SCENE.instantiate()
+				else:
+					enemy = CANNONHEAD_ENEMY_SCENE.instantiate()
 				enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 				# Pass pathfinding for this mine level to the enemy.
 				enemy.astar = _astar

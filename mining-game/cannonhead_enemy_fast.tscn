@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cdntrlsbstvpm"]
+[gd_scene format=3 uid="uid://cmppbo06pi2h8"]
 
-[ext_resource type="Script" uid="uid://btysxomk4twwq" path="res://cannonhead_enemy.gd" id="1_areo8"]
-[ext_resource type="Texture2D" uid="uid://c8ph8ofod4sta" path="res://cannonhead_enemy_spritesheet.png" id="2_w12mx"]
+[ext_resource type="Script" uid="uid://btysxomk4twwq" path="res://cannonhead_enemy.gd" id="1_2mtft"]
+[ext_resource type="Texture2D" uid="uid://c8ph8ofod4sta" path="res://cannonhead_enemy_spritesheet.png" id="2_i7cd5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl63k"]
 size = Vector2(12, 5)
@@ -9,10 +9,13 @@ size = Vector2(12, 5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r41k"]
 size = Vector2(10, 3)
 
-[node name="CannonheadEnemy" type="Node2D" unique_id=1273210817]
-modulate = Color(0.7, 0.13999999, 0.13999999, 1)
+[node name="CannonheadEnemyFast" type="Node2D" unique_id=1273210817]
+modulate = Color(0.6, 0.6, 0.12, 1)
 z_index = -2
-script = ExtResource("1_areo8")
+script = ExtResource("1_2mtft")
+_move_speed = 32
+_head_throw_telegraph_time = 0.5
+_head_throw_total_time_multiplier = 0.5
 
 [node name="Head" type="Area2D" parent="." unique_id=1132862508]
 position = Vector2(0, -6)
@@ -22,7 +25,7 @@ monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Head" unique_id=1117944061]
 position = Vector2(0, 1)
-texture = ExtResource("2_w12mx")
+texture = ExtResource("2_i7cd5")
 region_enabled = true
 region_rect = Rect2(16, 0, 16, 16)
 
@@ -37,7 +40,7 @@ monitorable = false
 
 [node name="BodySprite" type="Sprite2D" parent="Body" unique_id=1154763131]
 position = Vector2(0, -5)
-texture = ExtResource("2_w12mx")
+texture = ExtResource("2_i7cd5")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
