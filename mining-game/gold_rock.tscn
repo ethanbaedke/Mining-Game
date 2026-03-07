@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://48bmgvw8iuhs"]
 
-[ext_resource type="Script" uid="uid://crb3mm4qt57mp" path="res://gold_rock.gd" id="1_3ohu8"]
+[ext_resource type="Script" uid="uid://crb3mm4qt57mp" path="res://rock.gd" id="1_3ohu8"]
 [ext_resource type="Texture2D" uid="uid://ceholrdhk306x" path="res://gold_rock.png" id="1_d01ql"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d01ql"]

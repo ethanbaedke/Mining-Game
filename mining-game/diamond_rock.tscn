@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c7ehegjtnlcxa"]
+
+[ext_resource type="Script" uid="uid://crb3mm4qt57mp" path="res://rock.gd" id="1_fqmwq"]
+[ext_resource type="Texture2D" uid="uid://rqhxg0gv75ij" path="res://diamond_rock.png" id="2_fqmwq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d01ql"]
+size = Vector2(14, 8)
+
+[node name="DiamondRock" type="StaticBody2D" unique_id=1019070247]
+z_index = -2
+collision_mask = 0
+script = ExtResource("1_fqmwq")
+score_for_breaking = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]
+position = Vector2(0, -2)
+texture = ExtResource("2_fqmwq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1479354802]
+shape = SubResource("RectangleShape2D_d01ql")

@@ -12,6 +12,7 @@ const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
+const DIAMOND_ROCK_SCENE:PackedScene = preload("res://diamond_rock.tscn")
 
 const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
@@ -31,7 +32,7 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 
 signal level_cleared
 signal player_killed
-signal gold_rock_broken
+signal rock_broken(rock:Rock)
 
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
@@ -54,9 +55,9 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 	# Update navigation so enemies can move into the newely empty space.
 	_astar.set_point_solid(cell_coordinates, false)
 	
-func remove_gold_rock(rock:GoldRock) -> void:
+func remove_rock(rock:Rock) -> void:
 	
-	gold_rock_broken.emit()
+	rock_broken.emit(rock)
 	
 	# Update navigation so enemies can move into the newely empty space.
 	var cell_coords:Vector2i = rock.position * 0.0625
@@ -114,7 +115,7 @@ func _generate_map() -> PackedByteArray:
 	# After placing walls but before placing secret rooms, so the player doesn't spawn inside of one.
 	_place_player(map)
 	
-	_place_secret_rooms(map)
+	_place_secret_rooms(map, rng)
 	
 	# NOTE: Prefereably, this goes right after secret rooms are placed. The algorithm to place holes can be slow if they must avoid many objects, so having this happen
 	#  after secret rooms are carved out but before other entities are placed helps performance.
@@ -141,7 +142,7 @@ func _place_gold_rocks(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 				
 				# Spawn the gold rock.
 				map[x + (y * MAP_WIDTH)] = 1
-				var rock:GoldRock = GOLD_ROCK_SCENE.instantiate()
+				var rock:Rock = GOLD_ROCK_SCENE.instantiate()
 				rock.position = Vector2((x * 16) + 8, (y * 16) + 8)
 				self.add_child(rock)
 
@@ -219,7 +220,7 @@ func _place_walls(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 				map[x + (y * MAP_WIDTH)] = 1
 
 # Hollows wall sections and replaces them with secret rooms.
-func _place_secret_rooms(map:PackedByteArray) -> void:
+func _place_secret_rooms(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
 	# Place secret rooms until the largest available area doesn't meet our size requirement.
 	# NOTE: One issue here is that the largest rectangular area could be long and really thin. By having one dimension that doesn't meet our minimum size requirements,
@@ -235,10 +236,10 @@ func _place_secret_rooms(map:PackedByteArray) -> void:
 			return
 		
 		var clipped_rect:Rect2i = Rect2i(rect.position + Vector2i(2, 2), rect.size - Vector2i(4, 4))
-		_place_secret_room(map, clipped_rect)
+		_place_secret_room(map, clipped_rect, rng)
 
 # Sets up one secret room over the input rect, which is considered to be in cell coordinates.
-func _place_secret_room(map:PackedByteArray, room_rect:Rect2i) -> void:
+func _place_secret_room(map:PackedByteArray, room_rect:Rect2i, rng:RandomNumberGenerator) -> void:
 	
 	# Remove all cells from the secret rooms area.
 	var start:Vector2i = room_rect.position
@@ -253,6 +254,27 @@ func _place_secret_room(map:PackedByteArray, room_rect:Rect2i) -> void:
 	self.add_child(room)
 	room.position = start * 16
 	room.set_size(room_rect.size)
+	
+	# Place diamond rocks in the secret room.
+	_place_diamond_rocks(map, room_rect, rng)
+
+# Places diamond rocks randomly within the input rect's area.
+func _place_diamond_rocks(map:PackedByteArray, rect:Rect2i, rng:RandomNumberGenerator) -> void:
+	
+	# Iterate over the rect's area.
+	var start:Vector2i = rect.position
+	var end:Vector2i = rect.position + rect.size
+	for y:int in range(start.y, end.y):
+		for x:int in range(start.x, end.x):
+			
+			# For each empty cell, there is a 2% chance to spawn a diamond rock.
+			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 24) == 0):
+				
+				# Spawn the diamond rock.
+				map[x + (y * MAP_WIDTH)] = 1
+				var rock:Rock = DIAMOND_ROCK_SCENE.instantiate()
+				rock.position = Vector2((x * 16) + 8, (y * 16) + 8)
+				self.add_child(rock)
 
 # Returns a rect, in cell coordinates, representing the largest wall rectangle in the map.
 func _get_largest_wall_rect() -> Rect2i:

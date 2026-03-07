@@ -2,7 +2,6 @@ class_name GameManager extends Node
 
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 
-const SCORE_FROM_GOLD_ROCK_BROKEN:int = 1
 const SCORE_FROM_PLAYER_KILLED:int = -10
 
 signal current_score_changed
@@ -25,7 +24,7 @@ func _instantiate_mine_level() -> void:
 	_mine_level = MINE_LEVEL_SCENE.instantiate()
 	_mine_level.level_cleared.connect(_on_mine_level_level_cleared)
 	_mine_level.player_killed.connect(_on_mine_level_player_killed)
-	_mine_level.gold_rock_broken.connect(_on_mine_level_gold_rock_broken)
+	_mine_level.rock_broken.connect(_on_mine_level_rock_broken)
 	self.add_child(_mine_level)
 
 func _free_mine_level() -> void:
@@ -57,6 +56,6 @@ func _on_mine_level_player_killed() -> void:
 	await _free_mine_level()
 	_instantiate_mine_level()
 	
-func _on_mine_level_gold_rock_broken() -> void:
+func _on_mine_level_rock_broken(rock:Rock) -> void:
 	
-	_modify_current_score(SCORE_FROM_GOLD_ROCK_BROKEN)
+	_modify_current_score(rock.score_for_breaking)

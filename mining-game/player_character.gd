@@ -273,7 +273,7 @@ func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
 		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_down_hitbox_shape.global_position)
-	elif (body is GoldRock):
+	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
 
@@ -282,7 +282,7 @@ func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
 		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_up_hitbox_shape.global_position)
-	elif (body is GoldRock):
+	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
 
@@ -291,7 +291,7 @@ func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
 		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_left_hitbox_shape.global_position)
-	elif (body is GoldRock):
+	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
 
@@ -300,6 +300,6 @@ func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
 		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_right_hitbox_shape.global_position)
-	elif (body is GoldRock):
+	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
