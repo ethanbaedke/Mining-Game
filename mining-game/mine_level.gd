@@ -12,6 +12,7 @@ const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_fast.tscn")
 const SLIME_ENEMY_SCENE:PackedScene = preload("res://slime_enemy.tscn")
+const BUG_ENEMY_SCENE:PackedScene = preload("res://bug_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
@@ -377,31 +378,41 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 			# For each empty cell, there is a 1% chance to spawn an enemy.
 			if (map[x + (y * MAP_WIDTH)] == 0 && rng.randi_range(0, 99) == 0):
 				
-				# 50% chance to spawn the cannonhead enemy, 50% chance to spawn the slime enemy.
-				if (rng.randi_range(0, 1) == 0):
-					
-					# Spawn the cannonhead enemy.
-					map[x + (y * MAP_WIDTH)] = 2
-					# There is a 10% chance for it to be the fast variant.
-					var enemy:CannonheadEnemy = null
-					if (rng.randi_range(0, 9) == 0):
-						enemy = CANNONHEAD_ENEMY_FAST_SCENE.instantiate()
-					else:
-						enemy = CANNONHEAD_ENEMY_SCENE.instantiate()
-					enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
-					# Pass pathfinding for this mine level to the enemy.
-					enemy.astar = _astar
-					self.add_child(enemy)
-					
-				else:
-					
-					# Spawn the slime enemy.
-					map[x + (y * MAP_WIDTH)] = 2
-					var enemy:SlimeEnemy = SLIME_ENEMY_SCENE.instantiate()
-					enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
-					# Pass pathfinding for this mine level to the enemy.
-					enemy.astar = _astar
-					self.add_child(enemy)
+				# ~33% chance to spawn the cannonhead enemy, ~33% chance to spawn the slime enemy, ~33% chance to spawn the bug enemy.
+				var enem:int = rng.randi_range(0, 2)
+				match (enem):
+					0:
+						# Spawn the cannonhead enemy.
+						map[x + (y * MAP_WIDTH)] = 2
+						# There is a 10% chance for it to be the fast variant.
+						var enemy:CannonheadEnemy = null
+						if (rng.randi_range(0, 9) == 0):
+							enemy = CANNONHEAD_ENEMY_FAST_SCENE.instantiate()
+						else:
+							enemy = CANNONHEAD_ENEMY_SCENE.instantiate()
+						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+						# Pass pathfinding for this mine level to the enemy.
+						enemy.astar = _astar
+						self.add_child(enemy)
+					1:
+						# Spawn the slime enemy.
+						map[x + (y * MAP_WIDTH)] = 2
+						var enemy:SlimeEnemy = SLIME_ENEMY_SCENE.instantiate()
+						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+						# Pass pathfinding for this mine level to the enemy.
+						enemy.astar = _astar
+						self.add_child(enemy)
+					2:
+						# Spawn the bug enemy.
+						map[x + (y * MAP_WIDTH)] = 2
+						var enemy:BugEnemy = BUG_ENEMY_SCENE.instantiate()
+						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+						# Pass pathfinding for this mine level to the enemy.
+						enemy.astar = _astar
+						# Pass player character to the enemy.
+						enemy.player_character = player_character
+						self.add_child(enemy)
+
 
 func _place_holes(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	

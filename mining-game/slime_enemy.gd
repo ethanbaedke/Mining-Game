@@ -40,11 +40,12 @@ func _draw() -> void:
 	
 	# Draw pathfinding if visible paths is checked in the editor.
 	if (get_tree().debug_paths_hint):
+		
+		# Movement.
 		for i:int in range(_movement_point_path.size() - 1):
 			draw_line(to_local(_movement_point_path[i]), to_local(_movement_point_path[i + 1]), Color.GREEN, 1.0)
-	
-	# Only draw collision if we have visible collision shapes checked in the editor.
-	if (get_tree().debug_collisions_hint):
+			
+		# Dashing.
 		if (_telegraphing || _dashing):
 			draw_line(to_local(_dash_start_pos), to_local(_dash_end_pos), Color.ORANGE, 1.0)
 

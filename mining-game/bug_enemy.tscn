@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bt6c803p1sdle"]
+
+[ext_resource type="Script" uid="uid://dqb5gqnjcvdwl" path="res://bug_enemy.gd" id="1_ks6cb"]
+[ext_resource type="Texture2D" uid="uid://4kmu7xeg4fme" path="res://bug_enemy.png" id="2_0bw16"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ukp0r"]
+size = Vector2(8, 6)
+
+[node name="BugEnemy" type="Area2D" unique_id=345780096]
+z_index = -2
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_ks6cb")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1852110331]
+texture = ExtResource("2_0bw16")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499750875]
+shape = SubResource("RectangleShape2D_ukp0r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
