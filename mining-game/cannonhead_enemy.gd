@@ -64,7 +64,7 @@ func _draw() -> void:
 		draw_line(_head.position, _head.position + HEAD_THROW_UP_FAR_OFFSET, Color.RED, 1.0)
 		draw_line(_head.position, _head.position + HEAD_THROW_DOWN_FAR_OFFSET, Color.RED, 1.0)
 		if (_throwing_head):
-			draw_line(self.to_local(_head_throw_start_pos), self.to_local(_head_throw_end_pos), Color.ORANGE, 2.0)
+			draw_line(self.to_local(_head_throw_start_pos), self.to_local(_head_throw_end_pos), Color.BLACK, 2.0)
 
 func _handle_movement(delta:float) -> void:
 	
