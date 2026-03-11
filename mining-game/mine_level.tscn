@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="4_dv24s"]
 [ext_resource type="Script" uid="uid://dydy3icdelc1b" path="res://mine_level_hud.gd" id="5_p3d05"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="6_sc2q2"]
+[ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
 y_sort_enabled = true
@@ -52,18 +53,46 @@ theme = ExtResource("6_sc2q2")
 [node name="Control" type="Control" parent="HUD/MarginContainer" unique_id=1512632271]
 layout_mode = 2
 
-[node name="FloorPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1975945760]
-custom_minimum_size = Vector2(125, 50)
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/MarginContainer/Control" unique_id=1511752746]
 layout_mode = 1
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 179.0
+offset_bottom = 50.0
 
-[node name="FloorLabel" type="Label" parent="HUD/MarginContainer/Control/FloorPanelContainer" unique_id=1318654353]
+[node name="FloorPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=1975945760]
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="FloorLabel" type="Label" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer" unique_id=1318654353]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 text = "Floor: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=460129840]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer" unique_id=1340797009]
+layout_mode = 2
+
+[node name="LivesContainer" type="HBoxContainer" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer" unique_id=678855071]
+layout_mode = 2
+
+[node name="LifeTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=480929603]
+layout_mode = 2
+texture = ExtResource("7_oyrvu")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="LifeTexture2" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=1683075077]
+layout_mode = 2
+texture = ExtResource("7_oyrvu")
+expand_mode = 2
+
+[node name="LifeTexture3" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=605241970]
+layout_mode = 2
+texture = ExtResource("7_oyrvu")
+expand_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
 custom_minimum_size = Vector2(125, 50)

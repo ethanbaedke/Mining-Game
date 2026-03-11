@@ -8,13 +8,19 @@ signal current_score_changed
 
 var current_floor:int = 0
 var current_score:int = 0
+var lives_remaining:int = 0
 
 var _mine_level:MineLevel = null
 
 func _ready() -> void:
 	
-	# Set the floor to 1.
+	_start_new_game()
+	
+func _start_new_game() -> void:
+	
 	current_floor = 1
+	current_score = 0
+	lives_remaining = 3
 	
 	# Instantiate the mine level.
 	_instantiate_mine_level()
@@ -54,7 +60,15 @@ func _on_mine_level_player_killed() -> void:
 	_modify_current_score(SCORE_FROM_PLAYER_KILLED)
 	
 	await _free_mine_level()
-	_instantiate_mine_level()
+	
+	# If the player has lives left, subtract one and reload the level.
+	if (lives_remaining > 1):
+		lives_remaining -= 1
+		_instantiate_mine_level()
+	
+	# Otherwise, start a new game.
+	else:
+		_start_new_game()
 	
 func _on_mine_level_rock_broken(rock:Rock) -> void:
 	
