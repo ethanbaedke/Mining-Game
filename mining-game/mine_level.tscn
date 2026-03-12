@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b76s3usqsbv7e" path="res://mine_level.gd" id="1_ksevt"]
 [ext_resource type="TileSet" uid="uid://cedbq7dlya52b" path="res://mine_tile_set.tres" id="2_08n1b"]
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="4_dv24s"]
+[ext_resource type="AudioStream" uid="uid://clqt65ifb6xd7" path="res://Theme.wav" id="4_ld46e"]
 [ext_resource type="Script" uid="uid://dydy3icdelc1b" path="res://mine_level_hud.gd" id="5_p3d05"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="6_sc2q2"]
 [ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
@@ -31,6 +32,11 @@ position = Vector2(-20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
 zoom = Vector2(2.7, 2.7)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerCharacter" unique_id=333498504]
+position = Vector2(20, 20)
+stream = ExtResource("4_ld46e")
+autoplay = true
 
 [node name="FloorSprite" type="Sprite2D" parent="." unique_id=898848134]
 z_index = -4
