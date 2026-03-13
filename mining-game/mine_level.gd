@@ -40,6 +40,9 @@ signal level_cleared
 signal player_killed
 signal rock_broken(rock:Rock)
 
+# Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
+var time_since_ghost_spawned:float = 0.0
+
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
 
@@ -107,6 +110,8 @@ func _process(delta: float) -> void:
 		else:
 			_ghost_spawned = true
 			_spawn_ghost()
+	else:
+		time_since_ghost_spawned += delta
 
 # Generates the map and returns a row major PackedByteArray representing the 2d grid holding 1's in area's that are filled with objects.
 func _generate_map() -> PackedByteArray:
