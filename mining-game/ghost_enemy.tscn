@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ct8krvt7rp88a"]
+
+[ext_resource type="Script" uid="uid://0wyqkm8360mu" path="res://ghost_enemy.gd" id="1_2fkgl"]
+[ext_resource type="Texture2D" uid="uid://crs6v8em68eqn" path="res://ghost_enemy.png" id="2_2fkgl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ukp0r"]
+size = Vector2(12, 12)
+
+[node name="GhostEnemy" type="Area2D" unique_id=345780096]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_2fkgl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1852110331]
+position = Vector2(1, -5)
+texture = ExtResource("2_2fkgl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499750875]
+shape = SubResource("RectangleShape2D_ukp0r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

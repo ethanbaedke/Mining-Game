@@ -13,6 +13,7 @@ const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn"
 const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_fast.tscn")
 const SLIME_ENEMY_SCENE:PackedScene = preload("res://slime_enemy.tscn")
 const BUG_ENEMY_SCENE:PackedScene = preload("res://bug_enemy.tscn")
+const GHOST_ENEMY_SCENE:PackedScene = preload("res://ghost_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
@@ -22,6 +23,7 @@ const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
 # The width and height of a secret area use the same minimum size.
 const MIN_SECRET_AREA_SIZE:int = 3
+const SECONDS_FROM_START_TO_GHOST_SPAWN:int = 70
 
 const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 	TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE,
@@ -43,6 +45,9 @@ var _game_manager:GameManager = null
 
 # Navigation
 var _astar:AStarGrid2D = AStarGrid2D.new()
+
+var _ghost_spawned:bool = false
+var _ghost_spawn_timer:float = SECONDS_FROM_START_TO_GHOST_SPAWN
 
 func remove_tile(cell_coordinates:Vector2i) -> void:
 	
@@ -93,6 +98,15 @@ func _ready() -> void:
 	player_camera.limit_right = (MAP_WIDTH + 1) * 16
 	player_camera.limit_top = -1 * 16
 	player_camera.limit_bottom = (MAP_HEIGHT + 1) * 16
+
+func _process(delta: float) -> void:
+	
+	if (!_ghost_spawned):
+		if (_ghost_spawn_timer > 0):
+			_ghost_spawn_timer -= delta
+		else:
+			_ghost_spawned = true
+			_spawn_ghost()
 
 # Generates the map and returns a row major PackedByteArray representing the 2d grid holding 1's in area's that are filled with objects.
 func _generate_map() -> PackedByteArray:
@@ -413,7 +427,6 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 						enemy.player_character = player_character
 						self.add_child(enemy)
 
-
 func _place_holes(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	
 	for i:int in range(4):
@@ -467,3 +480,21 @@ func _update_visual_tilemap_cell(cell_coordinates:Vector2i) -> void:
 	
 	# Set the visual tilemap to use the same tile on the same cell, but from it's own TileSet.
 	wall_visual_layer.set_cell(cell_coordinates, 1, atlas_coords)
+
+func _spawn_ghost() -> void:
+	
+	var ghost:GhostEnemy = GHOST_ENEMY_SCENE.instantiate()
+	ghost.player_character = player_character
+	
+	var spawn:int = randi_range(0, 3)
+	match (spawn):
+		0:	# Top left
+			ghost.position = Vector2(-32.0, -32.0)
+		1:	# Top right
+			ghost.position = Vector2((MAP_WIDTH + 2) * 16.0, -32.0)
+		2:	# Bottom left
+			ghost.position = Vector2(-32.0, (MAP_HEIGHT + 2) * 16.0)
+		3:	# Bottom right
+			ghost.position = Vector2((MAP_WIDTH + 2) * 16.0, (MAP_HEIGHT + 2) * 16.0)
+	
+	self.add_child(ghost)

@@ -24,6 +24,7 @@ z_index = -1
 tile_set = ExtResource("2_08n1b")
 
 [node name="MapOutlineLayer" type="TileMapLayer" parent="." unique_id=1579735637]
+z_index = -2
 y_sort_enabled = true
 tile_set = ExtResource("2_08n1b")
 
