@@ -7,7 +7,18 @@ class_name GhostEnemy extends Area2D
 # Should be set by the instantiator.
 var player_character:PlayerCharacter = null
 
+# Reference retrieved on ready.
+var _mine_level:MineLevel = null
+
+func _ready() -> void:
+	
+	_mine_level = get_parent()
+
 func _physics_process(delta: float) -> void:
+	
+	# Do no processing if the level is ending.
+	if (_mine_level.level_cleanup_imminent):
+		return
 	
 	# Must have a reference to the player character to function.
 	if (player_character == null):

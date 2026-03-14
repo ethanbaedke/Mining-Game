@@ -11,10 +11,21 @@ const DIRECT_MOVEMENT_MARGIN:float = 256 #16-pixels
 var astar:AStarGrid2D = null
 var player_character:PlayerCharacter = null
 
+# Reference retrieved on ready.
+var _mine_level:MineLevel = null
+
 var _movement_point_path:PackedVector2Array = []
 var _point_path_index:int = 0
 
+func _ready() -> void:
+	
+	_mine_level = get_parent()
+
 func _physics_process(delta: float) -> void:
+	
+	# Do no processing if the level is ending.
+	if (_mine_level.level_cleanup_imminent):
+		return
 	
 	# Must have a reference to the player character to function.
 	if (player_character == null):

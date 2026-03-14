@@ -43,6 +43,9 @@ signal rock_broken(rock:Rock)
 # Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
 var time_since_ghost_spawned:float = 0.0
 
+# Set to true when the level is cleared or the player dies.
+var level_cleanup_imminent:bool = false
+
 # Reference retrieved on ready.
 var _game_manager:GameManager = null
 
@@ -93,6 +96,7 @@ func _ready() -> void:
 	
 	# Listen for the player dying so we can fire our own event.
 	player_character.player_killed.connect(func() -> void:
+		level_cleanup_imminent = true
 		player_killed.emit()
 	)
 	
@@ -455,6 +459,7 @@ func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 	# If the player touches the hole, move to the next floor.
 	hole.body_entered.connect(func(body:Node2D) -> void:
 		if (body == player_character):
+			level_cleanup_imminent = true
 			level_cleared.emit()
 	)
 

@@ -2,6 +2,7 @@ class_name PlayerCharacter extends CharacterBody2D
 
 @onready var _player_sprite:AnimatedSprite2D = $PlayerSprite
 @onready var _pickaxe_sprite:AnimatedSprite2D = $PickaxeSprite
+@onready var _player_collision_shape:CollisionShape2D = $CollisionShape2D
 
 @onready var _pickaxe_down_hitbox_shape:CollisionShape2D = $PickaxeDownHitbox/CollisionShape2D
 @onready var _pickaxe_up_hitbox_shape:CollisionShape2D = $PickaxeUpHitbox/CollisionShape2D
@@ -26,6 +27,9 @@ const MOVE_SPEED:int = 40
 
 signal player_killed
 
+# Reference retrieved on ready.
+var _mine_level:MineLevel = null
+
 enum FacingDirection { LEFT, RIGHT, UP, DOWN }
 var _face_dir:FacingDirection = FacingDirection.DOWN
 
@@ -38,9 +42,22 @@ var _pickaxe_thrust_time:float = 0.25
 var _pickaxe_anim_time:float = 0.0
 
 func kill_player() -> void:
+	
+	# Disable hitbox.
+	_player_collision_shape.set_disabled.call_deferred(true)
+	
 	player_killed.emit()
 
+func _ready() -> void:
+	
+	_mine_level = get_parent()
+
 func _physics_process(delta:float) -> void:
+	
+	# Do no processing if the level is ending.
+	if (_mine_level.level_cleanup_imminent):
+		_player_sprite.play("idle_down")
+		return
 	
 	_set_velocity()
 	_update_facing_direction()

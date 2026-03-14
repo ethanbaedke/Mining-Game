@@ -1,5 +1,7 @@
 class_name GameManager extends Node
 
+@onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
+
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 
 const SCORE_FROM_PLAYER_KILLED:int = -10
@@ -32,6 +34,8 @@ func _instantiate_mine_level() -> void:
 	_mine_level.player_killed.connect(_on_mine_level_player_killed)
 	_mine_level.rock_broken.connect(_on_mine_level_rock_broken)
 	self.add_child(_mine_level)
+	
+	_loading_ui_anim_player.play("black_to_full_visible")
 
 func _free_mine_level() -> void:
 	
@@ -49,6 +53,8 @@ func _modify_current_score(amount:int) -> void:
 
 func _on_mine_level_level_cleared() -> void:
 	
+	await _player_focus_to_black()
+	
 	# Increment our current floor.
 	current_floor += 1
 	
@@ -56,6 +62,8 @@ func _on_mine_level_level_cleared() -> void:
 	_instantiate_mine_level()
 
 func _on_mine_level_player_killed() -> void:
+	
+	await _player_focus_to_black()
 	
 	_modify_current_score(SCORE_FROM_PLAYER_KILLED)
 	
@@ -73,3 +81,16 @@ func _on_mine_level_player_killed() -> void:
 func _on_mine_level_rock_broken(rock:Rock) -> void:
 	
 	_modify_current_score(rock.score_for_breaking)
+
+func _player_focus_to_black() -> void:
+	
+	# Bring the screen in on the player.
+	_loading_ui_anim_player.play("full_visible_to_focus_player")
+	await _loading_ui_anim_player.animation_finished
+	
+	# Wait a moment.
+	await get_tree().create_timer(0.5).timeout
+	
+	# Black out the screen.
+	_loading_ui_anim_player.play("player_focus_to_black")
+	await _loading_ui_anim_player.animation_finished

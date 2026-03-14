@@ -1,6 +1,97 @@
 [gd_scene format=3 uid="uid://bw3qxilyjwca5"]
 
 [ext_resource type="Script" uid="uid://6s7e718ilk80" path="res://game_manager.gd" id="1_70yv6"]
+[ext_resource type="Shader" uid="uid://bj3u72s40gntn" path="res://loading_screen.gdshader" id="2_smx3j"]
+
+[sub_resource type="Animation" id="Animation_d5upp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_shwjl"]
+resource_name = "black_to_full_visible"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_o2178"]
+resource_name = "focus_player"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [1.0, 0.1]
+}
+
+[sub_resource type="Animation" id="Animation_vk86k"]
+resource_name = "player_focus_to_black"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d5upp"]
+_data = {
+&"RESET": SubResource("Animation_d5upp"),
+&"black_to_full_visible": SubResource("Animation_shwjl"),
+&"full_visible_to_focus_player": SubResource("Animation_o2178"),
+&"player_focus_to_black": SubResource("Animation_vk86k")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2178"]
+shader = ExtResource("2_smx3j")
+shader_parameter/mask_coverage = 1.0
+shader_parameter/screen_width = 1280.0
+shader_parameter/screen_height = 720.0
 
 [node name="GameManager" type="Node" unique_id=2030903267]
 script = ExtResource("1_70yv6")
+
+[node name="LoadingUI" type="CanvasLayer" parent="." unique_id=258859855]
+layer = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="LoadingUI" unique_id=1511860160]
+root_node = NodePath("../ScreenMask")
+libraries/ = SubResource("AnimationLibrary_d5upp")
+
+[node name="ScreenMask" type="ColorRect" parent="LoadingUI" unique_id=148587536]
+material = SubResource("ShaderMaterial_o2178")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -13,6 +13,9 @@ const DASH_TOTAL_TIME:float = 1.0
 # Should be set by the instantiator. Used for pathfinding.
 var astar:AStarGrid2D = null
 
+# Reference retrieved on ready.
+var _mine_level:MineLevel = null
+
 var _movement_point_path:PackedVector2Array = []
 var _point_path_index:int = -1
 var _dashing:bool = false
@@ -23,7 +26,15 @@ var _dash_timer:float = 0.0
 var _dash_start_pos:Vector2 = Vector2.ZERO
 var _dash_end_pos:Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	
+	_mine_level = get_parent()
+
 func _physics_process(delta: float) -> void:
+	
+	# Do no processing if the level is ending.
+	if (_mine_level.level_cleanup_imminent):
+		return
 	
 	if (_movement_point_path.size() != 0):
 		_handle_movement(delta)

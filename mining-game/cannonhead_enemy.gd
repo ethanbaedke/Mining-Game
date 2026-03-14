@@ -23,6 +23,9 @@ enum ThrowingDirection { LEFT, RIGHT, UP, DOWN }
 # Should be set by the instantiator. Used for pathfinding.
 var astar:AStarGrid2D = null
 
+# Reference retrieved on ready.
+var _mine_level:MineLevel = null
+
 var _movement_point_path:PackedVector2Array = []
 var _point_path_index:int = -1
 var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
@@ -36,7 +39,15 @@ var _head_throw_timer:float = 0.0
 var _head_throw_start_pos:Vector2 = Vector2.ZERO
 var _head_throw_end_pos:Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	
+	_mine_level = get_parent()
+
 func _physics_process(delta: float) -> void:
+	
+	# Do no processing if the level is ending.
+	if (_mine_level.level_cleanup_imminent):
+		return
 	
 	if (_head_throw_cooldown_timer > 0.0):
 		_head_throw_cooldown_timer -= delta
