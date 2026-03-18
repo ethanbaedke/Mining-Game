@@ -1,6 +1,7 @@
 class_name GameManager extends Node
 
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
+@onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 
@@ -17,6 +18,16 @@ var _mine_level:MineLevel = null
 func _ready() -> void:
 	
 	_start_new_game()
+	
+func _process(delta: float) -> void:
+	
+	var viewport:Viewport = get_viewport()
+	_screen_mask.material.set_shader_parameter("screen_size", viewport.get_visible_rect().size)
+	
+	if (_mine_level != null && _mine_level.player_character != null):
+		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_canvas_transform() * _mine_level.player_character.global_position)
+	else:
+		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_visible_rect().size * 0.5)
 	
 func _start_new_game() -> void:
 	
