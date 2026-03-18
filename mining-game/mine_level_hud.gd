@@ -10,6 +10,9 @@ var _mine_level:MineLevel = null
 var _game_manager:GameManager = null
 var _player_character:PlayerCharacter = null
 
+# Used when the ghost is chasing the player.
+var _screen_wave_intensity:float = 0.0
+
 func _ready() -> void:
 	
 	# Grab a reference to the mine level, which should be this nodes parent.
@@ -35,8 +38,13 @@ func _process(delta: float) -> void:
 	
 	_screen_effects.material.set_shader_parameter("player_pos", _player_character.global_position)
 	
-	# Intensity rate: y\ =\ \frac{-4096}{\left(x+32\right)^{2}}+4
-	_screen_effects.material.set_shader_parameter("intensity", (-4096.0 / pow((_mine_level.time_since_ghost_spawned + 32.0), 2.0)) + 4.0)
+	if (!_mine_level.level_cleanup_imminent):
+		# Intensity rate: y\ =\ \frac{-4096}{\left(x+32\right)^{2}}+4
+		_screen_wave_intensity = (-4096.0 / pow((_mine_level.time_since_ghost_spawned + 32.0), 2.0)) + 4.0
+	else:
+		# Intensity lowers rapidly after level is finished.
+		_screen_wave_intensity = max(0.0, _screen_wave_intensity - (delta * 4.0))
+	_screen_effects.material.set_shader_parameter("intensity", _screen_wave_intensity)
 
 func _update_score_label() -> void:
 	

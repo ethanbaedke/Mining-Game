@@ -23,7 +23,7 @@ const MAP_WIDTH:int = 64
 const MAP_HEIGHT:int = 64
 # The width and height of a secret area use the same minimum size.
 const MIN_SECRET_AREA_SIZE:int = 3
-const SECONDS_FROM_START_TO_GHOST_SPAWN:int = 70
+const SECONDS_FROM_START_TO_GHOST_SPAWN:int = 1
 
 const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 	TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE,
