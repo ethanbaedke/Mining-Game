@@ -209,7 +209,7 @@ func _update_navigation(map:PackedByteArray) -> void:
 # Set the player's position to the open tile closest to the center of the map.
 func _place_player(map:PackedByteArray) -> void:
 	
-	# Start at the center of the map and breadth first search for an open cell.
+	# Start at the center of the map and breadth first search for a 3x3 area of filled cells (to keep the player initially safe).
 	var cell_queue:Array[Vector2i] = [Vector2i(MAP_WIDTH * 0.5, MAP_HEIGHT * 0.5)]
 	var processed_set:Dictionary[Vector2i, bool] = {}
 	while (!cell_queue.is_empty()):
@@ -218,12 +218,22 @@ func _place_player(map:PackedByteArray) -> void:
 		var current:Vector2i = cell_queue.pop_front()
 		processed_set[current] = true
 		
-		# If this cell is empty, move the player there and return.
-		if (map[current.x + (current.y * MAP_WIDTH)] == 0):
+		# Check if the cell is centered on a filled 3x3 grid.
+		var surrounded:bool = true
+		for y:int in range(current.y - 1, current.y + 2):
+			for x:int in range(current.x - 1, current.x + 2):
+				if (map[x + (y * MAP_WIDTH)] != 1):
+					surrounded = false
+					break
+		
+		# Success! Remove the center cell and place the player there.
+		if (surrounded):
+			remove_tile(current)
 			player_character.global_position = (current * 16.0) + Vector2(8.0, 8.0)
 			map[current.x + (current.y * MAP_WIDTH)] = 2
 			return
-		# Otherwise, add its surrounding cells to the queue to be checked against.
+			
+		# Failure. Add the surrounding cells to the queue for processing.
 		else:
 			var left:Vector2i = Vector2i(current.x - 1, current.y)
 			if (processed_set.get(left) == null):
