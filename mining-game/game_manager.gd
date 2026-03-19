@@ -5,9 +5,11 @@ class_name GameManager extends Node
 
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 
-const SCORE_FROM_PLAYER_KILLED:int = -10
+const SCORE_FROM_PLAYER_KILLED:int = 0
 
 signal current_score_changed
+
+var high_score:int = 0
 
 var current_floor:int = 0
 var current_score:int = 0
@@ -87,6 +89,7 @@ func _on_mine_level_player_killed() -> void:
 	
 	# Otherwise, start a new game.
 	else:
+		high_score = max(high_score, current_score)
 		_start_new_game()
 	
 func _on_mine_level_rock_broken(rock:Rock) -> void:

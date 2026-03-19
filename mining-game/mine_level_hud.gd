@@ -2,7 +2,8 @@ class_name MineLevelHud extends CanvasLayer
 
 @onready var _screen_effects:ColorRect = $ScreenEffects
 @onready var _floor_label:Label = $MarginContainer/Control/HBoxContainer/FloorPanelContainer/FloorLabel
-@onready var _score_label:Label = $MarginContainer/Control/PanelContainer/ScoreLabel
+@onready var _high_score_label:Label = $MarginContainer/Control/HighScorePanelContainer/HighScoreLabel
+@onready var _score_label:Label = $MarginContainer/Control/ScorePanelContainer/ScoreLabel
 @onready var _lives_container:Container = $MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer
 
 # References retrieved on ready.
@@ -28,6 +29,8 @@ func _ready() -> void:
 	# Set the lives to reflect the current number of lives the player has left.
 	_update_lives_container()
 	
+	_update_high_score_label()
+	
 	# Set score (since the UI will reset every new level)
 	_update_score_label()
 	
@@ -45,6 +48,10 @@ func _process(delta: float) -> void:
 		# Intensity lowers rapidly after level is finished.
 		_screen_wave_intensity = max(0.0, _screen_wave_intensity - (delta * 3.0))
 	_screen_effects.material.set_shader_parameter("intensity", _screen_wave_intensity)
+
+func _update_high_score_label() -> void:
+	
+	_high_score_label.text = "High Score: " + str(_game_manager.high_score)
 
 func _update_score_label() -> void:
 	

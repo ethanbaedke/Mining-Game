@@ -115,19 +115,37 @@ layout_mode = 2
 texture = ExtResource("7_oyrvu")
 expand_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
+[node name="ScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
 custom_minimum_size = Vector2(125, 50)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
+offset_left = -125.0
+offset_bottom = 50.0
 grow_horizontal = 0
 
-[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/Control/PanelContainer" unique_id=599813455]
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/Control/ScorePanelContainer" unique_id=599813455]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 text = "Score: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1269415656]
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -90.0
+offset_right = 90.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="HighScoreLabel" type="Label" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=1853980166]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+text = "High Score: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
