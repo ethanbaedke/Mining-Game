@@ -12,6 +12,7 @@ const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_fast.tscn")
 const SLIME_ENEMY_SCENE:PackedScene = preload("res://slime_enemy.tscn")
+const SLIME_ENEMY_FAST_SCENE:PackedScene = preload("res://slime_enemy_fast.tscn")
 const BUG_ENEMY_SCENE:PackedScene = preload("res://bug_enemy.tscn")
 const GHOST_ENEMY_SCENE:PackedScene = preload("res://ghost_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
@@ -443,6 +444,14 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 						# Spawn the slime enemy.
 						map[x + (y * MAP_WIDTH)] = 2
 						var enemy:SlimeEnemy = SLIME_ENEMY_SCENE.instantiate()
+						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+						# Pass pathfinding for this mine level to the enemy.
+						enemy.astar = _astar
+						self.add_child(enemy)
+					EnemySpawnTableRow.EnemyType.SLIME_FAST:
+						# Spawn the slime enemy.
+						map[x + (y * MAP_WIDTH)] = 2
+						var enemy:SlimeEnemy = SLIME_ENEMY_FAST_SCENE.instantiate()
 						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 						# Pass pathfinding for this mine level to the enemy.
 						enemy.astar = _astar
