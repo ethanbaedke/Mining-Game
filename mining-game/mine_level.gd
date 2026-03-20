@@ -14,6 +14,7 @@ const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_
 const SLIME_ENEMY_SCENE:PackedScene = preload("res://slime_enemy.tscn")
 const SLIME_ENEMY_FAST_SCENE:PackedScene = preload("res://slime_enemy_fast.tscn")
 const BUG_ENEMY_SCENE:PackedScene = preload("res://bug_enemy.tscn")
+const BUG_ENEMY_FAST_SCENE:PackedScene = preload("res://bug_enemy_fast.tscn")
 const GHOST_ENEMY_SCENE:PackedScene = preload("res://ghost_enemy.tscn")
 const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
@@ -460,6 +461,16 @@ func _place_enemies(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 						# Spawn the bug enemy.
 						map[x + (y * MAP_WIDTH)] = 2
 						var enemy:BugEnemy = BUG_ENEMY_SCENE.instantiate()
+						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
+						# Pass pathfinding for this mine level to the enemy.
+						enemy.astar = _astar
+						# Pass player character to the enemy.
+						enemy.player_character = player_character
+						self.add_child(enemy)
+					EnemySpawnTableRow.EnemyType.BUG_FAST:
+						# Spawn the bug enemy.
+						map[x + (y * MAP_WIDTH)] = 2
+						var enemy:BugEnemy = BUG_ENEMY_FAST_SCENE.instantiate()
 						enemy.position = Vector2((x * 16) + 8, (y * 16) + 8)
 						# Pass pathfinding for this mine level to the enemy.
 						enemy.astar = _astar

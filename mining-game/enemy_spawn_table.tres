@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Resource_tit3i"]
 script = ExtResource("2_tit3i")
 enemy_pool = Array[int]([2])
-spawn_chance = 1
+spawn_chance = 2
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_hsig6"]
@@ -29,38 +29,38 @@ metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_ad6jg"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 4])
 spawn_chance = 1
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_4rscw"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
-spawn_chance = 2
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 5])
+spawn_chance = 1
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_dc6p1"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
-spawn_chance = 3
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 5])
+spawn_chance = 2
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_3vabw"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
-spawn_chance = 4
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 5])
+spawn_chance = 3
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_ghq6e"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
-spawn_chance = 5
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 5])
+spawn_chance = 4
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [sub_resource type="Resource" id="Resource_ua3jw"]
 script = ExtResource("2_tit3i")
-enemy_pool = Array[int]([2, 3, 0, 1, 4])
-spawn_chance = 6
+enemy_pool = Array[int]([2, 2, 3, 3, 0, 0, 1, 1, 4, 5])
+spawn_chance = 5
 metadata/_custom_type_script = "uid://c1wfh5vc6g1e6"
 
 [resource]
