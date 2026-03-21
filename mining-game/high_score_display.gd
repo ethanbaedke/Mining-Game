@@ -67,6 +67,7 @@ var _entry_to_name:HighScoreEntry = null
 var _name_entry_label:Label = null
 var _name_entry_character_index:int = 0
 var _name_entry_unicode_index:int = 0
+var _name_entry_cursor_flash_timer:float = 0.0
 
 var _display_countdown_complete:bool = false
 var _display_countdown:float = DISPLAY_TIME
@@ -118,6 +119,15 @@ func _process(delta: float) -> void:
 		_timer_label.text = "TIME REMAINING: " + str(int(ceil(_name_entry_countdown)))
 		if (_name_entry_countdown <= 0.0):
 			_name_entry_countdown_complete = true
+			# Update name one last time (in case flashing cursor is active)
+			_name_entry_label.text = _entry_to_name.name
+			
+		# Handle cursor flashing
+		_name_entry_cursor_flash_timer += delta
+		if (int(_name_entry_cursor_flash_timer * 2.0) % 2 == 1):
+			_name_entry_label.text[_name_entry_character_index] = '+'
+		else:
+			_name_entry_label.text = _entry_to_name.name
 			
 		_handle_name_user_input()
 
@@ -129,6 +139,8 @@ func _handle_name_user_input() -> void:
 		# Update name.
 		_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index])
 		_name_entry_label.text = _entry_to_name.name
+		# Reset cursor flash timer
+		_name_entry_cursor_flash_timer = 0.0
 	elif (Input.is_action_just_pressed("move_down")):
 		# Decrement unicode character from list.
 		_name_entry_unicode_index -= 1
@@ -137,6 +149,8 @@ func _handle_name_user_input() -> void:
 		# Update name.
 		_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index])
 		_name_entry_label.text = _entry_to_name.name
+		# Reset cursor flash timer
+		_name_entry_cursor_flash_timer = 0.0
 	elif (Input.is_action_just_pressed("use_pickaxe")):
 		# Move to next character.
 		if (_name_entry_character_index < 2):
@@ -144,6 +158,8 @@ func _handle_name_user_input() -> void:
 			# Move the last input character over to the next spot by default.
 			_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index])
 			_name_entry_label.text = _entry_to_name.name
+			# Reset cursor flash timer
+			_name_entry_cursor_flash_timer = 0.0
 		# Finished
 		else:
 			_name_entry_countdown_complete = true
