@@ -43,7 +43,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
 
 [node name="TimerLabel" type="Label" parent="Timer" unique_id=926964627]
 layout_mode = 2
-text = "Time Remaining: 0"
+text = "TIME REMAINING: 0"
 horizontal_alignment = 1
 
 [node name="Scoreboard" type="PanelContainer" parent="." unique_id=2145809886]

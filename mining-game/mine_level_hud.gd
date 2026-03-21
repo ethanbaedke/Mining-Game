@@ -24,7 +24,7 @@ func _ready() -> void:
 	_player_character = _mine_level.find_child("PlayerCharacter")
 	
 	# Set the floor label to reflect the current floor the player is on.
-	_floor_label.text = "Floor: " + str(_game_manager.current_floor)
+	_floor_label.text = "FLOOR: " + str(_game_manager.current_floor)
 	
 	# Set the lives to reflect the current number of lives the player has left.
 	_update_lives_container()
@@ -55,11 +55,11 @@ func _update_high_score_label() -> void:
 	if (_game_manager.high_scores.size() > 0):
 		high_score = _game_manager.high_scores[0].score
 	
-	_high_score_label.text = "High Score: " + str(high_score)
+	_high_score_label.text = "HIGH SCORE: " + str(high_score)
 
 func _update_score_label() -> void:
 	
-	_score_label.text = "Score: " + str(_game_manager.current_score)
+	_score_label.text = "SCORE: " + str(_game_manager.current_score)
 	
 func _update_lives_container() -> void:
 	
