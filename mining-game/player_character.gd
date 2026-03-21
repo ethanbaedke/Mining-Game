@@ -46,6 +46,9 @@ func kill_player() -> void:
 	# Disable hitbox.
 	_player_collision_shape.set_disabled.call_deferred(true)
 	
+	# Hide pickaxe.
+	_pickaxe_sprite.visible = false
+	
 	player_killed.emit()
 
 func _ready() -> void:
