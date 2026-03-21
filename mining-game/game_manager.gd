@@ -4,18 +4,20 @@ class_name GameManager extends Node
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
+const HIGH_SCORE_DISPLAY_SCENE:PackedScene = preload("res://high_score_display.tscn")
 
 const SCORE_FROM_PLAYER_KILLED:int = 0
 
 signal current_score_changed
 
-var high_score:int = 0
+var high_scores:Array[HighScoreEntry] = []
 
 var current_floor:int = 0
 var current_score:int = 0
 var lives_remaining:int = 0
 
 var _mine_level:MineLevel = null
+var _high_score_display:HighScoreDisplay = null
 
 func _ready() -> void:
 	
@@ -35,7 +37,9 @@ func _start_new_game() -> void:
 	
 	current_floor = 1
 	current_score = 0
-	lives_remaining = 3
+	
+	# TESTING: Reset to 3.
+	lives_remaining = 1
 	
 	# Instantiate the mine level.
 	_instantiate_mine_level()
@@ -87,11 +91,41 @@ func _on_mine_level_player_killed() -> void:
 		lives_remaining -= 1
 		_instantiate_mine_level()
 	
-	# Otherwise, start a new game.
+	# Otherwise, go to high score display.
 	else:
-		high_score = max(high_score, current_score)
-		_start_new_game()
+		# Try and add this run to the list of high scores.
+		var new_entry:HighScoreEntry = HighScoreEntry.new()
+		new_entry.score = current_score
+		new_entry.floor_number = current_floor
+		_try_add_score_to_high_scores(new_entry)
+		
+		# Go to high score display.
+		_instantiate_high_score_display()
+
+func _instantiate_high_score_display() -> void:
 	
+	# Instantiate the high score display scene.
+	_high_score_display = HIGH_SCORE_DISPLAY_SCENE.instantiate()
+	self.add_child(_high_score_display)
+	
+	# Load out of our black screen.
+	_loading_ui_anim_player.play("black_to_full_visible")
+	await _loading_ui_anim_player.animation_finished
+	
+	# Wait a moment
+	await get_tree().create_timer(2.0).timeout
+	
+	# Load to black.
+	_loading_ui_anim_player.play("full_visible_to_black")
+	await _loading_ui_anim_player.animation_finished
+	
+	# Destroy the high score display scene.
+	_high_score_display.queue_free()
+	await get_tree().process_frame
+	
+	# Start a new game.
+	_start_new_game()
+
 func _on_mine_level_rock_broken(rock:Rock) -> void:
 	
 	_modify_current_score(rock.score_for_breaking)
@@ -108,3 +142,29 @@ func _player_focus_to_black() -> void:
 	# Black out the screen.
 	_loading_ui_anim_player.play("player_focus_to_black")
 	await _loading_ui_anim_player.animation_finished
+
+func _try_add_score_to_high_scores(entry:HighScoreEntry) -> void:
+	
+	var add_ind:int = 0
+	
+	# Find the index where the new entry should be put.
+	while (add_ind < high_scores.size() && !_compare_high_score_entries(entry, high_scores[add_ind])):
+		add_ind += 1
+	
+	# If there is a valid spot, insert it.
+	if (add_ind < 10):
+		high_scores.insert(add_ind, entry)
+
+	# If there are now 11 entries on the high score board, remove the last one.
+	if (high_scores.size() == 11):
+		high_scores.remove_at(10)
+
+# Returns true if e1 should be ranked higher on the scoreboard than e2, and false otherwise.
+func _compare_high_score_entries(e1:HighScoreEntry, e2:HighScoreEntry) -> bool:
+	
+	# Use score to determine who is higher.
+	if (e1.score != e2.score):
+		return e1.score > e2.score
+	# Use floor as the tiebreaker (higher floor wins). If this is tied, e2 wins (since the question is, is e1 BETTER than e2).
+	else:
+		return e1.floor_number > e2.floor_number

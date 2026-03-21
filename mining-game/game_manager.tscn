@@ -33,6 +33,21 @@ tracks/0/keys = {
 "values": [0.0, 1.0]
 }
 
+[sub_resource type="Animation" id="Animation_smx3j"]
+resource_name = "full_visible_to_black"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
 [sub_resource type="Animation" id="Animation_o2178"]
 resource_name = "focus_player"
 tracks/0/type = "value"
@@ -68,6 +83,7 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_d5upp"),
 &"black_to_full_visible": SubResource("Animation_shwjl"),
+&"full_visible_to_black": SubResource("Animation_smx3j"),
 &"full_visible_to_focus_player": SubResource("Animation_o2178"),
 &"player_focus_to_black": SubResource("Animation_vk86k")
 }

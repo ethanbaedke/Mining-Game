@@ -51,7 +51,11 @@ func _process(delta: float) -> void:
 
 func _update_high_score_label() -> void:
 	
-	_high_score_label.text = "High Score: " + str(_game_manager.high_score)
+	var high_score:int = 0
+	if (_game_manager.high_scores.size() > 0):
+		high_score = _game_manager.high_scores[0].score
+	
+	_high_score_label.text = "High Score: " + str(high_score)
 
 func _update_score_label() -> void:
 	
