@@ -31,253 +31,268 @@ grow_vertical = 2
 scale = Vector2(4, 4)
 theme_override_styles/panel = SubResource("StyleBoxTexture_hp0dq")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2145809886]
+[node name="Timer" type="PanelContainer" parent="." unique_id=1686957705]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.35
-anchor_top = 0.25
+anchor_top = 0.15
 anchor_right = 0.65
-anchor_bottom = 0.75
+anchor_bottom = 0.25
 theme = ExtResource("3_0fdav")
 theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=2010503954]
+[node name="TimerLabel" type="Label" parent="Timer" unique_id=926964627]
+layout_mode = 2
+text = "Time Remaining: 0"
+horizontal_alignment = 1
+
+[node name="Scoreboard" type="PanelContainer" parent="." unique_id=2145809886]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.35
+anchor_top = 0.3
+anchor_right = 0.65
+anchor_bottom = 0.85
+theme = ExtResource("3_0fdav")
+theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
+
+[node name="MarginContainer" type="MarginContainer" parent="Scoreboard" unique_id=2010503954]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1410364223]
+[node name="VBoxContainer" type="VBoxContainer" parent="Scoreboard/MarginContainer" unique_id=1410364223]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1745617250]
+[node name="Title" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1745617250]
 layout_mode = 2
 text = "HIGH SCORES"
 horizontal_alignment = 1
 
-[node name="Headers" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1507574940]
+[node name="Headers" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1507574940]
 layout_mode = 2
 
-[node name="NameHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Headers" unique_id=436649356]
+[node name="NameHeader" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Headers" unique_id=436649356]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "NAME"
 horizontal_alignment = 1
 
-[node name="ScoreHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Headers" unique_id=1433791112]
+[node name="ScoreHeader" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Headers" unique_id=1433791112]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "SCORE"
 horizontal_alignment = 1
 
-[node name="LevelHeader" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Headers" unique_id=1406349687]
+[node name="LevelHeader" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Headers" unique_id=1406349687]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "LEVEL"
 horizontal_alignment = 1
 
-[node name="Entry1" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=375747542]
+[node name="Entry1" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=375747542]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry1" unique_id=1140081947]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "BAD"
-horizontal_alignment = 1
-
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry1" unique_id=2051006270]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
-horizontal_alignment = 1
-
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry1" unique_id=118706]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
-horizontal_alignment = 1
-
-[node name="Entry2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=328497589]
-layout_mode = 2
-
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry2" unique_id=1252735733]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry1" unique_id=1140081947]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry2" unique_id=850853838]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry1" unique_id=2051006270]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry2" unique_id=347105738]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry1" unique_id=118706]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1483434939]
+[node name="Entry2" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=328497589]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry3" unique_id=1374614589]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry2" unique_id=1252735733]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry3" unique_id=257380982]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry2" unique_id=850853838]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry3" unique_id=1876666204]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry2" unique_id=347105738]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry4" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=782537537]
+[node name="Entry3" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1483434939]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry4" unique_id=1693624185]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry3" unique_id=1374614589]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry4" unique_id=246337005]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry3" unique_id=257380982]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry4" unique_id=463767736]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry3" unique_id=1876666204]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry5" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1253853756]
+[node name="Entry4" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=782537537]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry5" unique_id=908774488]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry4" unique_id=1693624185]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry5" unique_id=1183651480]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry4" unique_id=246337005]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry5" unique_id=634506047]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry4" unique_id=463767736]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry6" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1983258715]
+[node name="Entry5" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1253853756]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry6" unique_id=530233849]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry5" unique_id=908774488]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry6" unique_id=670104012]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry5" unique_id=1183651480]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry6" unique_id=1353723172]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry5" unique_id=634506047]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry7" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=589014290]
+[node name="Entry6" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1983258715]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry7" unique_id=1107703207]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry6" unique_id=530233849]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry7" unique_id=632795827]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry6" unique_id=670104012]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry7" unique_id=497298867]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry6" unique_id=1353723172]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry8" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1005764559]
+[node name="Entry7" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=589014290]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry8" unique_id=1941847585]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry7" unique_id=1107703207]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry8" unique_id=1860889196]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry7" unique_id=632795827]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry8" unique_id=1592594317]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry7" unique_id=497298867]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry9" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1612139285]
+[node name="Entry8" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1005764559]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry9" unique_id=360039491]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry8" unique_id=1941847585]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry9" unique_id=380840646]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry8" unique_id=1860889196]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry9" unique_id=952157521]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry8" unique_id=1592594317]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="Entry10" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2031727693]
+[node name="Entry9" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=1612139285]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry10" unique_id=596926636]
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry9" unique_id=360039491]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "BAD"
 horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry10" unique_id=926024318]
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry9" unique_id=380840646]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
 
-[node name="LevelLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Entry10" unique_id=889661945]
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry9" unique_id=952157521]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="Entry10" type="HBoxContainer" parent="Scoreboard/MarginContainer/VBoxContainer" unique_id=2031727693]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry10" unique_id=596926636]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "BAD"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry10" unique_id=926024318]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Scoreboard/MarginContainer/VBoxContainer/Entry10" unique_id=889661945]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "0"

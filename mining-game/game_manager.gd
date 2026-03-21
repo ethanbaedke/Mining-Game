@@ -106,14 +106,13 @@ func _instantiate_high_score_display() -> void:
 	
 	# Instantiate the high score display scene.
 	_high_score_display = HIGH_SCORE_DISPLAY_SCENE.instantiate()
+	_high_score_display.display_finished.connect(_on_high_score_display_display_finished)
 	self.add_child(_high_score_display)
 	
 	# Load out of our black screen.
 	_loading_ui_anim_player.play("black_to_full_visible")
-	await _loading_ui_anim_player.animation_finished
-	
-	# Wait a moment
-	await get_tree().create_timer(2.0).timeout
+
+func _on_high_score_display_display_finished() -> void:
 	
 	# Load to black.
 	_loading_ui_anim_player.play("full_visible_to_black")
