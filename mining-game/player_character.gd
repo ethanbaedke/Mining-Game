@@ -89,15 +89,14 @@ func _try_use_pickaxe() -> void:
 	_pickaxe_sprite.set_visible(true)
 	_update_pickaxe_position()
 	
-	# If swinging the pickaxe up, it should render behind the player sprite.
-	# This will happen if they're on the same z_index since the pickaxe sprite sits higher in the scene tree than the player sprite.
-	# We have to do it this way so the pickaxe doesn't render under the terrain (with a lower z_index).
-	if _face_dir == FacingDirection.UP:
-		_pickaxe_sprite.z_index = 0
-	# In all other cases it should render in front. We set the z_index to 1.
-	# It will always render in front of the terrain, but that is okay in this case. It looks fine.
-	else:
-		_pickaxe_sprite.z_index = 1
+	# If swinging the pickaxe up, it should render behind the player. In all other cases, it should render in front of the player.
+	# We swap order in the scene tree instead of using z-index intentionally. If we modify z-index, the pickaxe will render incorrectly due to y-ordering on the mine level.
+	# By instead swapping indices in the scene tree, we ensure the pickaxe is always in line with the player in y-ordering, but also renders correctly relative to the player.
+	if (_face_dir == FacingDirection.UP):
+		if (_player_sprite.get_index() < _pickaxe_sprite.get_index()):
+			self.move_child(_pickaxe_sprite, _player_sprite.get_index())
+	elif (_pickaxe_sprite.get_index() < _player_sprite.get_index()):
+		self.move_child(_player_sprite, _pickaxe_sprite.get_index())
 
 func _handle_pickaxe_swing(delta:float) -> void:
 		
