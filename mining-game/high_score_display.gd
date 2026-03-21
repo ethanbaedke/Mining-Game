@@ -163,6 +163,8 @@ func _handle_name_user_input() -> void:
 		# Finished
 		else:
 			_name_entry_countdown_complete = true
+			# Update name one last time (in case flashing cursor is active)
+			_name_entry_label.text = _entry_to_name.name
 
 func _fillout_high_score_ui() -> void:
 	
