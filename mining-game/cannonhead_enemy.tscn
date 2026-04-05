@@ -10,7 +10,6 @@ size = Vector2(12, 5)
 size = Vector2(10, 3)
 
 [node name="CannonheadEnemy" type="Node2D" unique_id=1273210817]
-modulate = Color(0.7, 0.13999999, 0.13999999, 1)
 z_index = -2
 script = ExtResource("1_areo8")
 
