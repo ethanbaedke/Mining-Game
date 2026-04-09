@@ -1,5 +1,5 @@
-class_name HighScoreEntry extends Object
+class_name HighScoreEntry extends Resource
 
-var name:String = ""
-var score:int = 0
-var floor_number:int = 0
+@export var name:String = ""
+@export var score:int = 0
+@export var floor_number:int = 0

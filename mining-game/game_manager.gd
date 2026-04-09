@@ -19,7 +19,18 @@ var lives_remaining:int = 0
 var _mine_level:MineLevel = null
 var _high_score_display:HighScoreDisplay = null
 
+func save_high_scores() -> void:
+	
+	var save_data:SaveData = SaveData.new()
+	save_data.high_scores = high_scores
+	ResourceSaver.save(save_data, "user://save_data.res")
+
 func _ready() -> void:
+	
+	# Load high scores.
+	var save_data:SaveData = ResourceLoader.load("user://save_data.res")
+	if (save_data != null):
+		high_scores = save_data.high_scores
 	
 	_start_new_game()
 	
@@ -32,7 +43,7 @@ func _process(delta: float) -> void:
 		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_canvas_transform() * _mine_level.player_character.global_position)
 	else:
 		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_visible_rect().size * 0.5)
-	
+
 func _start_new_game() -> void:
 	
 	current_floor = 1

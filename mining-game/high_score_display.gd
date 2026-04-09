@@ -163,6 +163,8 @@ func _handle_name_user_input() -> void:
 		# Finished
 		else:
 			_name_entry_countdown_complete = true
+			# Save the new high score to the filesystem as soon as the user finishes entering their name.
+			_game_manager.save_high_scores()
 			# Update name one last time (in case flashing cursor is active)
 			_name_entry_label.text = _entry_to_name.name
 
