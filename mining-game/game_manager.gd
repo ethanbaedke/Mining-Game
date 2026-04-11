@@ -50,7 +50,7 @@ func _start_new_game() -> void:
 	current_score = 0
 	
 	# TESTING: Reset to 3.
-	lives_remaining = 1
+	lives_remaining = 3
 	
 	# Instantiate the mine level.
 	_instantiate_mine_level()
