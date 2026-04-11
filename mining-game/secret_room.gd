@@ -15,8 +15,10 @@ func set_size(size:Vector2i) -> void:
 	_collision_shape.position = relative_position
 	
 	# Update the sprite size.
-	_sprite.region_rect.size = pixel_size
-	_sprite.position = relative_position
+	_sprite.region_rect.size = pixel_size + Vector2(4.0, 4.0) # Sprite should be slightly larger than collision area (adjust as shader changes).
+	_sprite.position = relative_position 
+	
+	_sprite.material.set_shader_parameter("region_size", _sprite.region_rect.size)
 
 func _unhide_room() -> void:
 	_sprite.visible = false
