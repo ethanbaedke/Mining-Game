@@ -273,20 +273,53 @@ func _update_animation() -> void:
 					_player_sprite.play("run_down")
 
 # Handles a tilemap being hit at a certain point. The hit_point parameter is in global coordinates.
-func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, hit_point:Vector2) -> void:
+func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, global_hit_rect:Rect2) -> void:
 	
 	# Hit tilemap must be part of the mine level
 	var tilemap_parent:Node = tilemap.get_parent()
 	if (tilemap_parent is MineLevel):
 	
-		# Get the hit point coordinates in the tilemap's local coordinate system.
-		var tilemap_local_hit_point:Vector2 = tilemap.to_local(hit_point)
+		# Get hit point coordinates in the tilemap's local coordinate system for each corner of the global hit rect.
+		var tilemap_local_tl:Vector2 = tilemap.to_local(global_hit_rect.position)
+		var tilemap_local_tr:Vector2 = tilemap.to_local(global_hit_rect.position + Vector2(global_hit_rect.size.x, 0.0))
+		var tilemap_local_bl:Vector2 = tilemap.to_local(global_hit_rect.position + Vector2(0.0, global_hit_rect.size.y))
+		var tilemap_local_br:Vector2 = tilemap.to_local(global_hit_rect.position + global_hit_rect.size)
 		
-		# Get the coordinates of the cell that was hit.
-		var hit_cell_coords:Vector2i = tilemap.local_to_map(tilemap_local_hit_point)
+		# Get the coordinates of each cell that was hit (unique).
+		var hit_cells:Array[Vector2i] = []
+		var tl_cell:Vector2i = tilemap.local_to_map(tilemap_local_tl)
+		if (tilemap.get_cell_source_id(tl_cell) != -1):
+			if (hit_cells.find(tl_cell) == -1):
+				hit_cells.push_back(tl_cell)
+		var tr_cell:Vector2i = tilemap.local_to_map(tilemap_local_tr)
+		if (tilemap.get_cell_source_id(tr_cell) != -1):
+			if (hit_cells.find(tr_cell) == -1):
+				hit_cells.push_back(tr_cell)
+		var bl_cell:Vector2i = tilemap.local_to_map(tilemap_local_bl)
+		if (tilemap.get_cell_source_id(bl_cell) != -1):
+			if (hit_cells.find(bl_cell) == -1):
+				hit_cells.push_back(bl_cell)
+		var br_cell:Vector2i = tilemap.local_to_map(tilemap_local_br)
+		if (tilemap.get_cell_source_id(br_cell) != -1):
+			if (hit_cells.find(br_cell) == -1):
+				hit_cells.push_back(br_cell)
+			
+		# This function is only called if a tilemap is hit. If we don't find any cells that were hit, our math is flawed. This should never happen.
+		assert(hit_cells.size() > 0)
+		
+		# Remove the tile closest to the player.
+		var to_remove:Vector2i = hit_cells[0]
+		var closest_dist_sqrd:float = (tilemap.to_global(tilemap.map_to_local(hit_cells[0])) - self.global_position).length_squared()
+		for i:int in range(1, hit_cells.size()):
+			var current_dist_sqrd:float = (tilemap.to_global(tilemap.map_to_local(hit_cells[i])) - self.global_position).length_squared()
+			if (current_dist_sqrd < closest_dist_sqrd):
+				to_remove = hit_cells[i]
+				closest_dist_sqrd = current_dist_sqrd
+		
+		print(hit_cells.size())
 		
 		# Call function on MineLevel to remove the tile at the hit cell.
-		tilemap_parent.remove_tile(hit_cell_coords)
+		tilemap_parent.remove_tile(to_remove)
 		
 		# Add some camera shake.
 		_camera.add_trauma(0.2)
@@ -295,7 +328,9 @@ func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
-		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_down_hitbox_shape.global_position)
+		var size:Vector2 = _pickaxe_down_hitbox_shape.shape.get_rect().size
+		var pos:Vector2 = _pickaxe_down_hitbox_shape.global_position - (size * 0.5)
+		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
@@ -305,7 +340,9 @@ func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
-		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_up_hitbox_shape.global_position)
+		var size:Vector2 = _pickaxe_up_hitbox_shape.shape.get_rect().size
+		var pos:Vector2 = _pickaxe_up_hitbox_shape.global_position - (size * 0.5)
+		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
@@ -315,7 +352,9 @@ func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
-		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_left_hitbox_shape.global_position)
+		var size:Vector2 = _pickaxe_left_hitbox_shape.shape.get_rect().size
+		var pos:Vector2 = _pickaxe_left_hitbox_shape.global_position - (size * 0.5)
+		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
@@ -325,7 +364,9 @@ func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	
 	if (body is TileMapLayer):
 		_disable_pickaxe_hitbox()
-		_handle_tilemap_hit_with_pickaxe(body, _pickaxe_right_hitbox_shape.global_position)
+		var size:Vector2 = _pickaxe_right_hitbox_shape.shape.get_rect().size
+		var pos:Vector2 = _pickaxe_right_hitbox_shape.global_position - (size * 0.5)
+		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
