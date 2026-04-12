@@ -3,6 +3,11 @@ class_name SecretRoom extends Area2D
 @onready var _collision_shape:CollisionShape2D = $CollisionShape2D
 @onready var _sprite:Sprite2D = $Sprite2D
 
+const UNHIDE_TIME:float = 0.5
+
+var _discovered:bool = false
+var _unhide_timer:float = UNHIDE_TIME
+
 # Sets the size of the secret room. Assumes the secret rooms origin is at the top-left of where the secret room should go. Size parameter should be in cell coordinates.
 func set_size(size:Vector2i) -> void:
 	
@@ -20,8 +25,18 @@ func set_size(size:Vector2i) -> void:
 	
 	_sprite.material.set_shader_parameter("region_size", _sprite.region_rect.size)
 
+func _process(delta: float) -> void:
+	
+	# Handle the cover fade out once room is discovered.
+	if (_discovered):
+		if (_unhide_timer > 0.0):
+			_unhide_timer -= delta
+		else:
+			_unhide_timer = 0.0
+		_sprite.material.set_shader_parameter("alpha", _unhide_timer / UNHIDE_TIME)
+
 func _unhide_room() -> void:
-	_sprite.visible = false
+	_discovered = true
 
 func _on_body_entered(body: Node2D) -> void:
 	

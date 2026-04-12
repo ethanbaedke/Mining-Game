@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 uniform vec2 region_size;
+uniform float alpha;
 
 void fragment() {
 	
@@ -49,8 +50,12 @@ void fragment() {
 	// TODO: Take a look at this wave function later.
 	float wave = (sin((TIME * 8.0f) + UV.x + UV.y) * 0.5f) + 0.5f + sin(TIME * 3.0f) + 1.0f;
 	
-	float alpha = step(wave, dist);
+	// Decide whether to paint this fragment or not.
+	float frag_alpha = step(wave, dist);
 	
-	COLOR = vec4(0.0f, 0.0f, 0.0f, alpha);
+	// If painting it, add the uniform alpha, which will decrease as the room is being revealed.
+	frag_alpha *= alpha;
+	
+	COLOR = vec4(0.0f, 0.0f, 0.0f, frag_alpha);
 	
 }
