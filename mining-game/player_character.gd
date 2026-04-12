@@ -3,6 +3,7 @@ class_name PlayerCharacter extends CharacterBody2D
 @onready var _player_sprite:AnimatedSprite2D = $PlayerSprite
 @onready var _pickaxe_sprite:AnimatedSprite2D = $PickaxeSprite
 @onready var _player_collision_shape:CollisionShape2D = $CollisionShape2D
+@onready var _camera:PlayerCamera = $Camera2D
 
 @onready var _pickaxe_down_hitbox_shape:CollisionShape2D = $PickaxeDownHitbox/CollisionShape2D
 @onready var _pickaxe_up_hitbox_shape:CollisionShape2D = $PickaxeUpHitbox/CollisionShape2D
@@ -286,6 +287,9 @@ func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, hit_point:Vector2) -
 		
 		# Call function on MineLevel to remove the tile at the hit cell.
 		tilemap_parent.remove_tile(hit_cell_coords)
+		
+		# Add some camera shake.
+		_camera.add_trauma(0.2)
 
 func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -295,6 +299,7 @@ func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
+		_camera.add_trauma(body.camera_trauma_on_break)
 
 func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -304,6 +309,7 @@ func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
+		_camera.add_trauma(body.camera_trauma_on_break)
 
 func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -313,6 +319,7 @@ func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
+		_camera.add_trauma(body.camera_trauma_on_break)
 
 func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -322,3 +329,4 @@ func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
+		_camera.add_trauma(body.camera_trauma_on_break)

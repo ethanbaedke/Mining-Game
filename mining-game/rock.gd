@@ -2,6 +2,9 @@ class_name Rock extends StaticBody2D
 
 @export var score_for_breaking:int = 1
 
+# This is handeled by the player when the rock is hit.
+@export var camera_trauma_on_break:float = 0.2
+
 func break_rock() -> void:
 	
 	queue_free()

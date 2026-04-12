@@ -3,12 +3,16 @@
 [ext_resource type="PackedScene" uid="uid://c3udix1j1wkol" path="res://player_character.tscn" id="1_3x8yu"]
 [ext_resource type="Script" uid="uid://b76s3usqsbv7e" path="res://mine_level.gd" id="1_ksevt"]
 [ext_resource type="TileSet" uid="uid://cedbq7dlya52b" path="res://mine_tile_set.tres" id="2_08n1b"]
+[ext_resource type="Script" uid="uid://c3rt1cuujrbmc" path="res://player_camera.gd" id="4_de3fa"]
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="4_dv24s"]
 [ext_resource type="AudioStream" uid="uid://clqt65ifb6xd7" path="res://Theme.wav" id="4_ld46e"]
 [ext_resource type="Script" uid="uid://dydy3icdelc1b" path="res://mine_level_hud.gd" id="5_p3d05"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="6_sc2q2"]
 [ext_resource type="Shader" uid="uid://ca7a4kmlne3pb" path="res://screen_effect.gdshader" id="7_m15wg"]
 [ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_de3fa"]
+frequency = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m15wg"]
 shader = ExtResource("7_m15wg")
@@ -38,7 +42,10 @@ tile_set = ExtResource("2_08n1b")
 position = Vector2(-20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
+ignore_rotation = false
 zoom = Vector2(2.7, 2.7)
+script = ExtResource("4_de3fa")
+_noise = SubResource("FastNoiseLite_de3fa")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="PlayerCharacter" unique_id=333498504]
 position = Vector2(20, 20)
