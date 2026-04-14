@@ -1,9 +1,9 @@
 class_name MineLevelHud extends CanvasLayer
 
 @onready var _screen_effects:ColorRect = $ScreenEffects
-@onready var _floor_label:Label = $MarginContainer/Control/HBoxContainer/FloorPanelContainer/FloorLabel
-@onready var _high_score_label:Label = $MarginContainer/Control/HighScorePanelContainer/HighScoreLabel
-@onready var _score_label:Label = $MarginContainer/Control/ScorePanelContainer/ScoreLabel
+@onready var _floor_label:Label = $MarginContainer/Control/HBoxContainer/FloorPanelContainer/MarginContainer/FloorLabel
+@onready var _high_score_label:Label = $MarginContainer/Control/HighScorePanelContainer/MarginContainer/HighScoreLabel
+@onready var _score_label:Label = $MarginContainer/Control/ScorePanelContainer/MarginContainer/ScoreLabel
 @onready var _lives_container:Container = $MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer
 
 # References retrieved on ready.

@@ -28,16 +28,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(4, 4)
 theme_override_styles/panel = SubResource("StyleBoxTexture_hp0dq")
 
 [node name="Timer" type="PanelContainer" parent="." unique_id=1686957705]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.35
-anchor_top = 0.15
+anchor_top = 0.075
 anchor_right = 0.65
-anchor_bottom = 0.25
+anchor_bottom = 0.175
 theme = ExtResource("3_0fdav")
 theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
 
@@ -50,9 +49,9 @@ horizontal_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.35
-anchor_top = 0.3
+anchor_top = 0.225
 anchor_right = 0.65
-anchor_bottom = 0.85
+anchor_bottom = 0.9
 theme = ExtResource("3_0fdav")
 theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
 

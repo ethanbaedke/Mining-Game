@@ -24,25 +24,25 @@ func save_high_scores() -> void:
 	var save_data:SaveData = SaveData.new()
 	save_data.high_scores = high_scores
 	ResourceSaver.save(save_data, "user://save_data.res")
+	print(OS.get_user_data_dir())
 
 func _ready() -> void:
 	
 	# Load high scores.
-	var save_data:SaveData = ResourceLoader.load("user://save_data.res")
-	if (save_data != null):
-		high_scores = save_data.high_scores
+	if (ResourceLoader.exists("user://save_data.res")):
+		var save_data:SaveData = ResourceLoader.load("user://save_data.res")
+		if (save_data != null):
+			high_scores = save_data.high_scores
 	
 	_start_new_game()
 	
 func _process(delta: float) -> void:
 	
 	var viewport:Viewport = get_viewport()
-	_screen_mask.material.set_shader_parameter("screen_size", viewport.get_visible_rect().size)
-	
 	if (_mine_level != null && _mine_level.player_character != null):
-		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_canvas_transform() * _mine_level.player_character.global_position)
+		_screen_mask.material.set_shader_parameter("player_uv", (viewport.get_canvas_transform() * _mine_level.player_character.global_position) / viewport.get_visible_rect().size)
 	else:
-		_screen_mask.material.set_shader_parameter("player_screen_pos", viewport.get_visible_rect().size * 0.5)
+		_screen_mask.material.set_shader_parameter("player_uv", Vector2(0.5, 0.5))
 
 func _start_new_game() -> void:
 	
@@ -50,7 +50,7 @@ func _start_new_game() -> void:
 	current_score = 0
 	
 	# TESTING: Reset to 3.
-	lives_remaining = 3
+	lives_remaining = 1
 	
 	# Instantiate the mine level.
 	_instantiate_mine_level()

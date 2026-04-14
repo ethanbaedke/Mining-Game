@@ -43,7 +43,6 @@ position = Vector2(-20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=1592437344]
 ignore_rotation = false
-zoom = Vector2(2.7, 2.7)
 script = ExtResource("4_de3fa")
 _noise = SubResource("FastNoiseLite_de3fa")
 
@@ -83,15 +82,16 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/MarginContainer/Control" unique_id=1511752746]
 layout_mode = 1
-offset_right = 179.0
-offset_bottom = 50.0
+offset_right = 187.0
+offset_bottom = 27.0
 
 [node name="FloorPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=1975945760]
-custom_minimum_size = Vector2(125, 50)
 layout_mode = 2
 
-[node name="FloorLabel" type="Label" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer" unique_id=1318654353]
-custom_minimum_size = Vector2(140, 50)
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer" unique_id=1423728145]
+layout_mode = 2
+
+[node name="FloorLabel" type="Label" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer/MarginContainer" unique_id=1318654353]
 layout_mode = 2
 text = "FLOOR: 0"
 horizontal_alignment = 1
@@ -123,35 +123,37 @@ texture = ExtResource("7_oyrvu")
 expand_mode = 2
 
 [node name="ScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
-custom_minimum_size = Vector2(125, 50)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -125.0
-offset_bottom = 50.0
+offset_left = -41.0
+offset_bottom = 11.0
 grow_horizontal = 0
 
-[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/Control/ScorePanelContainer" unique_id=599813455]
-custom_minimum_size = Vector2(150, 50)
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/ScorePanelContainer" unique_id=932264190]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/Control/ScorePanelContainer/MarginContainer" unique_id=599813455]
 layout_mode = 2
 text = "SCORE: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HighScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1269415656]
-custom_minimum_size = Vector2(125, 50)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -90.0
-offset_right = 90.0
-offset_bottom = 50.0
+offset_left = -42.0
+offset_right = 42.0
+offset_bottom = 27.0
 grow_horizontal = 2
 
-[node name="HighScoreLabel" type="Label" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=1853980166]
-custom_minimum_size = Vector2(210, 50)
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=275931661]
+layout_mode = 2
+
+[node name="HighScoreLabel" type="Label" parent="HUD/MarginContainer/Control/HighScorePanelContainer/MarginContainer" unique_id=1853980166]
 layout_mode = 2
 text = "HIGH SCORE: 0"
 horizontal_alignment = 1
