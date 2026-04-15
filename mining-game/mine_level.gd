@@ -44,6 +44,7 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 signal level_cleared
 signal player_killed
 signal rock_broken(rock:Rock)
+signal wall_broken_by_player
 signal bomb_placed
 
 # Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
@@ -61,7 +62,7 @@ var _astar:AStarGrid2D = AStarGrid2D.new()
 var _ghost_spawned:bool = false
 var _ghost_spawn_timer:float = SECONDS_FROM_START_TO_GHOST_SPAWN
 
-func remove_tile(cell_coordinates:Vector2i) -> void:
+func remove_tile(cell_coordinates:Vector2i, broken_by_player:bool = false) -> void:
 	
 	# Can't remove a tile from a cell that's already empty. This also handels out of bounds errors for us.
 	if (wall_physical_layer.get_cell_source_id(cell_coordinates) == -1):
@@ -79,6 +80,9 @@ func remove_tile(cell_coordinates:Vector2i) -> void:
 			
 	# Update navigation so enemies can move into the newely empty space.
 	_astar.set_point_solid(cell_coordinates, false)
+	
+	if (broken_by_player):
+		wall_broken_by_player.emit()
 	
 func remove_rock(rock:Rock) -> void:
 	

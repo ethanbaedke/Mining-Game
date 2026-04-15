@@ -321,7 +321,7 @@ func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, global_hit_rect:Rect
 		print(hit_cells.size())
 		
 		# Call function on MineLevel to remove the tile at the hit cell.
-		tilemap_parent.remove_tile(to_remove)
+		tilemap_parent.remove_tile(to_remove, true)
 		
 		# Add some camera shake.
 		_camera.add_trauma(0.2)

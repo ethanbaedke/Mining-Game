@@ -1,7 +1,6 @@
 class_name Rock extends StaticBody2D
 
 @export var score_for_breaking:int = 1
-@export var coal_for_breaking:int = 0
 
 # This is handeled by the player when the rock is hit.
 @export var camera_trauma_on_break:float = 0.2
