@@ -7,13 +7,16 @@ const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 const HIGH_SCORE_DISPLAY_SCENE:PackedScene = preload("res://high_score_display.tscn")
 
 const SCORE_FROM_PLAYER_KILLED:int = 0
+const COAL_NEEDED_FOR_BOMB:int = 8
 
 signal current_score_changed
+signal current_coal_changed
 
 var high_scores:Array[HighScoreEntry] = []
 
 var current_floor:int = 0
 var current_score:int = 0
+var current_coal:int = 0
 var lives_remaining:int = 0
 
 var _mine_level:MineLevel = null
@@ -50,7 +53,7 @@ func _start_new_game() -> void:
 	current_score = 0
 	
 	# TESTING: Reset to 3.
-	lives_remaining = 1
+	lives_remaining = 3
 	
 	# Instantiate the mine level.
 	_instantiate_mine_level()
@@ -78,6 +81,10 @@ func _modify_current_score(amount:int) -> void:
 	current_score = min(999, current_score)
 	
 	current_score_changed.emit()
+
+func _modify_current_coal(amount:int) -> void:
+	current_coal = max(min(current_coal + 1, COAL_NEEDED_FOR_BOMB), 0.0)
+	current_coal_changed.emit()
 
 func _on_mine_level_level_cleared() -> void:
 	
@@ -137,8 +144,8 @@ func _on_high_score_display_display_finished() -> void:
 	_start_new_game()
 
 func _on_mine_level_rock_broken(rock:Rock) -> void:
-	
 	_modify_current_score(rock.score_for_breaking)
+	_modify_current_coal(rock.coal_for_breaking)
 
 func _player_focus_to_black() -> void:
 	

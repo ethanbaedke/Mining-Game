@@ -4,7 +4,8 @@ class_name MineLevelHud extends CanvasLayer
 @onready var _floor_label:Label = $MarginContainer/Control/HBoxContainer/FloorPanelContainer/MarginContainer/FloorLabel
 @onready var _high_score_label:Label = $MarginContainer/Control/HighScorePanelContainer/MarginContainer/HighScoreLabel
 @onready var _score_label:Label = $MarginContainer/Control/ScorePanelContainer/MarginContainer/ScoreLabel
-@onready var _lives_container:Container = $MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer
+@onready var _lives_container:Container = $MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer/LivesContainer
+@onready var _bomb_texture:TextureRect = $MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer/BombTexture
 
 # References retrieved on ready.
 var _mine_level:MineLevel = null
@@ -29,6 +30,8 @@ func _ready() -> void:
 	# Set the lives to reflect the current number of lives the player has left.
 	_update_lives_container()
 	
+	_update_bomb_texture()
+	
 	_update_high_score_label()
 	
 	# Set score (since the UI will reset every new level)
@@ -36,6 +39,9 @@ func _ready() -> void:
 	
 	# Listen for score changes.
 	_game_manager.current_score_changed.connect(_update_score_label)
+	
+	# Listen for coal changes.
+	_game_manager.current_coal_changed.connect(_update_bomb_texture)
 
 func _process(delta: float) -> void:
 	
@@ -74,3 +80,6 @@ func _update_lives_container() -> void:
 	while (i < _lives_container.get_child_count()):
 		(_lives_container.get_child(i) as TextureRect).modulate = Color.TRANSPARENT
 		i += 1
+
+func _update_bomb_texture() -> void:
+	_bomb_texture.material.set_shader_parameter("percent", _game_manager.current_coal as float / _game_manager.COAL_NEEDED_FOR_BOMB)

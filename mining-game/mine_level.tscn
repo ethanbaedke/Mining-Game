@@ -10,6 +10,8 @@
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="6_sc2q2"]
 [ext_resource type="Shader" uid="uid://ca7a4kmlne3pb" path="res://screen_effect.gdshader" id="7_m15wg"]
 [ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
+[ext_resource type="Texture2D" uid="uid://dm3vlguqrpiao" path="res://bomb.png" id="11_elslm"]
+[ext_resource type="Shader" uid="uid://cgfscj40hchw2" path="res://vertical_mask.gdshader" id="12_23j83"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_de3fa"]
 frequency = 1.0
@@ -18,6 +20,11 @@ frequency = 1.0
 shader = ExtResource("7_m15wg")
 shader_parameter/player_pos = Vector2(0, 0)
 shader_parameter/intensity = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g8q7o"]
+shader = ExtResource("12_23j83")
+shader_parameter/tex = ExtResource("11_elslm")
+shader_parameter/percent = 0.0
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
 y_sort_enabled = true
@@ -97,30 +104,46 @@ text = "FLOOR: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=460129840]
+[node name="LivesPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=460129840]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer" unique_id=1340797009]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer" unique_id=1340797009]
 layout_mode = 2
 
-[node name="LivesContainer" type="HBoxContainer" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer" unique_id=678855071]
+[node name="LivesContainer" type="HBoxContainer" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer" unique_id=678855071]
 layout_mode = 2
 
-[node name="LifeTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=480929603]
+[node name="LifeTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer/LivesContainer" unique_id=480929603]
 layout_mode = 2
 texture = ExtResource("7_oyrvu")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="LifeTexture2" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=1683075077]
+[node name="LifeTexture2" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer/LivesContainer" unique_id=1683075077]
 layout_mode = 2
 texture = ExtResource("7_oyrvu")
 expand_mode = 2
 
-[node name="LifeTexture3" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/PanelContainer/MarginContainer/LivesContainer" unique_id=605241970]
+[node name="LifeTexture3" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer/LivesContainer" unique_id=605241970]
 layout_mode = 2
 texture = ExtResource("7_oyrvu")
 expand_mode = 2
+
+[node name="BombPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=82023418]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer" unique_id=317400553]
+layout_mode = 2
+
+[node name="BombSilhouetteTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer" unique_id=426069600]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+texture = ExtResource("11_elslm")
+
+[node name="BombTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer" unique_id=926039357]
+material = SubResource("ShaderMaterial_g8q7o")
+layout_mode = 2
+texture = ExtResource("11_elslm")
 
 [node name="ScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
 layout_mode = 1
