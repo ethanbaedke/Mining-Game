@@ -25,6 +25,7 @@ const PICKAXE_RIGHT_F1_POS:Vector2 = Vector2(0.0, -12.0)
 const PICKAXE_RIGHT_F2_POS:Vector2 = Vector2(9.0, -1.0)
 
 const MOVE_SPEED:int = 40
+const CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT:float = 0.2
 
 signal player_killed
 
@@ -324,7 +325,7 @@ func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, global_hit_rect:Rect
 		tilemap_parent.remove_tile(to_remove, true)
 		
 		# Add some camera shake.
-		_camera.add_trauma(0.2)
+		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -336,7 +337,7 @@ func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
-		_camera.add_trauma(body.camera_trauma_on_break)
+		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -348,7 +349,7 @@ func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
-		_camera.add_trauma(body.camera_trauma_on_break)
+		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -360,7 +361,7 @@ func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
-		_camera.add_trauma(body.camera_trauma_on_break)
+		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -372,4 +373,4 @@ func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
 		body.handle_hit()
-		_camera.add_trauma(body.camera_trauma_on_break)
+		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)

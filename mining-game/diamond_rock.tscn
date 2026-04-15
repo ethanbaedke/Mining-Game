@@ -11,7 +11,6 @@ z_index = -2
 collision_mask = 0
 script = ExtResource("1_fqmwq")
 score_for_breaking = 5
-camera_trauma_on_break = 0.6
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]
 position = Vector2(0, -2)
