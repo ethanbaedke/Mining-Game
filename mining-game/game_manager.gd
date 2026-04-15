@@ -28,7 +28,7 @@ func save_high_scores() -> void:
 	var save_data:SaveData = SaveData.new()
 	save_data.high_scores = high_scores
 	ResourceSaver.save(save_data, "user://save_data.res")
-	print(OS.get_user_data_dir())
+	print("Data saved to " + OS.get_user_data_dir())
 
 func _ready() -> void:
 	

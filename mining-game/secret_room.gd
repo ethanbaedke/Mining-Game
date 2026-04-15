@@ -32,7 +32,7 @@ func set_size(size:Vector2i) -> void:
 
 func unhide_room() -> void:
 	_discovered = true
-	_collision_shape.disabled = true
+	_collision_shape.set_disabled.call_deferred(true)
 	
 	# Expidite the removal of all hints spawned from this secret room.
 	for child:Node2D in self.get_children():

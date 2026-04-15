@@ -319,8 +319,6 @@ func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, global_hit_rect:Rect
 				to_remove = hit_cells[i]
 				closest_dist_sqrd = current_dist_sqrd
 		
-		print(hit_cells.size())
-		
 		# Call function on MineLevel to remove the tile at the hit cell.
 		tilemap_parent.remove_tile(to_remove, true)
 		
