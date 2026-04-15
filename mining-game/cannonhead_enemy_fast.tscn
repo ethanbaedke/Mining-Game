@@ -18,9 +18,8 @@ _head_throw_total_time_multiplier = 0.5
 
 [node name="Head" type="Area2D" parent="." unique_id=1132862508]
 position = Vector2(0, -6)
-collision_layer = 0
+collision_layer = 4
 collision_mask = 2
-monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Head" unique_id=1117944061]
 position = Vector2(0, 1)
@@ -33,9 +32,8 @@ position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_yl63k")
 
 [node name="Body" type="Area2D" parent="." unique_id=1228915583]
-collision_layer = 0
+collision_layer = 4
 collision_mask = 2
-monitorable = false
 
 [node name="BodySprite" type="Sprite2D" parent="Body" unique_id=1154763131]
 position = Vector2(0, -5)

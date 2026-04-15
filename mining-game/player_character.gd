@@ -68,6 +68,8 @@ func _physics_process(delta:float) -> void:
 	
 	if (Input.is_action_just_pressed("use_pickaxe")):
 		_try_use_pickaxe()
+	elif (Input.is_action_just_pressed("place_bomb")):
+		_mine_level.try_place_bomb(self.global_position)
 	
 	if (_using_pickaxe):
 		_handle_pickaxe_swing(delta)

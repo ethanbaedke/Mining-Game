@@ -8,9 +8,8 @@ size = Vector2(14, 8)
 
 [node name="SlimeEnemyFast" type="Area2D" unique_id=345780096]
 z_index = -2
-collision_layer = 0
+collision_layer = 4
 collision_mask = 2
-monitorable = false
 script = ExtResource("1_ionlg")
 _move_speed = 32
 _dash_telegraph_time = 0.5

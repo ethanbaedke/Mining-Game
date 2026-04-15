@@ -20,6 +20,7 @@ const SECRET_ROOM_SCENE:PackedScene = preload("res://secret_room.tscn")
 const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
 const DIAMOND_ROCK_SCENE:PackedScene = preload("res://diamond_rock.tscn")
+const BOMB_SCENE:PackedScene = preload("res://bomb.tscn")
 
 const ENEMY_SPAWN_TABLE:EnemySpawnTable = preload("res://enemy_spawn_table.tres")
 
@@ -43,6 +44,7 @@ const CELL_NEIGHBORS:Array[TileSet.CellNeighbor] = [
 signal level_cleared
 signal player_killed
 signal rock_broken(rock:Rock)
+signal bomb_placed
 
 # Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
 var time_since_ghost_spawned:float = 0.0
@@ -60,6 +62,10 @@ var _ghost_spawned:bool = false
 var _ghost_spawn_timer:float = SECONDS_FROM_START_TO_GHOST_SPAWN
 
 func remove_tile(cell_coordinates:Vector2i) -> void:
+	
+	# Can't remove a tile from a cell that's already empty. This also handels out of bounds errors for us.
+	if (wall_physical_layer.get_cell_source_id(cell_coordinates) == -1):
+		return
 	
 	# This call removes the tile at the input cell coordinates and updates the tiles of the surrounding cells using their terrain.
 	wall_physical_layer.set_cells_terrain_connect([cell_coordinates], 0, -1)
@@ -84,6 +90,26 @@ func remove_rock(rock:Rock) -> void:
 	
 	# Let the rock handle removal itself.
 	rock.break_rock()
+
+func try_place_bomb(world_pos:Vector2) -> void:
+	
+	# Can't place a bomb if not enough coal has been collected.
+	if (_game_manager.current_coal < _game_manager.COAL_NEEDED_FOR_BOMB):
+		return
+	
+	var cell:Vector2i = wall_physical_layer.local_to_map(wall_physical_layer.to_local(world_pos))
+	
+	# If this assert fails, the player is inside a wall.
+	assert(wall_physical_layer.get_cell_source_id(cell) == -1)
+	
+	var bomb:Bomb = BOMB_SCENE.instantiate()
+	bomb.setup(self, cell)
+	self.add_child(bomb)
+	
+	# The reason we convert our world position back and fourth is to center the bomb on the cell.
+	bomb.global_position = wall_physical_layer.to_global(wall_physical_layer.map_to_local(cell))
+	
+	bomb_placed.emit()
 
 func _ready() -> void:
 	

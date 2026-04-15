@@ -7,7 +7,7 @@ const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 const HIGH_SCORE_DISPLAY_SCENE:PackedScene = preload("res://high_score_display.tscn")
 
 const SCORE_FROM_PLAYER_KILLED:int = 0
-const COAL_NEEDED_FOR_BOMB:int = 8
+const COAL_NEEDED_FOR_BOMB:int = 4
 
 signal current_score_changed
 signal current_coal_changed
@@ -64,6 +64,7 @@ func _instantiate_mine_level() -> void:
 	_mine_level.level_cleared.connect(_on_mine_level_level_cleared)
 	_mine_level.player_killed.connect(_on_mine_level_player_killed)
 	_mine_level.rock_broken.connect(_on_mine_level_rock_broken)
+	_mine_level.bomb_placed.connect(_on_mine_level_bomb_placed)
 	self.add_child(_mine_level)
 	
 	_loading_ui_anim_player.play("black_to_full_visible")
@@ -83,7 +84,7 @@ func _modify_current_score(amount:int) -> void:
 	current_score_changed.emit()
 
 func _modify_current_coal(amount:int) -> void:
-	current_coal = max(min(current_coal + 1, COAL_NEEDED_FOR_BOMB), 0.0)
+	current_coal = max(min(current_coal + amount, COAL_NEEDED_FOR_BOMB), 0.0)
 	current_coal_changed.emit()
 
 func _on_mine_level_level_cleared() -> void:
@@ -146,6 +147,9 @@ func _on_high_score_display_display_finished() -> void:
 func _on_mine_level_rock_broken(rock:Rock) -> void:
 	_modify_current_score(rock.score_for_breaking)
 	_modify_current_coal(rock.coal_for_breaking)
+
+func _on_mine_level_bomb_placed() -> void:
+	_modify_current_coal(-COAL_NEEDED_FOR_BOMB)
 
 func _player_focus_to_black() -> void:
 	
