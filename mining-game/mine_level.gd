@@ -534,21 +534,41 @@ func _place_hole(map:PackedByteArray, rng:RandomNumberGenerator) -> void:
 # Outlines the map with unbreakable physical and visual tiles.
 func _place_map_outline() -> void:
 	
-	# Horizontal borders on the top and bottom.
+	# Horizontal borders on the top and bottom, 2-thick.
 	for x:int in range(0, MAP_WIDTH):
+		map_outline_layer.set_cell(Vector2i(x, -2), 2, Vector2i(4, 1))
 		map_outline_layer.set_cell(Vector2i(x, -1), 2, Vector2i(4, 2))
 		map_outline_layer.set_cell(Vector2i(x, MAP_HEIGHT), 2, Vector2i(4, 0))
+		map_outline_layer.set_cell(Vector2i(x, MAP_HEIGHT + 1), 2, Vector2i(4, 1))
 		
-	# Vertical borders on the left and right.
+	# Vertical borders on the left and right 2-thick.
 	for y:int in range(0, MAP_HEIGHT):
+		map_outline_layer.set_cell(Vector2i(-2, y), 2, Vector2i(4, 1))
 		map_outline_layer.set_cell(Vector2i(-1, y), 2, Vector2i(5, 1))
 		map_outline_layer.set_cell(Vector2i(MAP_WIDTH, y), 2, Vector2i(3, 1))
+		map_outline_layer.set_cell(Vector2i(MAP_WIDTH + 1, y), 2, Vector2i(4, 1))
 		
 	# Corners.
+	# Top left.
 	map_outline_layer.set_cell(Vector2i(-1, -1), 2, Vector2i(1, 4))
+	map_outline_layer.set_cell(Vector2i(-2, -1), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(-1, -2), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(-2, -2), 2, Vector2i(4, 1))
+	# Top right.
 	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, -1), 2, Vector2i(0, 4))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH + 1, -1), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, -2), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH + 1, -2), 2, Vector2i(4, 1))
+	# Bottom left.
 	map_outline_layer.set_cell(Vector2i(-1, MAP_HEIGHT), 2, Vector2i(1, 3))
+	map_outline_layer.set_cell(Vector2i(-2, MAP_HEIGHT), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(-1, MAP_HEIGHT + 1), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(-2, MAP_HEIGHT + 1), 2, Vector2i(4, 1))
+	# Bottom right.
 	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, MAP_HEIGHT), 2, Vector2i(0, 3))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH + 1, MAP_HEIGHT), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH, MAP_HEIGHT + 1), 2, Vector2i(4, 1))
+	map_outline_layer.set_cell(Vector2i(MAP_WIDTH + 1, MAP_HEIGHT + 1), 2, Vector2i(4, 1))
 
 # Updates a cell on the visual tilemap to match the cooresponding cell on the physical tilemap.
 func _update_visual_tilemap_cell(cell_coordinates:Vector2i) -> void:
