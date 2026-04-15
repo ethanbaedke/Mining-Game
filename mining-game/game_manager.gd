@@ -51,6 +51,7 @@ func _start_new_game() -> void:
 	
 	current_floor = 1
 	current_score = 0
+	current_coal = 0
 	
 	# TESTING: Reset to 3.
 	lives_remaining = 3
