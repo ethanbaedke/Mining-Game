@@ -30,6 +30,15 @@ func set_size(size:Vector2i) -> void:
 	
 	_sprite.material.set_shader_parameter("region_size", _sprite.region_rect.size)
 
+func unhide_room() -> void:
+	_discovered = true
+	_collision_shape.disabled = true
+	
+	# Expidite the removal of all hints spawned from this secret room.
+	for child:Node2D in self.get_children():
+		if (child is SecretRoomHint):
+			child.expidite_removal()
+
 func _process(delta: float) -> void:
 	
 	_update_cover_opacity(delta)
@@ -64,15 +73,7 @@ func _update_cover_opacity(delta: float) -> void:
 			_unhide_timer = 0.0
 		_sprite.material.set_shader_parameter("alpha", _unhide_timer / UNHIDE_TIME)
 
-func _unhide_room() -> void:
-	_discovered = true
-	
-	# Expidite the removal of all hints spawned from this secret room.
-	for child:Node2D in self.get_children():
-		if (child is SecretRoomHint):
-			child.expidite_removal()
-
 func _on_body_entered(body: Node2D) -> void:
 	
 	if (body is PlayerCharacter):
-		_unhide_room()
+		unhide_room()

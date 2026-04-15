@@ -30,9 +30,11 @@ func _handle_explosion() -> void:
 	var area_hits:Array[Area2D] = get_overlapping_areas()
 	var body_hits:Array[Node2D] = get_overlapping_bodies()
 	
-	# These will be enemies.
+	# These will be enemies and hidden rooms.
 	for area_hit:Area2D in area_hits:
 		
+		if (area_hit is SecretRoom):
+			area_hit.unhide_room()
 		if (area_hit is BugEnemy):
 			area_hit.queue_free()
 		elif (area_hit is SlimeEnemy):
