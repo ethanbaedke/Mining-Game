@@ -4,6 +4,7 @@ class_name Bomb extends Area2D
 
 const EXPLODE_TIME:float = 1.0
 const EXPLOSION_RADIUS:int = 2
+const CAMERA_TRAUMA_ON_EXPLOSION:float = 1.0
 
 var _mine_level:MineLevel = null
 var _cell_position:Vector2i = Vector2i.ZERO
@@ -26,6 +27,9 @@ func _process(delta: float) -> void:
 		_handle_explosion()
 
 func _handle_explosion() -> void:
+	
+	# Camera shake.
+	_mine_level.player_camera.add_trauma(CAMERA_TRAUMA_ON_EXPLOSION)
 	
 	var area_hits:Array[Area2D] = get_overlapping_areas()
 	var body_hits:Array[Node2D] = get_overlapping_bodies()
