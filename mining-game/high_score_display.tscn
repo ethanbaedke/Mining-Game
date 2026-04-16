@@ -3,14 +3,12 @@
 [ext_resource type="Script" uid="uid://d2jtv45vto14j" path="res://high_score_display.gd" id="1_wjjog"]
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="2_7eads"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="3_0fdav"]
+[ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="4_7eads"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hp0dq"]
 texture = ExtResource("2_7eads")
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r6m2r"]
-bg_color = Color(0.1, 0.1, 0.1, 1)
 
 [node name="HighScoreDisplay" type="Control" unique_id=1317239377]
 layout_mode = 3
@@ -38,7 +36,14 @@ anchor_top = 0.075
 anchor_right = 0.65
 anchor_bottom = 0.175
 theme = ExtResource("3_0fdav")
-theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Timer" unique_id=156815272]
+layout_mode = 2
+texture = ExtResource("4_7eads")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="TimerLabel" type="Label" parent="Timer" unique_id=926964627]
 layout_mode = 2
@@ -53,7 +58,14 @@ anchor_top = 0.225
 anchor_right = 0.65
 anchor_bottom = 0.9
 theme = ExtResource("3_0fdav")
-theme_override_styles/panel = SubResource("StyleBoxFlat_r6m2r")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Scoreboard" unique_id=912452645]
+layout_mode = 2
+texture = ExtResource("4_7eads")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="Scoreboard" unique_id=2010503954]
 layout_mode = 2

@@ -10,6 +10,7 @@
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="6_sc2q2"]
 [ext_resource type="Shader" uid="uid://ca7a4kmlne3pb" path="res://screen_effect.gdshader" id="7_m15wg"]
 [ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
+[ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="10_yumoj"]
 [ext_resource type="Texture2D" uid="uid://dm3vlguqrpiao" path="res://bomb.png" id="11_elslm"]
 [ext_resource type="Shader" uid="uid://cgfscj40hchw2" path="res://vertical_mask.gdshader" id="12_23j83"]
 [ext_resource type="Texture2D" uid="uid://13p2ky26adiu" path="res://bomb_better.png" id="13_g8q7o"]
@@ -104,8 +105,17 @@ layout_mode = 1
 offset_right = 187.0
 offset_bottom = 27.0
 
-[node name="FloorPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=1975945760]
+[node name="FloorPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=1918889790]
 layout_mode = 2
+size_flags_vertical = 0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer" unique_id=1872715663]
+layout_mode = 2
+texture = ExtResource("10_yumoj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/FloorPanelContainer" unique_id=1423728145]
 layout_mode = 2
@@ -118,6 +128,14 @@ vertical_alignment = 1
 
 [node name="LivesPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=460129840]
 layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer" unique_id=826489751]
+layout_mode = 2
+texture = ExtResource("10_yumoj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/LivesPanelContainer" unique_id=1340797009]
 layout_mode = 2
@@ -144,6 +162,14 @@ expand_mode = 2
 [node name="BombPanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control/HBoxContainer" unique_id=82023418]
 layout_mode = 2
 
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer" unique_id=1978504873]
+layout_mode = 2
+texture = ExtResource("10_yumoj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
 [node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer" unique_id=317400553]
 layout_mode = 2
 
@@ -167,6 +193,33 @@ material = SubResource("ShaderMaterial_g8q7o")
 layout_mode = 2
 texture = ExtResource("11_elslm")
 
+[node name="HighScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1269415656]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_right = 45.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=1030121260]
+layout_mode = 2
+texture = ExtResource("10_yumoj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=275931661]
+layout_mode = 2
+
+[node name="HighScoreLabel" type="Label" parent="HUD/MarginContainer/Control/HighScorePanelContainer/MarginContainer" unique_id=1853980166]
+layout_mode = 2
+text = "HIGH SCORE: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1422294124]
 layout_mode = 1
 anchors_preset = 1
@@ -176,30 +229,19 @@ offset_left = -41.0
 offset_bottom = 11.0
 grow_horizontal = 0
 
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/MarginContainer/Control/ScorePanelContainer" unique_id=212039932]
+layout_mode = 2
+texture = ExtResource("10_yumoj")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
 [node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/ScorePanelContainer" unique_id=932264190]
 layout_mode = 2
 
 [node name="ScoreLabel" type="Label" parent="HUD/MarginContainer/Control/ScorePanelContainer/MarginContainer" unique_id=599813455]
 layout_mode = 2
 text = "SCORE: 0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HighScorePanelContainer" type="PanelContainer" parent="HUD/MarginContainer/Control" unique_id=1269415656]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -42.0
-offset_right = 42.0
-offset_bottom = 27.0
-grow_horizontal = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HUD/MarginContainer/Control/HighScorePanelContainer" unique_id=275931661]
-layout_mode = 2
-
-[node name="HighScoreLabel" type="Label" parent="HUD/MarginContainer/Control/HighScorePanelContainer/MarginContainer" unique_id=1853980166]
-layout_mode = 2
-text = "HIGH SCORE: 0"
 horizontal_alignment = 1
 vertical_alignment = 1

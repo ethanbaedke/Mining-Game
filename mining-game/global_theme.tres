@@ -2,12 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://d10aapmqp0kdq" path="res://BadKeyPixelMinimal.ttf" id="1_ofusn"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tccg3"]
-bg_color = Color(0.2, 0.2, 0.2, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ofusn"]
 
 [resource]
 Label/font_sizes/font_size = 8
@@ -16,4 +11,4 @@ MarginContainer/constants/margin_bottom = 8
 MarginContainer/constants/margin_left = 8
 MarginContainer/constants/margin_right = 8
 MarginContainer/constants/margin_top = 8
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_tccg3")
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_ofusn")
