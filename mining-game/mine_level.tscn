@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://dfb2y8mhd8hhh" path="res://miner_sprite.png" id="7_oyrvu"]
 [ext_resource type="Texture2D" uid="uid://dm3vlguqrpiao" path="res://bomb.png" id="11_elslm"]
 [ext_resource type="Shader" uid="uid://cgfscj40hchw2" path="res://vertical_mask.gdshader" id="12_23j83"]
+[ext_resource type="Texture2D" uid="uid://13p2ky26adiu" path="res://bomb_better.png" id="13_g8q7o"]
+[ext_resource type="Texture2D" uid="uid://dydee07a5h7o5" path="res://bomb_best.png" id="14_o3m1f"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_de3fa"]
 frequency = 1.0
@@ -21,9 +23,19 @@ shader = ExtResource("7_m15wg")
 shader_parameter/player_pos = Vector2(0, 0)
 shader_parameter/intensity = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g8q7o"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yumoj"]
 shader = ExtResource("12_23j83")
 shader_parameter/tex = ExtResource("11_elslm")
+shader_parameter/percent = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e22tr"]
+shader = ExtResource("12_23j83")
+shader_parameter/tex = ExtResource("13_g8q7o")
+shader_parameter/percent = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g8q7o"]
+shader = ExtResource("12_23j83")
+shader_parameter/tex = ExtResource("14_o3m1f")
 shader_parameter/percent = 0.0
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
@@ -141,6 +153,16 @@ layout_mode = 2
 texture = ExtResource("11_elslm")
 
 [node name="BombTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer" unique_id=926039357]
+material = SubResource("ShaderMaterial_yumoj")
+layout_mode = 2
+texture = ExtResource("11_elslm")
+
+[node name="BetterBombTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer" unique_id=1122576949]
+material = SubResource("ShaderMaterial_e22tr")
+layout_mode = 2
+texture = ExtResource("11_elslm")
+
+[node name="BestBombTexture" type="TextureRect" parent="HUD/MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer" unique_id=14843661]
 material = SubResource("ShaderMaterial_g8q7o")
 layout_mode = 2
 texture = ExtResource("11_elslm")

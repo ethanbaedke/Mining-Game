@@ -6,6 +6,8 @@ class_name MineLevelHud extends CanvasLayer
 @onready var _score_label:Label = $MarginContainer/Control/ScorePanelContainer/MarginContainer/ScoreLabel
 @onready var _lives_container:Container = $MarginContainer/Control/HBoxContainer/LivesPanelContainer/MarginContainer/LivesContainer
 @onready var _bomb_texture:TextureRect = $MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer/BombTexture
+@onready var _better_bomb_texture:TextureRect = $MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer/BetterBombTexture
+@onready var _best_bomb_texture:TextureRect = $MarginContainer/Control/HBoxContainer/BombPanelContainer/MarginContainer/BestBombTexture
 
 # References retrieved on ready.
 var _mine_level:MineLevel = null
@@ -30,7 +32,7 @@ func _ready() -> void:
 	# Set the lives to reflect the current number of lives the player has left.
 	_update_lives_container()
 	
-	_update_bomb_texture()
+	_update_bomb_textures()
 	
 	_update_high_score_label()
 	
@@ -41,7 +43,7 @@ func _ready() -> void:
 	_game_manager.current_score_changed.connect(_update_score_label)
 	
 	# Listen for coal changes.
-	_game_manager.current_coal_changed.connect(_update_bomb_texture)
+	_game_manager.current_coal_changed.connect(_update_bomb_textures)
 
 func _process(delta: float) -> void:
 	
@@ -81,5 +83,7 @@ func _update_lives_container() -> void:
 		(_lives_container.get_child(i) as TextureRect).modulate = Color.TRANSPARENT
 		i += 1
 
-func _update_bomb_texture() -> void:
-	_bomb_texture.material.set_shader_parameter("percent", _game_manager.current_coal as float / _game_manager.COAL_NEEDED_FOR_BOMB)
+func _update_bomb_textures() -> void:
+	_bomb_texture.material.set_shader_parameter("percent", clampf(_game_manager.current_coal as float / _game_manager.COAL_NEEDED_FOR_BOMB, 0.0, 1.0))
+	_better_bomb_texture.material.set_shader_parameter("percent", clampf((_game_manager.current_coal - _game_manager.COAL_NEEDED_FOR_BOMB) as float / _game_manager.COAL_NEEDED_FOR_BOMB, 0.0, 1.0))
+	_best_bomb_texture.material.set_shader_parameter("percent", clampf((_game_manager.current_coal - (_game_manager.COAL_NEEDED_FOR_BOMB * 2)) as float / _game_manager.COAL_NEEDED_FOR_BOMB, 0.0, 1.0))

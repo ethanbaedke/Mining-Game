@@ -21,6 +21,8 @@ const COAL_ROCK_SCENE:PackedScene = preload("res://coal_rock.tscn")
 const GOLD_ROCK_SCENE:PackedScene = preload("res://gold_rock.tscn")
 const DIAMOND_ROCK_SCENE:PackedScene = preload("res://diamond_rock.tscn")
 const BOMB_SCENE:PackedScene = preload("res://bomb.tscn")
+const BETTER_BOMB_SCENE:PackedScene = preload("res://better_bomb.tscn")
+const BEST_BOMB_SCENE:PackedScene = preload("res://best_bomb.tscn")
 
 const ENEMY_SPAWN_TABLE:EnemySpawnTable = preload("res://enemy_spawn_table.tres")
 
@@ -45,7 +47,7 @@ signal level_cleared
 signal player_killed
 signal rock_broken(rock:Rock)
 signal wall_broken_by_player
-signal bomb_placed
+signal bomb_placed(bombType:int)
 
 # Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
 var time_since_ghost_spawned:float = 0.0
@@ -106,14 +108,25 @@ func try_place_bomb(world_pos:Vector2) -> void:
 	# If this assert fails, the player is inside a wall.
 	assert(wall_physical_layer.get_cell_source_id(cell) == -1)
 	
-	var bomb:Bomb = BOMB_SCENE.instantiate()
+	var bomb:Bomb = null
+	var bombType:int = 0
+	if (_game_manager.current_coal < _game_manager.COAL_NEEDED_FOR_BOMB * 2):
+		bomb = BOMB_SCENE.instantiate()
+		bombType = 1
+	elif (_game_manager.current_coal < _game_manager.COAL_NEEDED_FOR_BOMB * 3):
+		bomb = BETTER_BOMB_SCENE.instantiate()
+		bombType = 2
+	else:
+		bomb = BEST_BOMB_SCENE.instantiate()
+		bombType = 3
+	
 	bomb.setup(self, cell)
 	self.add_child(bomb)
 	
 	# The reason we convert our world position back and fourth is to center the bomb on the cell.
 	bomb.global_position = wall_physical_layer.to_global(wall_physical_layer.map_to_local(cell))
 	
-	bomb_placed.emit()
+	bomb_placed.emit(bombType)
 
 func _ready() -> void:
 	

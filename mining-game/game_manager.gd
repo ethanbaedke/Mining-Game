@@ -87,7 +87,7 @@ func _modify_current_score(amount:int) -> void:
 	current_score_changed.emit()
 
 func _modify_current_coal(amount:int) -> void:
-	current_coal = max(min(current_coal + amount, COAL_NEEDED_FOR_BOMB), 0.0)
+	current_coal = max(min(current_coal + amount, COAL_NEEDED_FOR_BOMB * 3), 0.0)
 	current_coal_changed.emit()
 
 func _on_mine_level_level_cleared() -> void:
@@ -153,8 +153,8 @@ func _on_mine_level_rock_broken(rock:Rock) -> void:
 func _on_mine_level_wall_broken_by_player() -> void:
 	_modify_current_coal(COAL_FROM_WALL_BREAK)
 
-func _on_mine_level_bomb_placed() -> void:
-	_modify_current_coal(-COAL_NEEDED_FOR_BOMB)
+func _on_mine_level_bomb_placed(bombType:int) -> void:
+	_modify_current_coal(-COAL_NEEDED_FOR_BOMB * bombType)
 
 func _player_focus_to_black() -> void:
 	
