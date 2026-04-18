@@ -3,6 +3,7 @@ class_name GameManager extends Node
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 
+const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 const HIGH_SCORE_DISPLAY_SCENE:PackedScene = preload("res://high_score_display.tscn")
 
@@ -57,6 +58,8 @@ func _start_new_game() -> void:
 	# TESTING: Reset to 3.
 	lives_remaining = 3
 	
+	await _show_help_screen()
+	
 	# Instantiate the mine level.
 	_instantiate_mine_level()
 
@@ -71,6 +74,27 @@ func _instantiate_mine_level() -> void:
 	self.add_child(_mine_level)
 	
 	_loading_ui_anim_player.play("black_to_full_visible")
+
+func _show_help_screen() -> void:
+	
+	# Create the help screen.
+	var help_scene:HelpScene = HELP_SCREEN_SCENE.instantiate()
+	self.add_child(help_scene)
+	
+	# Show the help screen.
+	_loading_ui_anim_player.play("black_to_full_visible")
+	await _loading_ui_anim_player.animation_finished
+	
+	# Wait for the user to skip the help screen.
+	help_scene.make_skip_available()
+	await help_scene.skipped
+	
+	# Hide the help screen.
+	_loading_ui_anim_player.play("full_visible_to_black")
+	await _loading_ui_anim_player.animation_finished
+	
+	# Cleanup the help scene.
+	help_scene.queue_free()
 
 func _free_mine_level() -> void:
 	
