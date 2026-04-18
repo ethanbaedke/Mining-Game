@@ -106,7 +106,7 @@ func _process(delta: float) -> void:
 		# Tick the display countdown.
 		else:
 			_display_countdown -= delta
-			_timer_label.text = "STARTING NEW GAME: " + str(int(ceil(_display_countdown)))
+			_timer_label.text = "RETURNING TO MENU: " + str(int(ceil(_display_countdown)))
 			if (_display_countdown <= 0.0):
 				_display_countdown_complete = true
 				display_finished.emit()

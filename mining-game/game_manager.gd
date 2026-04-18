@@ -3,6 +3,7 @@ class_name GameManager extends Node
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 
+const MAIN_MENU_SCENE:PackedScene = preload("res://main_menu.tscn")
 const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
 const HIGH_SCORE_DISPLAY_SCENE:PackedScene = preload("res://high_score_display.tscn")
@@ -21,6 +22,7 @@ var current_score:int = 0
 var current_coal:int = 0
 var lives_remaining:int = 0
 
+var _main_menu:MainMenu = null
 var _mine_level:MineLevel = null
 var _high_score_display:HighScoreDisplay = null
 
@@ -39,7 +41,7 @@ func _ready() -> void:
 		if (save_data != null):
 			high_scores = save_data.high_scores
 	
-	_start_new_game()
+	_load_main_menu()
 	
 func _process(delta: float) -> void:
 	
@@ -48,6 +50,32 @@ func _process(delta: float) -> void:
 		_screen_mask.material.set_shader_parameter("player_uv", (viewport.get_canvas_transform() * _mine_level.player_character.global_position) / viewport.get_visible_rect().size)
 	else:
 		_screen_mask.material.set_shader_parameter("player_uv", Vector2(0.5, 0.5))
+
+func _load_main_menu() -> void:
+	
+	_main_menu = MAIN_MENU_SCENE.instantiate()
+	self.add_child(_main_menu)
+	
+	_loading_ui_anim_player.play("black_to_full_visible")
+	await _loading_ui_anim_player.animation_finished
+	
+	_main_menu.start_game_requested.connect(_on_main_menu_start_game_requested)
+	_main_menu.quit_game_requested.connect(_on_main_menu_quit_game_requested)
+	_main_menu.set_input_available(true)
+
+func _on_main_menu_start_game_requested() -> void:
+	
+	_main_menu.set_input_available(false)
+	
+	_loading_ui_anim_player.play("full_visible_to_black")
+	await _loading_ui_anim_player.animation_finished
+	
+	_main_menu.queue_free()
+	
+	_start_new_game()
+	
+func _on_main_menu_quit_game_requested() -> void:
+	get_tree().quit()
 
 func _start_new_game() -> void:
 	
@@ -168,8 +196,8 @@ func _on_high_score_display_display_finished() -> void:
 	_high_score_display.queue_free()
 	await get_tree().process_frame
 	
-	# Start a new game.
-	_start_new_game()
+	# Go to the main menu.
+	_load_main_menu()
 
 func _on_mine_level_rock_broken(rock:Rock) -> void:
 	_modify_current_score(rock.score_for_breaking)

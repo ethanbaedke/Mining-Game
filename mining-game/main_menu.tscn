@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://br1d0xwy7a8hb"]
+
+[ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://crtsqt66qm5x0" path="res://main_menu.gd" id="2_7vrkn"]
+[ext_resource type="PackedScene" uid="uid://chx8ubxax8nyv" path="res://stylized_button.tscn" id="3_fu7sn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
+bg_color = Color(0.12941177, 0.25490198, 0.21176471, 1)
+
+[node name="MainMenu" type="Control" unique_id=1319524886]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_06t4h")
+script = ExtResource("2_7vrkn")
+
+[node name="Panel" type="Panel" parent="." unique_id=1835775982]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
+
+[node name="Title" type="Label" parent="." unique_id=118894228]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -90.0
+offset_top = 30.0
+offset_right = 90.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "PIKPOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=818230902]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.6
+anchor_right = 0.5
+anchor_bottom = 0.6
+offset_left = -38.0
+offset_top = -20.0
+offset_right = 38.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="StartButton" parent="VBoxContainer" unique_id=268936778 instance=ExtResource("3_fu7sn")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/StartButton/MarginContainer" parent_id_path=PackedInt32Array(268936778, 631224989) index="0" unique_id=627928942]
+text = "START"
+
+[node name="SettingsButton" parent="VBoxContainer" unique_id=167150385 instance=ExtResource("3_fu7sn")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/SettingsButton/MarginContainer" parent_id_path=PackedInt32Array(167150385, 631224989) index="0" unique_id=627928942]
+text = "SETTINGS"
+
+[node name="QuitButton" parent="VBoxContainer" unique_id=2106435768 instance=ExtResource("3_fu7sn")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/QuitButton/MarginContainer" parent_id_path=PackedInt32Array(2106435768, 631224989) index="0" unique_id=627928942]
+text = "QUIT"
+
+[editable path="VBoxContainer/StartButton"]
+[editable path="VBoxContainer/SettingsButton"]
+[editable path="VBoxContainer/QuitButton"]

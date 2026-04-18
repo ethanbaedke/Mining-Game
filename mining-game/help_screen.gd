@@ -3,7 +3,7 @@ class_name HelpScene extends Control
 @onready var _continue_label:Label = $ContinueLabel
 
 const CONTINUE_LABEL_FADE_IN_TIME:float = 1.5
-const CONTINUE_LABEL_WAIT_TIME:float = 3.0
+const CONTINUE_LABEL_WAIT_TIME:float = 1.0
 
 signal skipped
 

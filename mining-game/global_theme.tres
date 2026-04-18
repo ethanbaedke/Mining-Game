@@ -5,6 +5,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ofusn"]
 
 [resource]
+default_font = ExtResource("1_ofusn")
 Label/font_sizes/font_size = 8
 Label/fonts/font = ExtResource("1_ofusn")
 MarginContainer/constants/margin_bottom = 8
