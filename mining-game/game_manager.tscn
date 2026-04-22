@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://bw3qxilyjwca5"]
 
 [ext_resource type="Script" uid="uid://6s7e718ilk80" path="res://game_manager.gd" id="1_70yv6"]
+[ext_resource type="AudioStream" uid="uid://clqt65ifb6xd7" path="res://Theme.wav" id="2_o2178"]
 [ext_resource type="Shader" uid="uid://bj3u72s40gntn" path="res://loading_screen.gdshader" id="2_smx3j"]
+[ext_resource type="Script" uid="uid://cgu7cdpkh2gf5" path="res://music_player.gd" id="4_d5upp"]
 
 [sub_resource type="Animation" id="Animation_d5upp"]
 length = 0.001
@@ -110,3 +112,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1674952044]
+stream = ExtResource("2_o2178")
+autoplay = true
+script = ExtResource("4_d5upp")

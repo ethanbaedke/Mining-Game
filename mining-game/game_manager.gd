@@ -2,6 +2,7 @@ class_name GameManager extends Node
 
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
+@onready var _music_player:MusicPlayer = $MusicPlayer
 
 const MAIN_MENU_SCENE:PackedScene = preload("res://main_menu.tscn")
 const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
@@ -15,8 +16,6 @@ const COAL_FROM_WALL_BREAK:int = 1
 signal current_score_changed
 signal current_coal_changed
 
-var high_scores:Array[HighScoreEntry] = []
-
 var current_floor:int = 0
 var current_score:int = 0
 var current_coal:int = 0
@@ -26,20 +25,7 @@ var _main_menu:MainMenu = null
 var _mine_level:MineLevel = null
 var _high_score_display:HighScoreDisplay = null
 
-func save_high_scores() -> void:
-	
-	var save_data:SaveData = SaveData.new()
-	save_data.high_scores = high_scores
-	ResourceSaver.save(save_data, "user://save_data.res")
-	print("Data saved to " + OS.get_user_data_dir())
-
 func _ready() -> void:
-	
-	# Load high scores.
-	if (ResourceLoader.exists("user://save_data.res")):
-		var save_data:SaveData = ResourceLoader.load("user://save_data.res")
-		if (save_data != null):
-			high_scores = save_data.high_scores
 	
 	_load_main_menu()
 	
@@ -101,6 +87,7 @@ func _instantiate_mine_level() -> void:
 	_mine_level.bomb_placed.connect(_on_mine_level_bomb_placed)
 	self.add_child(_mine_level)
 	
+	_music_player.play_game_theme()
 	_loading_ui_anim_player.play("black_to_full_visible")
 
 func _show_help_screen() -> void:
@@ -226,16 +213,16 @@ func _try_add_score_to_high_scores(entry:HighScoreEntry) -> void:
 	var add_ind:int = 0
 	
 	# Find the index where the new entry should be put.
-	while (add_ind < high_scores.size() && !_compare_high_score_entries(entry, high_scores[add_ind])):
+	while (add_ind < Globals.game_data.high_scores.size() && !_compare_high_score_entries(entry, Globals.game_data.high_scores[add_ind])):
 		add_ind += 1
 	
 	# If there is a valid spot, insert it.
 	if (add_ind < 10):
-		high_scores.insert(add_ind, entry)
+		Globals.game_data.high_scores.insert(add_ind, entry)
 
 	# If there are now 11 entries on the high score board, remove the last one.
-	if (high_scores.size() == 11):
-		high_scores.remove_at(10)
+	if (Globals.game_data.high_scores.size() == 11):
+		Globals.game_data.high_scores.remove_at(10)
 
 # Returns true if e1 should be ranked higher on the scoreboard than e2, and false otherwise.
 func _compare_high_score_entries(e1:HighScoreEntry, e2:HighScoreEntry) -> bool:

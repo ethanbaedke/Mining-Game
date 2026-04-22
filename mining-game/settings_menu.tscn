@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://e56g5rw70bxt"]
+
+[ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_ufg0w"]
+[ext_resource type="PackedScene" uid="uid://chx8ubxax8nyv" path="res://stylized_button.tscn" id="2_0cmel"]
+[ext_resource type="Script" uid="uid://7qusv6e7ys6u" path="res://settings_menu.gd" id="2_mlw3h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oerog"]
+bg_color = Color(0.12941177, 0.25490198, 0.21176471, 1)
+
+[node name="SettingsMenu" type="Control" unique_id=1309553969]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ufg0w")
+script = ExtResource("2_mlw3h")
+
+[node name="Panel" type="Panel" parent="." unique_id=2073948390]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_oerog")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2111541425]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=853772600]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1746799924]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MusicVolume" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=444293247]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" unique_id=1427834405]
+layout_mode = 2
+text = "MUSIC VOLUME"
+
+[node name="MusicVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" unique_id=1248912543]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1577510161]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="ResetToDefaultButton" parent="MarginContainer/VBoxContainer/Buttons" unique_id=167150385 instance=ExtResource("2_0cmel")]
+layout_mode = 2
+
+[node name="Label" parent="MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton/MarginContainer" parent_id_path=PackedInt32Array(167150385, 631224989) index="0" unique_id=627928942]
+text = "RESET TO DEFAULT"
+
+[node name="BackButton" parent="MarginContainer/VBoxContainer/Buttons" unique_id=1280754361 instance=ExtResource("2_0cmel")]
+layout_mode = 2
+
+[node name="Label" parent="MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1280754361, 631224989) index="0" unique_id=627928942]
+text = "BACK"
+
+[editable path="MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]
+[editable path="MarginContainer/VBoxContainer/Buttons/BackButton"]

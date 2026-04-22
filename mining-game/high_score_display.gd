@@ -79,9 +79,9 @@ func _ready() -> void:
 	_fillout_high_score_ui()
 	
 	# See if we need the user to enter a name.
-	for i:int in range(_game_manager.high_scores.size()):
-		if (_game_manager.high_scores[i].name == ""):
-			_entry_to_name = _game_manager.high_scores[i]
+	for i:int in range(Globals.game_data.high_scores.size()):
+		if (Globals.game_data.high_scores[i].name == ""):
+			_entry_to_name = Globals.game_data.high_scores[i]
 			_name_entry_label = _high_score_entry_ui[i].get_child(0) as Label
 			break
 	
@@ -164,7 +164,7 @@ func _handle_name_user_input() -> void:
 		else:
 			_name_entry_countdown_complete = true
 			# Save the new high score to the filesystem as soon as the user finishes entering their name.
-			_game_manager.save_high_scores()
+			Globals.save_game_data()
 			# Update name one last time (in case flashing cursor is active)
 			_name_entry_label.text = _entry_to_name.name
 
@@ -172,10 +172,10 @@ func _fillout_high_score_ui() -> void:
 	
 	# Fill out the high score ui with all high scores on the game manager.
 	var entry_ind:int = 0
-	while (entry_ind < _game_manager.high_scores.size()):
-		(_high_score_entry_ui[entry_ind].get_child(0) as Label).text = _game_manager.high_scores[entry_ind].name
-		(_high_score_entry_ui[entry_ind].get_child(1) as Label).text = str(_game_manager.high_scores[entry_ind].score)
-		(_high_score_entry_ui[entry_ind].get_child(2) as Label).text = str(_game_manager.high_scores[entry_ind].floor_number)
+	while (entry_ind < Globals.game_data.high_scores.size()):
+		(_high_score_entry_ui[entry_ind].get_child(0) as Label).text = Globals.game_data.high_scores[entry_ind].name
+		(_high_score_entry_ui[entry_ind].get_child(1) as Label).text = str(Globals.game_data.high_scores[entry_ind].score)
+		(_high_score_entry_ui[entry_ind].get_child(2) as Label).text = str(Globals.game_data.high_scores[entry_ind].floor_number)
 		entry_ind += 1
 		
 	# Fill out the remaining high score ui with blanks.

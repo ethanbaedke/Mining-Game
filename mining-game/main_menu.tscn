@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_06t4h"]
 [ext_resource type="Script" uid="uid://crtsqt66qm5x0" path="res://main_menu.gd" id="2_7vrkn"]
 [ext_resource type="PackedScene" uid="uid://chx8ubxax8nyv" path="res://stylized_button.tscn" id="3_fu7sn"]
+[ext_resource type="PackedScene" uid="uid://e56g5rw70bxt" path="res://settings_menu.tscn" id="4_jix8l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
 bg_color = Color(0.12941177, 0.25490198, 0.21176471, 1)
@@ -74,6 +75,21 @@ layout_mode = 2
 [node name="Label" parent="VBoxContainer/QuitButton/MarginContainer" parent_id_path=PackedInt32Array(2106435768, 631224989) index="0" unique_id=627928942]
 text = "QUIT"
 
+[node name="SettingsMenu" parent="." unique_id=1309553969 instance=ExtResource("4_jix8l")]
+layout_mode = 1
+offset_top = 270.0
+offset_bottom = 270.0
+
+[node name="MusicVolumeSlider" parent="SettingsMenu/MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" parent_id_path=PackedInt32Array(1309553969, 444293247) index="1" unique_id=1248912543]
+max_value = 10.0
+value = 10.0
+
+[node name="BackButton" parent="SettingsMenu/MarginContainer/VBoxContainer/Buttons" parent_id_path=PackedInt32Array(1309553969, 1577510161) index="1" unique_id=1280754361]
+focus_mode = 0
+
 [editable path="VBoxContainer/StartButton"]
 [editable path="VBoxContainer/SettingsButton"]
 [editable path="VBoxContainer/QuitButton"]
+[editable path="SettingsMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton"]

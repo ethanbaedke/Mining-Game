@@ -5,14 +5,15 @@ const SCALE_SPEED:float = 2.0
 
 signal pressed
 
-var _input_allowed:bool = true
-
 func set_input_allowed(allowed:bool) -> void:
 	
-	_input_allowed = allowed
+	if (allowed):
+		focus_mode = Control.FOCUS_ALL
+	else:
+		focus_mode = Control.FOCUS_NONE
 	
 	# Fixes edge case where mouse is over button on load but movement doesn't happen so it doesn't focus. Now updating focus as soon as input becomes available.
-	if (_input_allowed && Globals.input_type == Globals.InputType.MOUSE):
+	if (Globals.input_type == Globals.InputType.MOUSE):
 		_update_mouse_focus()
 
 func _process(delta: float) -> void:
@@ -25,12 +26,12 @@ func _process(delta: float) -> void:
 		var new_scale:float = max(scale.x - (SCALE_SPEED * delta), 1.0)
 		scale = Vector2(new_scale, new_scale)
 	
-	if (has_focus() && Input.is_action_just_pressed("ui_accept") && _input_allowed):
+	if (has_focus() && Input.is_action_just_pressed("ui_accept")):
 		pressed.emit()
 
 func _input(event: InputEvent) -> void:
 	
-	if (Globals.input_type != Globals.InputType.MOUSE || !_input_allowed):
+	if (Globals.input_type != Globals.InputType.MOUSE):
 		return
 	
 	if (event is InputEventMouseMotion):
@@ -41,7 +42,7 @@ func _input(event: InputEvent) -> void:
 
 func _update_mouse_focus() -> void:
 	var mouse_pos:Vector2 = get_viewport().get_mouse_position()
-	if (self.get_global_rect().has_point(mouse_pos)):
+	if (self.get_global_rect().has_point(mouse_pos) && focus_mode == FOCUS_ALL):
 		self.grab_focus()
 	elif (self.has_focus()):
 		self.release_focus()

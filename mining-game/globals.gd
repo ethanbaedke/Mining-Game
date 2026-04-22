@@ -7,9 +7,23 @@ enum InputType
 	GAMEPAD,
 }
 
+# Settings signals.
+signal music_volume_changed(new_value:float)
+
 signal input_type_changed(old_type:InputType)
 
 var input_type:InputType = InputType.GAMEPAD
+
+var game_data:SaveData = null
+
+func save_game_data() -> void:
+	
+	ResourceSaver.save(game_data, "user://save_data.res")
+	print("Data saved to " + OS.get_user_data_dir())
+
+func set_music_volume(value:float) -> void:
+	game_data.music_volume = clampf(value, 0.0, 1.0)
+	music_volume_changed.emit(game_data.music_volume)
 
 func switch_input_type(type:InputType) -> void:
 	
@@ -32,7 +46,19 @@ func switch_input_type(type:InputType) -> void:
 
 func _ready() -> void:
 	
+	_load_game_data()
+	
 	_update_cursor_state()
+
+func _load_game_data() -> void:
+	
+	# Load save data.
+	if (ResourceLoader.exists("user://save_data.res")):
+		game_data = ResourceLoader.load("user://save_data.res")
+		
+		# If we couldn't load it, let it set to defaults.
+		if (game_data == null):
+			game_data = SaveData.new()
 
 func _input(event: InputEvent) -> void:
 	

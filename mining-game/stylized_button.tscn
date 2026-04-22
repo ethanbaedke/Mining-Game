@@ -28,7 +28,6 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer" unique_id=627928942]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 text = "TEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
