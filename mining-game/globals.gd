@@ -46,6 +46,9 @@ func switch_input_type(type:InputType) -> void:
 
 func _ready() -> void:
 	
+	# Ensure a pause game doesn't affect this object.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	_load_game_data()
 	
 	_update_cursor_state()

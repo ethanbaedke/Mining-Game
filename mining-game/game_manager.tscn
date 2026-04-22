@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://6s7e718ilk80" path="res://game_manager.gd" id="1_70yv6"]
 [ext_resource type="AudioStream" uid="uid://clqt65ifb6xd7" path="res://Theme.wav" id="2_o2178"]
 [ext_resource type="Shader" uid="uid://bj3u72s40gntn" path="res://loading_screen.gdshader" id="2_smx3j"]
+[ext_resource type="PackedScene" uid="uid://cg6c6ogadqx0c" path="res://pause_menu.tscn" id="2_vk86k"]
 [ext_resource type="Script" uid="uid://cgu7cdpkh2gf5" path="res://music_player.gd" id="4_d5upp"]
 
 [sub_resource type="Animation" id="Animation_d5upp"]
@@ -96,9 +97,14 @@ shader_parameter/mask_coverage = 1.0
 shader_parameter/player_uv = Vector2(0.5, 0.5)
 
 [node name="GameManager" type="Node" unique_id=2030903267]
+process_mode = 3
 script = ExtResource("1_70yv6")
 
+[node name="PauseMenu" parent="." unique_id=1540041217 instance=ExtResource("2_vk86k")]
+layer = 3
+
 [node name="LoadingUI" type="CanvasLayer" parent="." unique_id=258859855]
+process_mode = 1
 layer = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="LoadingUI" unique_id=1511860160]
@@ -114,7 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1674952044]
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1674952044 node_paths=PackedStringArray("_pause_menu")]
 stream = ExtResource("2_o2178")
-autoplay = true
 script = ExtResource("4_d5upp")
+_pause_menu = NodePath("../PauseMenu")

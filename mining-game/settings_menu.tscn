@@ -56,6 +56,8 @@ text = "MUSIC VOLUME"
 [node name="MusicVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" unique_id=1248912543]
 layout_mode = 2
 size_flags_horizontal = 3
+max_value = 10.0
+value = 10.0
 
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1577510161]
 layout_mode = 2

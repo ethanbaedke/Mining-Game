@@ -39,6 +39,7 @@ shader_parameter/tex = ExtResource("14_o3m1f")
 shader_parameter/percent = 0.0
 
 [node name="MineLevel" type="Node2D" unique_id=2076899661]
+process_mode = 1
 y_sort_enabled = true
 script = ExtResource("1_ksevt")
 

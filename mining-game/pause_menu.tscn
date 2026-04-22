@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://cg6c6ogadqx0c"]
+
+[ext_resource type="PackedScene" uid="uid://e56g5rw70bxt" path="res://settings_menu.tscn" id="1_hdmo1"]
+[ext_resource type="Script" uid="uid://dwfy6xy1je2tf" path="res://pause_menu.gd" id="1_nwcfo"]
+[ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="2_05uyy"]
+[ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="4_p81d2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwcfo"]
+bg_color = Color(0, 0, 0, 0.49803922)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1540041217]
+process_mode = 3
+script = ExtResource("1_nwcfo")
+
+[node name="Control" type="Control" parent="." unique_id=13437568]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_05uyy")
+
+[node name="DarkBackground" type="Panel" parent="Control" unique_id=1720108387]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nwcfo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=1213047326]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 10
+
+[node name="SettingsMenu" parent="Control/MarginContainer" unique_id=1309553969 instance=ExtResource("1_hdmo1")]
+layout_mode = 2
+
+[node name="Panel" parent="Control/MarginContainer/SettingsMenu" index="0" unique_id=2073948390]
+visible = false
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/MarginContainer/SettingsMenu" unique_id=1279251749]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_p81d2")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="MarginContainer" parent="Control/MarginContainer/SettingsMenu" index="2" unique_id=2111541425]
+z_index = 1
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 167150385, 631224989) index="0" unique_id=627928942]
+text = "RESET SETTINGS TO DEFAULT"
+
+[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 1280754361, 631224989) index="0" unique_id=627928942]
+text = "CONTINUE"
+
+[editable path="Control/MarginContainer/SettingsMenu"]
+[editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]
+[editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton"]

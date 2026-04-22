@@ -3,6 +3,7 @@ class_name GameManager extends Node
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 @onready var _music_player:MusicPlayer = $MusicPlayer
+@onready var _pause_menu:PauseMenu = $PauseMenu
 
 const MAIN_MENU_SCENE:PackedScene = preload("res://main_menu.tscn")
 const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
@@ -31,11 +32,16 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 	
+	# Handle parameter setting for load screen shader.
 	var viewport:Viewport = get_viewport()
 	if (_mine_level != null && _mine_level.player_character != null):
 		_screen_mask.material.set_shader_parameter("player_uv", (viewport.get_canvas_transform() * _mine_level.player_character.global_position) / viewport.get_visible_rect().size)
 	else:
 		_screen_mask.material.set_shader_parameter("player_uv", Vector2(0.5, 0.5))
+		
+	# Handle toggling the pause menu.
+	if (Input.is_action_just_pressed("pause_game") && (_mine_level != null || _high_score_display != null)):
+		_pause_menu.toggle_game_paused()
 
 func _load_main_menu() -> void:
 	
@@ -88,6 +94,7 @@ func _instantiate_mine_level() -> void:
 	self.add_child(_mine_level)
 	
 	_music_player.play_game_theme()
+	
 	_loading_ui_anim_player.play("black_to_full_visible")
 
 func _show_help_screen() -> void:
@@ -131,6 +138,8 @@ func _modify_current_coal(amount:int) -> void:
 
 func _on_mine_level_level_cleared() -> void:
 	
+	_music_player.play_level_cleared()
+	
 	await _player_focus_to_black()
 	
 	# Increment our current floor.
@@ -140,6 +149,8 @@ func _on_mine_level_level_cleared() -> void:
 	_instantiate_mine_level()
 
 func _on_mine_level_player_killed() -> void:
+	
+	_music_player.play_player_killed()
 	
 	await _player_focus_to_black()
 	
