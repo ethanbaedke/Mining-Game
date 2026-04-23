@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://6oilcmvlmre7" path="res://bomb.gd" id="1_lawlw"]
 [ext_resource type="Texture2D" uid="uid://dydee07a5h7o5" path="res://bomb_best.png" id="2_lawlw"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="3_utdx6"]
+[ext_resource type="AudioStream" uid="uid://cncbvrwfnhols" path="res://bomb_drop.wav" id="4_3kpoh"]
+[ext_resource type="AudioStream" uid="uid://bd6xoqkeg4b7k" path="res://bomb_light.wav" id="5_u812x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4fn8o"]
 radius = 128.0
@@ -18,3 +21,9 @@ texture = ExtResource("2_lawlw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1064975989]
 shape = SubResource("CircleShape2D_4fn8o")
+
+[node name="DropSoundEffect" parent="." unique_id=811159807 instance=ExtResource("3_utdx6")]
+stream = ExtResource("4_3kpoh")
+
+[node name="LightSoundEffect" parent="." unique_id=840389846 instance=ExtResource("3_utdx6")]
+stream = ExtResource("5_u812x")

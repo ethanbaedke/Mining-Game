@@ -14,6 +14,9 @@ const SCORE_FROM_PLAYER_KILLED:int = 0
 const COAL_NEEDED_FOR_BOMB:int = 8
 const COAL_FROM_WALL_BREAK:int = 1
 
+const SOUND_EFFECT_PLAYER_SCENE:PackedScene = preload("res://sound_effect_player.tscn")
+const BOMB_CHARGED_SOUND_EFFECT_CLIP:AudioStreamWAV = preload("res://bomb_ready.wav")
+
 signal current_score_changed
 signal current_coal_changed
 
@@ -133,7 +136,22 @@ func _modify_current_score(amount:int) -> void:
 	current_score_changed.emit()
 
 func _modify_current_coal(amount:int) -> void:
+	
+	# Used for bomb charge sound effect, see below.
+	var progress_toward_next_bomb_charge:int = current_coal % COAL_NEEDED_FOR_BOMB
+	
+	# Base modification, with clamping.
 	current_coal = max(min(current_coal + amount, COAL_NEEDED_FOR_BOMB * 3), 0.0)
+	
+	# If we just charged a bomb with this addition of coal, play the sound effect for charging a bomb.
+	if (current_coal % COAL_NEEDED_FOR_BOMB < progress_toward_next_bomb_charge):
+		var bomb_charged_sound_effect:SoundEffectPlayer = SOUND_EFFECT_PLAYER_SCENE.instantiate()
+		bomb_charged_sound_effect.stream = BOMB_CHARGED_SOUND_EFFECT_CLIP
+		bomb_charged_sound_effect.cleanup_when_finished = true
+		_mine_level.player_character.add_child(bomb_charged_sound_effect)
+		bomb_charged_sound_effect.position = Vector2.ZERO
+		bomb_charged_sound_effect.play_effect()
+		
 	current_coal_changed.emit()
 
 func _on_mine_level_level_cleared() -> void:
