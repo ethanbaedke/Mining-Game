@@ -1,6 +1,11 @@
 class_name Bomb extends Area2D
 
+const SOUND_EFFECT_PLAYER_SCENE:PackedScene = preload("res://sound_effect_player.tscn")
+const EXPLODE_SOUND_EFFECT_CLIP:AudioStreamWAV = preload("res://bomb_explode.wav")
+
 @onready var _collision_shape:CollisionShape2D = $CollisionShape2D
+@onready var _drop_sound_effect:SoundEffectPlayer = $DropSoundEffect
+@onready var _light_sound_effect:SoundEffectPlayer = $LightSoundEffect
 
 const EXPLODE_TIME:float = 1.0
 
@@ -15,6 +20,12 @@ func setup(mine_level:MineLevel, cell_position:Vector2i) -> void:
 	_mine_level = mine_level
 	_cell_position = cell_position
 
+func _ready() -> void:
+	
+	_drop_sound_effect.play()
+	await get_tree().create_timer(EXPLODE_TIME * 0.5).timeout
+	_light_sound_effect.play()
+
 func _process(delta: float) -> void:
 	
 	# Do not allow this bomb to explode if the level is cleaning up.
@@ -27,6 +38,14 @@ func _process(delta: float) -> void:
 		_handle_explosion()
 
 func _handle_explosion() -> void:
+	
+	# Instantiate the bomb sound effect outside the bomb so when it's cleaned up the effect finishes.
+	var explode_sound_effect:SoundEffectPlayer = SOUND_EFFECT_PLAYER_SCENE.instantiate()
+	explode_sound_effect.stream = EXPLODE_SOUND_EFFECT_CLIP
+	explode_sound_effect.cleanup_when_finished = true
+	self.get_parent().add_child(explode_sound_effect)
+	explode_sound_effect.global_position = self.global_position
+	explode_sound_effect.play_effect()
 	
 	# Camera shake.
 	_mine_level.player_camera.add_trauma(_camera_trauma_on_explosion)
