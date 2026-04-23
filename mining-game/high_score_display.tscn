@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="2_7eads"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="3_0fdav"]
 [ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="4_7eads"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="5_0fdav"]
+[ext_resource type="AudioStream" uid="uid://deu88vylfvvtk" path="res://ui_click_medium.wav" id="6_ppxdp"]
+[ext_resource type="AudioStream" uid="uid://c8mryd6vgwqh0" path="res://ui_click_hard.wav" id="7_gfwad"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hp0dq"]
 texture = ExtResource("2_7eads")
@@ -309,3 +312,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "0"
 horizontal_alignment = 1
+
+[node name="LetterChangedSoundEffect" parent="." unique_id=811159807 instance=ExtResource("5_0fdav")]
+stream = ExtResource("6_ppxdp")
+attenuation = 0.0
+panning_strength = 0.0
+base_volume_scale = 0.8
+
+[node name="LetterInputSoundEffect" parent="." unique_id=1547356739 instance=ExtResource("5_0fdav")]
+stream = ExtResource("7_gfwad")
+attenuation = 0.0
+panning_strength = 0.0

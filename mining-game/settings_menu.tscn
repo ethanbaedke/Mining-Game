@@ -3,6 +3,8 @@
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_ufg0w"]
 [ext_resource type="PackedScene" uid="uid://chx8ubxax8nyv" path="res://stylized_button.tscn" id="2_0cmel"]
 [ext_resource type="Script" uid="uid://7qusv6e7ys6u" path="res://settings_menu.gd" id="2_mlw3h"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="4_fiqec"]
+[ext_resource type="AudioStream" uid="uid://dp3i86ufcgwmo" path="res://ui_click_soft.wav" id="5_h437d"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oerog"]
 bg_color = Color(0.12941177, 0.25490198, 0.21176471, 1)
@@ -75,6 +77,12 @@ layout_mode = 2
 
 [node name="Label" parent="MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1280754361, 631224989) index="0" unique_id=627928942]
 text = "BACK"
+
+[node name="SliderMovedSoundEffect" parent="." unique_id=811159807 instance=ExtResource("4_fiqec")]
+stream = ExtResource("5_h437d")
+attenuation = 0.0
+panning_strength = 0.0
+base_volume_scale = 0.5
 
 [editable path="MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]
 [editable path="MarginContainer/VBoxContainer/Buttons/BackButton"]

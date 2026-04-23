@@ -3,6 +3,7 @@ class_name SettingsMenu extends Control
 @onready var _music_volume_slider:HSlider = $MarginContainer/VBoxContainer/VBoxContainer/MusicVolume/MusicVolumeSlider
 @onready var _back_button:StylizedButton = $MarginContainer/VBoxContainer/Buttons/BackButton
 @onready var _reset_to_default_button:StylizedButton = $MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton
+@onready var _slider_moved_sound_effect:SoundEffectPlayer = $SliderMovedSoundEffect
 
 func set_input_available(available:bool) -> void:
 	
@@ -26,6 +27,7 @@ func _ready() -> void:
 	
 	_music_volume_slider.value = Globals.game_data.music_volume * _music_volume_slider.max_value
 	_music_volume_slider.value_changed.connect(func (value:float) -> void:
+		_slider_moved_sound_effect.play_effect()
 		Globals.set_music_volume(value / _music_volume_slider.max_value))
 	
 	Globals.input_type_changed.connect(_on_globals_input_type_changed)

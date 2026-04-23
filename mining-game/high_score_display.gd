@@ -12,7 +12,8 @@ class_name HighScoreDisplay extends Control
 	$Scoreboard/MarginContainer/VBoxContainer/Entry9,
 	$Scoreboard/MarginContainer/VBoxContainer/Entry10]
 @onready var _timer_label:Label = $Timer/TimerLabel
-
+@onready var _letter_changed_sound_effect:SoundEffectPlayer = $LetterChangedSoundEffect
+@onready var _letter_input_sound_effect:SoundEffectPlayer = $LetterInputSoundEffect
 
 const NAME_ENTRY_UNICODE_OPTIONS:Array[int] = [
 	65, # A
@@ -141,6 +142,8 @@ func _handle_name_user_input() -> void:
 		_name_entry_label.text = _entry_to_name.name
 		# Reset cursor flash timer
 		_name_entry_cursor_flash_timer = 0.0
+		# Play letter changed sound effect.
+		_letter_changed_sound_effect.play_effect()
 	elif (Input.is_action_just_pressed("move_down")):
 		# Decrement unicode character from list.
 		_name_entry_unicode_index -= 1
@@ -151,6 +154,8 @@ func _handle_name_user_input() -> void:
 		_name_entry_label.text = _entry_to_name.name
 		# Reset cursor flash timer
 		_name_entry_cursor_flash_timer = 0.0
+		# Play letter changed sound effect.
+		_letter_changed_sound_effect.play_effect()
 	elif (Input.is_action_just_pressed("use_pickaxe")):
 		# Move to next character.
 		if (_name_entry_character_index < 2):
@@ -160,6 +165,8 @@ func _handle_name_user_input() -> void:
 			_name_entry_label.text = _entry_to_name.name
 			# Reset cursor flash timer
 			_name_entry_cursor_flash_timer = 0.0
+			# Play letter input sound effect.
+			_letter_input_sound_effect.play_effect()
 		# Finished
 		else:
 			_name_entry_countdown_complete = true
@@ -167,6 +174,8 @@ func _handle_name_user_input() -> void:
 			Globals.save_game_data()
 			# Update name one last time (in case flashing cursor is active)
 			_name_entry_label.text = _entry_to_name.name
+			# Play letter input sound effect.
+			_letter_input_sound_effect.play_effect()
 
 func _fillout_high_score_ui() -> void:
 	

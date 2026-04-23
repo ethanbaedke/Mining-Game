@@ -3,6 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="1_lmna4"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_vvtve"]
 [ext_resource type="Script" uid="uid://b8nf0060b164j" path="res://stylized_button.gd" id="2_jtx01"]
+[ext_resource type="AudioStream" uid="uid://c8mryd6vgwqh0" path="res://ui_click_hard.wav" id="4_0povb"]
+[ext_resource type="Script" uid="uid://dusm36rrfd7om" path="res://sound_effect_player.gd" id="4_mn187"]
 
 [node name="StylizedButton" type="PanelContainer" unique_id=167150385]
 anchors_preset = 15
@@ -31,3 +33,10 @@ layout_mode = 2
 text = "TEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ClickSoundEffect" type="AudioStreamPlayer2D" parent="." unique_id=21644789]
+stream = ExtResource("4_0povb")
+attenuation = 0.0
+panning_strength = 0.0
+script = ExtResource("4_mn187")
+metadata/_custom_type_script = "uid://dusm36rrfd7om"

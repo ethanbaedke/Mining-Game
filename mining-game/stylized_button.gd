@@ -1,5 +1,7 @@
 class_name StylizedButton extends PanelContainer
 
+@onready var _click_sound_effect:SoundEffectPlayer = $ClickSoundEffect
+
 const MAX_SCALE_MODIFIER:float = 1.2
 const SCALE_SPEED:float = 2.0
 
@@ -27,6 +29,7 @@ func _process(delta: float) -> void:
 		scale = Vector2(new_scale, new_scale)
 	
 	if (has_focus() && Input.is_action_just_pressed("ui_accept")):
+		_click_sound_effect.play_effect()
 		pressed.emit()
 
 func _input(event: InputEvent) -> void:
@@ -37,7 +40,8 @@ func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseMotion):
 		_update_mouse_focus()
 	elif (event is InputEventMouseButton):
-		if (event.button_index == 1 && self.has_focus()):
+		if (event.button_index == 1 && event.pressed && self.has_focus()):
+			_click_sound_effect.play_effect()
 			pressed.emit()
 
 func _update_mouse_focus() -> void:
