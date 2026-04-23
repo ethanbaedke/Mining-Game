@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cw0ixj5v3p15u"]
 
 [ext_resource type="Script" uid="uid://cajaw11yu84cx" path="res://slime_enemy.gd" id="1_ljpcw"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="2_ljpcw"]
+[ext_resource type="AudioStream" uid="uid://02n7wp7yf43g" path="res://slime_dash.wav" id="3_wns1r"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ukp0r"]
 load_path = "res://.godot/imported/slime_enemy_spritesheet.png-cd1e5b6dd8d2a26813934dcee2e12d6c.ctex"
@@ -22,5 +24,10 @@ region_rect = Rect2(0, 0, 16, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499750875]
 shape = SubResource("RectangleShape2D_ukp0r")
+
+[node name="DashSoundEffect" parent="." unique_id=811159807 instance=ExtResource("2_ljpcw")]
+stream = ExtResource("3_wns1r")
+attenuation = 4.0
+base_volume_scale = 0.8
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cajaw11yu84cx" path="res://slime_enemy.gd" id="1_ionlg"]
 [ext_resource type="Texture2D" uid="uid://bqqftw6y46nfm" path="res://slime_enemy_fast_spritesheet.png" id="2_n0xqv"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="3_iimu6"]
+[ext_resource type="AudioStream" uid="uid://02n7wp7yf43g" path="res://slime_dash.wav" id="4_c1wto"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ukp0r"]
 size = Vector2(14, 8)
@@ -22,5 +24,11 @@ region_rect = Rect2(0, 0, 16, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1499750875]
 shape = SubResource("RectangleShape2D_ukp0r")
+
+[node name="DashSoundEffect" parent="." unique_id=811159807 instance=ExtResource("3_iimu6")]
+stream = ExtResource("4_c1wto")
+pitch_scale = 2.0
+attenuation = 4.0
+base_volume_scale = 0.8
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

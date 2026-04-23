@@ -1,6 +1,7 @@
 class_name SlimeEnemy extends Area2D
 
 @onready var _sprite:Sprite2D = $Sprite2D
+@onready var _dash_sound_effect:SoundEffectPlayer = $DashSoundEffect
 
 # The distance squared away from the next point (in pixels) we have to be to consider ourselves at that point.
 const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
@@ -18,6 +19,9 @@ var _mine_level:MineLevel = null
 
 var _movement_point_path:PackedVector2Array = []
 var _point_path_index:int = -1
+# This is extremely important. When we begin processing, we must calculate a movement path first. Otherwise, all slimes that can find a dash path will dash
+#  at the same time when the level starts. This creates crazy sound effect collision.
+var _has_calculated_first_movement_path:bool = false
 var _dashing:bool = false
 var _telegraphing:bool = false
 var _telegraph_timer:float = _dash_telegraph_time
@@ -36,7 +40,10 @@ func _physics_process(delta: float) -> void:
 	if (_mine_level.level_cleanup_imminent):
 		return
 	
-	if (_movement_point_path.size() != 0):
+	if (!_has_calculated_first_movement_path):
+		_calculate_new_movement_path()
+		_has_calculated_first_movement_path = true
+	elif (_movement_point_path.size() != 0):
 		_handle_movement(delta)
 	elif (!_telegraphing && !_dashing):
 		_telegraph_dash()
@@ -194,6 +201,8 @@ func _start_dash() -> void:
 	
 	# Update the sprite to the dashing sprite
 	_sprite.region_rect.position.x = 32.0
+	
+	_dash_sound_effect.play_effect()
 
 func _on_body_entered(body: Node2D) -> void:
 	
