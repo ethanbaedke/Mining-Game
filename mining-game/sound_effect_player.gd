@@ -12,3 +12,7 @@ func play_effect() -> void:
 	if (cleanup_when_finished):
 		self.finished.connect(func () -> void:
 			self.queue_free())
+
+func _ready() -> void:
+	
+	max_distance = 480

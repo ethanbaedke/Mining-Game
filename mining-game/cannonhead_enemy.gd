@@ -4,6 +4,8 @@ class_name CannonheadEnemy extends Node2D
 @onready var _head_sprite:Sprite2D = $Head/Sprite2D
 @onready var _body:Area2D = $Body
 
+@onready var _head_throw_sound_effect:SoundEffectPlayer = $HeadThrowSoundEffect
+
 # The distance squared away from the next point (in pixels) we have to be to consider ourselves at that point.
 const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
 # This distance is measured in cells.
@@ -31,7 +33,7 @@ var _point_path_index:int = -1
 var _head_throwing_direction:ThrowingDirection = ThrowingDirection.DOWN
 var _throwing_head:bool = false
 var _telegraphing:bool = false
-var _head_throw_cooldown_timer:float = HEAD_THROW_COOLDOWN
+var _head_throw_cooldown_timer:float = randf_range(0.0, HEAD_THROW_COOLDOWN)
 var _telegraph_timer:float = _head_throw_telegraph_time
 var _head_throw_total_time:float = 1.0
 var _head_throw_timer:float = 0.0
@@ -218,9 +220,12 @@ func _start_head_throw() -> void:
 	
 	# Scale the head throw time linearly with distance.
 	_head_throw_total_time = _head_throw_start_pos.distance_to(_head_throw_end_pos) * .02 * _head_throw_total_time_multiplier
-				
+	
 	# Here to visualize throw path.
 	queue_redraw()
+	
+	# Play the head throw sound effect.
+	_head_throw_sound_effect.play_effect()
 
 # This handles another body enetering the head or body area's of this enemy.
 # The "body" in the function title does not refer specifically to the body node of the enemy.

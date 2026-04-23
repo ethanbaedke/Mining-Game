@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://btysxomk4twwq" path="res://cannonhead_enemy.gd" id="1_2mtft"]
 [ext_resource type="Texture2D" uid="uid://cryep2a57e1l7" path="res://cannonhead_enemy_fast_spritesheet.png" id="2_2mtft"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="3_en7pg"]
+[ext_resource type="AudioStream" uid="uid://bwdrp85kd4fdl" path="res://cannonhead_shoot.wav" id="4_gakmi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yl63k"]
 size = Vector2(12, 5)
@@ -44,6 +46,12 @@ region_rect = Rect2(0, 0, 16, 16)
 [node name="BodyCollisionShape" type="CollisionShape2D" parent="Body" unique_id=128430652]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_5r41k")
+
+[node name="HeadThrowSoundEffect" parent="." unique_id=811159807 instance=ExtResource("3_en7pg")]
+stream = ExtResource("4_gakmi")
+pitch_scale = 2.0
+attenuation = 4.0
+base_volume_scale = 4.0
 
 [connection signal="body_entered" from="Head" to="." method="_on_head_body_entered"]
 [connection signal="body_entered" from="Body" to="." method="_on_body_body_entered"]
