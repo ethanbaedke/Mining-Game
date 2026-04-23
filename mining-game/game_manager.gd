@@ -4,6 +4,8 @@ class_name GameManager extends Node
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 @onready var _music_player:MusicPlayer = $MusicPlayer
 @onready var _pause_menu:PauseMenu = $PauseMenu
+@onready var _load_in_sound_effect:SoundEffectPlayer = $LoadInSoundEffect
+@onready var _load_out_sound_effect:SoundEffectPlayer = $LoadOutSoundEffect
 
 const MAIN_MENU_SCENE:PackedScene = preload("res://main_menu.tscn")
 const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
@@ -52,6 +54,7 @@ func _load_main_menu() -> void:
 	self.add_child(_main_menu)
 	
 	_loading_ui_anim_player.play("black_to_full_visible")
+	_load_in_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	_main_menu.start_game_requested.connect(_on_main_menu_start_game_requested)
@@ -63,6 +66,7 @@ func _on_main_menu_start_game_requested() -> void:
 	_main_menu.set_input_available(false)
 	
 	_loading_ui_anim_player.play("full_visible_to_black")
+	_load_out_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	_main_menu.queue_free()
@@ -99,6 +103,7 @@ func _instantiate_mine_level() -> void:
 	_music_player.play_game_theme()
 	
 	_loading_ui_anim_player.play("black_to_full_visible")
+	_load_in_sound_effect.play_effect()
 
 func _show_help_screen() -> void:
 	
@@ -108,6 +113,7 @@ func _show_help_screen() -> void:
 	
 	# Show the help screen.
 	_loading_ui_anim_player.play("black_to_full_visible")
+	_load_in_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	# Wait for the user to skip the help screen.
@@ -116,6 +122,7 @@ func _show_help_screen() -> void:
 	
 	# Hide the help screen.
 	_loading_ui_anim_player.play("full_visible_to_black")
+	_load_out_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	# Cleanup the help scene.
@@ -203,11 +210,13 @@ func _instantiate_high_score_display() -> void:
 	
 	# Load out of our black screen.
 	_loading_ui_anim_player.play("black_to_full_visible")
+	_load_in_sound_effect.play_effect()
 
 func _on_high_score_display_display_finished() -> void:
 	
 	# Load to black.
 	_loading_ui_anim_player.play("full_visible_to_black")
+	_load_out_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	# Destroy the high score display scene.
@@ -230,6 +239,7 @@ func _player_focus_to_black() -> void:
 	
 	# Bring the screen in on the player.
 	_loading_ui_anim_player.play("full_visible_to_focus_player")
+	_load_out_sound_effect.play_effect()
 	await _loading_ui_anim_player.animation_finished
 	
 	# Wait a moment.

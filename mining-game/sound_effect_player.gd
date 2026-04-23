@@ -2,6 +2,7 @@ class_name SoundEffectPlayer extends AudioStreamPlayer2D
 
 @export var base_volume_scale:float = 1.0
 @export var cleanup_when_finished:bool = false
+@export var infinite_distance:bool = false
 
 func play_effect() -> void:
 	
@@ -15,4 +16,8 @@ func play_effect() -> void:
 
 func _ready() -> void:
 	
-	max_distance = 480
+	if (!infinite_distance):
+		max_distance = 480
+	else:
+		# Should be enough unless we make the mine level larger.
+		max_distance = 2048

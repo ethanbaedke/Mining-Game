@@ -5,6 +5,9 @@
 [ext_resource type="Shader" uid="uid://bj3u72s40gntn" path="res://loading_screen.gdshader" id="2_smx3j"]
 [ext_resource type="PackedScene" uid="uid://cg6c6ogadqx0c" path="res://pause_menu.tscn" id="2_vk86k"]
 [ext_resource type="Script" uid="uid://cgu7cdpkh2gf5" path="res://music_player.gd" id="4_d5upp"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="6_shwjl"]
+[ext_resource type="AudioStream" uid="uid://b53ggjjf1ggp1" path="res://load_in.wav" id="7_eakoi"]
+[ext_resource type="AudioStream" uid="uid://bdjqf1hw25qwd" path="res://load_out.wav" id="8_8jrwq"]
 
 [sub_resource type="Animation" id="Animation_d5upp"]
 length = 0.001
@@ -23,6 +26,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_shwjl"]
 resource_name = "black_to_full_visible"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -30,7 +34,7 @@ tracks/0/path = NodePath(".:material:shader_parameter/mask_coverage")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(2, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -124,3 +128,17 @@ mouse_filter = 2
 stream = ExtResource("2_o2178")
 script = ExtResource("4_d5upp")
 _pause_menu = NodePath("../PauseMenu")
+
+[node name="LoadInSoundEffect" parent="." unique_id=811159807 instance=ExtResource("6_shwjl")]
+stream = ExtResource("7_eakoi")
+attenuation = 0.0
+panning_strength = 0.0
+base_volume_scale = 3.0
+infinite_distance = true
+
+[node name="LoadOutSoundEffect" parent="." unique_id=1871449267 instance=ExtResource("6_shwjl")]
+stream = ExtResource("8_8jrwq")
+attenuation = 0.0
+panning_strength = 0.0
+base_volume_scale = 3.0
+infinite_distance = true
