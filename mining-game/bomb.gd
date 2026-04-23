@@ -61,11 +61,11 @@ func _handle_explosion() -> void:
 		if (area_hit is SecretRoom):
 			area_hit.unhide_room()
 		if (area_hit is BugEnemy):
-			area_hit.queue_free()
+			_mine_level.handle_enemy_killed(area_hit)
 		elif (area_hit is SlimeEnemy):
-			area_hit.queue_free()
+			_mine_level.handle_enemy_killed(area_hit)
 		elif (area_hit.get_parent() is CannonheadEnemy):
-			area_hit.get_parent().queue_free()
+			_mine_level.handle_enemy_killed(area_hit)
 		
 	# These will be rocks.
 	for body_hit:Node2D in body_hits:

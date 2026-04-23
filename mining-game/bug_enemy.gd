@@ -5,6 +5,8 @@ const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
 # The distance squared away from the player the enemy has to be within to move directly towards them instead of following it's path.
 const DIRECT_MOVEMENT_MARGIN:float = 256 #16-pixels
 
+@export var points_for_killed:int = 1
+
 @export var _move_speed:int = 16
 
 # Should be set by the instantiator. Used for pathfinding.

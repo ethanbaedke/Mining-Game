@@ -50,6 +50,7 @@ signal player_killed
 signal rock_broken(rock:Rock)
 signal wall_broken_by_player
 signal bomb_placed(bombType:int)
+signal enemy_killed(enemy:Node2D)
 
 # Used by the HUD to modify the intensity of the screen effect applied when the ghost is spawned.
 var time_since_ghost_spawned:float = 0.0
@@ -134,6 +135,9 @@ func try_place_bomb(world_pos:Vector2) -> void:
 	bomb.global_position = wall_physical_layer.to_global(wall_physical_layer.map_to_local(cell))
 	
 	bomb_placed.emit(bombType)
+
+func handle_enemy_killed(enemy:Node2D) -> void:
+	enemy_killed.emit(enemy)
 
 func _ready() -> void:
 	

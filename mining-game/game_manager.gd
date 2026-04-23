@@ -98,6 +98,7 @@ func _instantiate_mine_level() -> void:
 	_mine_level.rock_broken.connect(_on_mine_level_rock_broken)
 	_mine_level.wall_broken_by_player.connect(_on_mine_level_wall_broken_by_player)
 	_mine_level.bomb_placed.connect(_on_mine_level_bomb_placed)
+	_mine_level.enemy_killed.connect(_on_mine_level_enemy_killed)
 	self.add_child(_mine_level)
 	
 	_music_player.play_game_theme()
@@ -234,6 +235,18 @@ func _on_mine_level_wall_broken_by_player() -> void:
 
 func _on_mine_level_bomb_placed(bombType:int) -> void:
 	_modify_current_coal(-COAL_NEEDED_FOR_BOMB * bombType)
+
+func _on_mine_level_enemy_killed(enemy:Node2D) -> void:
+	
+	if (enemy is SlimeEnemy):
+		_modify_current_score(enemy.points_for_killed)
+		enemy.queue_free()
+	elif (enemy is CannonheadEnemy):
+		_modify_current_score(enemy.points_for_killed)
+		enemy.get_parent().queue_free()
+	elif (enemy is BugEnemy):
+		_modify_current_score(enemy.points_for_killed)
+		enemy.queue_free()
 
 func _player_focus_to_black() -> void:
 	

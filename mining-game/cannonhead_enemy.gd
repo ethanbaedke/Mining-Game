@@ -16,6 +16,8 @@ const HEAD_THROW_UP_FAR_OFFSET:Vector2 = Vector2(0.0, -HEAD_THROW_MAX_DISTANCE *
 const HEAD_THROW_DOWN_FAR_OFFSET:Vector2 = Vector2(0.0, HEAD_THROW_MAX_DISTANCE * 16.0)
 const HEAD_THROW_COOLDOWN:float = 2.0
 
+@export var points_for_killed:int = 2
+
 @export var _move_speed:int = 16
 @export var _head_throw_telegraph_time:float = 1.0
 @export var _head_throw_total_time_multiplier:float = 1.0

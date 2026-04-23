@@ -14,6 +14,7 @@ size = Vector2(10, 3)
 [node name="CannonheadEnemyFast" type="Node2D" unique_id=1273210817]
 z_index = -2
 script = ExtResource("1_2mtft")
+points_for_killed = 4
 _move_speed = 32
 _head_throw_telegraph_time = 0.5
 _head_throw_total_time_multiplier = 0.5
