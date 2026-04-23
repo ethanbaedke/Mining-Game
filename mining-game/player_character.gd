@@ -324,6 +324,8 @@ func _handle_tilemap_hit_with_pickaxe(tilemap:TileMapLayer, global_hit_rect:Rect
 		
 		# Add some camera shake.
 		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
+		
+		# Play the rock break sound effect.
 
 func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 	
@@ -334,7 +336,7 @@ func _on_pickaxe_down_hitbox_body_entered(body: Node2D) -> void:
 		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
-		body.handle_hit()
+		body.handle_hit(true)
 		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
@@ -346,7 +348,7 @@ func _on_pickaxe_up_hitbox_body_entered(body: Node2D) -> void:
 		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
-		body.handle_hit()
+		body.handle_hit(true)
 		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
@@ -358,7 +360,7 @@ func _on_pickaxe_left_hitbox_body_entered(body: Node2D) -> void:
 		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
-		body.handle_hit()
+		body.handle_hit(true)
 		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)
 
 func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
@@ -370,5 +372,5 @@ func _on_pickaxe_right_hitbox_body_entered(body: Node2D) -> void:
 		_handle_tilemap_hit_with_pickaxe(body, Rect2(pos, size))
 	elif (body is Rock):
 		_disable_pickaxe_hitbox()
-		body.handle_hit()
+		body.handle_hit(true)
 		_camera.add_trauma(CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT)

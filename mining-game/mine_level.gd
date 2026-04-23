@@ -8,6 +8,8 @@ class_name MineLevel extends Node2D
 @onready var player_character:PlayerCharacter = $PlayerCharacter
 @onready var player_camera:Camera2D = $PlayerCharacter/Camera2D
 
+@onready var _wall_break_sound_effect:SoundEffectPlayer = $WallBreakSoundEffect
+
 const CAVE_HOLE_SCENE:PackedScene = preload("res://cave_hole.tscn")
 const CANNONHEAD_ENEMY_SCENE:PackedScene = preload("res://cannonhead_enemy.tscn")
 const CANNONHEAD_ENEMY_FAST_SCENE:PackedScene = preload("res://cannonhead_enemy_fast.tscn")
@@ -84,9 +86,14 @@ func remove_tile(cell_coordinates:Vector2i, broken_by_player:bool = false) -> vo
 	_astar.set_point_solid(cell_coordinates, false)
 	
 	if (broken_by_player):
+		
+		# Play the wall break sound effect. Only plays for player hits to avoid too many sound effects on a bomb explosion.
+		_wall_break_sound_effect.global_position = wall_physical_layer.to_global(wall_physical_layer.map_to_local(cell_coordinates))
+		_wall_break_sound_effect.play_effect()
+		
 		wall_broken_by_player.emit()
 	
-func remove_rock(rock:Rock) -> void:
+func remove_rock(rock:Rock, removed_by_player:bool = false) -> void:
 	
 	rock_broken.emit(rock)
 	
@@ -95,7 +102,7 @@ func remove_rock(rock:Rock) -> void:
 	_astar.set_point_solid(cell_coords, false)
 	
 	# Let the rock handle removal itself.
-	rock.break_rock()
+	rock.break_rock(removed_by_player)
 
 func try_place_bomb(world_pos:Vector2) -> void:
 	

@@ -14,6 +14,8 @@
 [ext_resource type="Shader" uid="uid://cgfscj40hchw2" path="res://vertical_mask.gdshader" id="12_23j83"]
 [ext_resource type="Texture2D" uid="uid://13p2ky26adiu" path="res://bomb_better.png" id="13_g8q7o"]
 [ext_resource type="Texture2D" uid="uid://dydee07a5h7o5" path="res://bomb_best.png" id="14_o3m1f"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="15_e22tr"]
+[ext_resource type="AudioStream" uid="uid://ccxufrbux5kjl" path="res://rock_break.wav" id="16_vsn1n"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_de3fa"]
 frequency = 1.0
@@ -240,3 +242,8 @@ layout_mode = 2
 text = "SCORE: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="WallBreakSoundEffect" parent="." unique_id=811159807 instance=ExtResource("15_e22tr")]
+stream = ExtResource("16_vsn1n")
+pitch_scale = 0.5
+base_volume_scale = 0.6
