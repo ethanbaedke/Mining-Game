@@ -6,7 +6,7 @@ class_name SoundEffectPlayer extends AudioStreamPlayer2D
 
 func play_effect() -> void:
 	
-	self.volume_linear = base_volume_scale
+	self.volume_linear = base_volume_scale * Globals.game_data.sound_effect_volume
 	
 	play()
 	
@@ -16,7 +16,9 @@ func play_effect() -> void:
 
 func _ready() -> void:
 	
+	# Set distance falloff.
 	if (!infinite_distance):
+		# Set to screen width.
 		max_distance = 480
 	else:
 		# Should be enough unless we make the mine level larger.

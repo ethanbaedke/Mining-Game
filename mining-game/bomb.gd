@@ -23,9 +23,9 @@ func setup(mine_level:MineLevel, cell_position:Vector2i) -> void:
 
 func _ready() -> void:
 	
-	_drop_sound_effect.play()
+	_drop_sound_effect.play_effect()
 	await get_tree().create_timer(EXPLODE_TIME * 0.5).timeout
-	_light_sound_effect.play()
+	_light_sound_effect.play_effect()
 
 func _process(delta: float) -> void:
 	

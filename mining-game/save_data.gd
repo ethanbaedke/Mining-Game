@@ -4,3 +4,4 @@ class_name SaveData extends Resource
 
 # Settings
 @export var music_volume:float = 1.0
+@export var sound_effect_volume:float = 1.0

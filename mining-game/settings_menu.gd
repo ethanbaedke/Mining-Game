@@ -1,6 +1,7 @@
 class_name SettingsMenu extends Control
 
 @onready var _music_volume_slider:HSlider = $MarginContainer/VBoxContainer/VBoxContainer/MusicVolume/MusicVolumeSlider
+@onready var _sound_effect_volume_slider:HSlider = $MarginContainer/VBoxContainer/VBoxContainer/SoundEffectVolume/SoundEffectVolumeSlider
 @onready var _back_button:StylizedButton = $MarginContainer/VBoxContainer/Buttons/BackButton
 @onready var _reset_to_default_button:StylizedButton = $MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton
 @onready var _slider_moved_sound_effect:SoundEffectPlayer = $SliderMovedSoundEffect
@@ -9,6 +10,7 @@ func set_input_available(available:bool) -> void:
 	
 	if (available):
 		_music_volume_slider.focus_mode = Control.FOCUS_ALL
+		_sound_effect_volume_slider.focus_mode = Control.FOCUS_ALL
 		_back_button.set_input_allowed(true)
 		_reset_to_default_button.set_input_allowed(true)
 		
@@ -16,6 +18,7 @@ func set_input_available(available:bool) -> void:
 			_music_volume_slider.grab_focus()
 	else:
 		_music_volume_slider.focus_mode = Control.FOCUS_NONE
+		_sound_effect_volume_slider.focus_mode = Control.FOCUS_NONE
 		_back_button.set_input_allowed(false)
 		_reset_to_default_button.set_input_allowed(false)
 		
@@ -29,6 +32,11 @@ func _ready() -> void:
 	_music_volume_slider.value_changed.connect(func (value:float) -> void:
 		_slider_moved_sound_effect.play_effect()
 		Globals.set_music_volume(value / _music_volume_slider.max_value))
+		
+	_sound_effect_volume_slider.value = Globals.game_data.sound_effect_volume * _sound_effect_volume_slider.max_value
+	_sound_effect_volume_slider.value_changed.connect(func (value:float) -> void:
+		_slider_moved_sound_effect.play_effect()
+		Globals.set_sound_effect_volume(value / _sound_effect_volume_slider.max_value))
 	
 	Globals.input_type_changed.connect(_on_globals_input_type_changed)
 

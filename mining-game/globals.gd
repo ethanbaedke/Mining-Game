@@ -9,6 +9,7 @@ enum InputType
 
 # Settings signals.
 signal music_volume_changed(new_value:float)
+signal sound_effect_volume_changed(new_value:float)
 
 signal input_type_changed(old_type:InputType)
 
@@ -24,6 +25,10 @@ func save_game_data() -> void:
 func set_music_volume(value:float) -> void:
 	game_data.music_volume = clampf(value, 0.0, 1.0)
 	music_volume_changed.emit(game_data.music_volume)
+	
+func set_sound_effect_volume(value:float) -> void:
+	game_data.sound_effect_volume = clampf(value, 0.0, 1.0)
+	sound_effect_volume_changed.emit(game_data.sound_effect_volume)
 
 func switch_input_type(type:InputType) -> void:
 	

@@ -53,9 +53,23 @@ theme_override_constants/separation = 4
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" unique_id=1427834405]
 layout_mode = 2
-text = "MUSIC VOLUME"
+text = "MUSIC VOLUME          "
 
 [node name="MusicVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" unique_id=1248912543]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10.0
+value = 10.0
+
+[node name="SoundEffectVolume" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1930943970]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/SoundEffectVolume" unique_id=303555405]
+layout_mode = 2
+text = "SOUND EFFECT VOLUME   "
+
+[node name="SoundEffectVolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/VBoxContainer/SoundEffectVolume" unique_id=1272682577]
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 10.0
