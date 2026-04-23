@@ -147,6 +147,8 @@ func _modify_current_coal(amount:int) -> void:
 	if (current_coal % COAL_NEEDED_FOR_BOMB < progress_toward_next_bomb_charge):
 		var bomb_charged_sound_effect:SoundEffectPlayer = SOUND_EFFECT_PLAYER_SCENE.instantiate()
 		bomb_charged_sound_effect.stream = BOMB_CHARGED_SOUND_EFFECT_CLIP
+		@warning_ignore("integer_division")
+		bomb_charged_sound_effect.pitch_scale = 0.6 + (0.2 * ((current_coal / COAL_NEEDED_FOR_BOMB) - 1))
 		bomb_charged_sound_effect.cleanup_when_finished = true
 		_mine_level.player_character.add_child(bomb_charged_sound_effect)
 		bomb_charged_sound_effect.position = Vector2.ZERO
