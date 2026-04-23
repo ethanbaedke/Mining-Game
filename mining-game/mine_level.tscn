@@ -245,5 +245,5 @@ vertical_alignment = 1
 
 [node name="WallBreakSoundEffect" parent="." unique_id=811159807 instance=ExtResource("15_e22tr")]
 stream = ExtResource("16_vsn1n")
-pitch_scale = 0.5
+pitch_scale = 0.8
 base_volume_scale = 0.6
