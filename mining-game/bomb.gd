@@ -10,6 +10,7 @@ const EXPLODE_SOUND_EFFECT_CLIP:AudioStreamWAV = preload("res://bomb_explode.wav
 const EXPLODE_TIME:float = 1.0
 
 @export var _camera_trauma_on_explosion:float = 0.6
+@export var _explode_sound_effect_pitch_scale:float = 1.0
 
 var _mine_level:MineLevel = null
 var _cell_position:Vector2i = Vector2i.ZERO
@@ -42,6 +43,7 @@ func _handle_explosion() -> void:
 	# Instantiate the bomb sound effect outside the bomb so when it's cleaned up the effect finishes.
 	var explode_sound_effect:SoundEffectPlayer = SOUND_EFFECT_PLAYER_SCENE.instantiate()
 	explode_sound_effect.stream = EXPLODE_SOUND_EFFECT_CLIP
+	explode_sound_effect.pitch_scale = _explode_sound_effect_pitch_scale
 	explode_sound_effect.cleanup_when_finished = true
 	self.get_parent().add_child(explode_sound_effect)
 	explode_sound_effect.global_position = self.global_position

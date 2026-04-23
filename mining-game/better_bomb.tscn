@@ -15,6 +15,7 @@ collision_layer = 0
 collision_mask = 13
 script = ExtResource("1_x7guf")
 _camera_trauma_on_explosion = 0.8
+_explode_sound_effect_pitch_scale = 0.8
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1548821806]
 texture = ExtResource("2_x7guf")
