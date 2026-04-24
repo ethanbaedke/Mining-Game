@@ -19,6 +19,8 @@ const COAL_FROM_WALL_BREAK:int = 1
 const SOUND_EFFECT_PLAYER_SCENE:PackedScene = preload("res://sound_effect_player.tscn")
 const BOMB_CHARGED_SOUND_EFFECT_CLIP:AudioStreamWAV = preload("res://bomb_ready.wav")
 
+const SCORE_INCREMENT_EFFECT_SCENE:PackedScene = preload("res://score_increment_effect.tscn")
+
 signal current_score_changed
 signal current_coal_changed
 
@@ -228,6 +230,13 @@ func _on_high_score_display_display_finished() -> void:
 	_load_main_menu()
 
 func _on_mine_level_rock_broken(rock:Rock) -> void:
+	
+	# Create a score effect above the rock.
+	var score_effect:ScoreIncrementEffect = SCORE_INCREMENT_EFFECT_SCENE.instantiate()
+	score_effect.setup(rock.score_for_breaking, rock.color_for_score_effect)
+	self.add_child(score_effect)
+	score_effect.global_position = rock.global_position
+	
 	_modify_current_score(rock.score_for_breaking)
 
 func _on_mine_level_wall_broken_by_player() -> void:
@@ -238,15 +247,26 @@ func _on_mine_level_bomb_placed(bombType:int) -> void:
 
 func _on_mine_level_enemy_killed(enemy:Node2D) -> void:
 	
+	var points:int = 0
+	var color_for_score_effect:Color = Color.WHITE
 	if (enemy is SlimeEnemy):
-		_modify_current_score(enemy.points_for_killed)
-		enemy.queue_free()
+		points = enemy.points_for_killed
+		color_for_score_effect = enemy.color_for_score_effect
 	elif (enemy is CannonheadEnemy):
-		_modify_current_score(enemy.points_for_killed)
-		enemy.get_parent().queue_free()
+		points = enemy.points_for_killed
+		color_for_score_effect = enemy.color_for_score_effect
 	elif (enemy is BugEnemy):
-		_modify_current_score(enemy.points_for_killed)
-		enemy.queue_free()
+		points = enemy.points_for_killed
+		color_for_score_effect = enemy.color_for_score_effect
+	
+	# Create a score effect above the enemy.
+	var score_effect:ScoreIncrementEffect = SCORE_INCREMENT_EFFECT_SCENE.instantiate()
+	score_effect.setup(points, color_for_score_effect)
+	self.add_child(score_effect)
+	score_effect.global_position = enemy.global_position
+	
+	_modify_current_score(points)
+	enemy.queue_free()
 
 func _player_focus_to_black() -> void:
 	

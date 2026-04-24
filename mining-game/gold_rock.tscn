@@ -11,6 +11,7 @@ z_index = -2
 collision_mask = 0
 script = ExtResource("1_3ohu8")
 score_for_breaking = 3
+color_for_score_effect = Color(0.83137256, 0.6666667, 0.18431373, 1)
 _rock_break_sound_effect_pitch_scale = 1.2
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1588099770]

@@ -14,6 +14,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_ionlg")
 points_for_killed = 6
+color_for_score_effect = Color(0.8745098, 0.44313726, 0.14901961, 1)
 _move_speed = 32
 _dash_telegraph_time = 0.5
 

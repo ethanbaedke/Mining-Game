@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://wrku1np2w5id"]
+
+[ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_cijpr"]
+[ext_resource type="Script" uid="uid://dxr84nhtgyjkd" path="res://score_increment_effect.gd" id="2_gdns8"]
+
+[sub_resource type="Animation" id="Animation_cijpr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5, -5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_gdns8"]
+resource_name = "rise_and_fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(-5, -8), Vector2(-5, -16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ojujo"]
+_data = {
+&"RESET": SubResource("Animation_cijpr"),
+&"rise_and_fade": SubResource("Animation_gdns8")
+}
+
+[node name="ScoreIncrementEffect" type="Control" unique_id=1595324379]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_cijpr")
+script = ExtResource("2_gdns8")
+
+[node name="Label" type="Label" parent="." unique_id=1372562528]
+layout_mode = 0
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+text = "+X"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1641925549]
+libraries/ = SubResource("AnimationLibrary_ojujo")
+autoplay = &"rise_and_fade"

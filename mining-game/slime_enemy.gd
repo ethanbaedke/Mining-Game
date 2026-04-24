@@ -9,6 +9,7 @@ const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
 const DASH_TOTAL_TIME:float = 1.0
 
 @export var points_for_killed:int = 3
+@export var color_for_score_effect:Color = Color.WHITE
 
 @export var _move_speed:int = 16
 @export var _dash_telegraph_time:float = 1.0

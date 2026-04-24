@@ -34,6 +34,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_t4inl")
 points_for_killed = 2
+color_for_score_effect = Color(0.9411765, 0.5372549, 0.8117647, 1)
 _move_speed = 20
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1010720086]

@@ -15,6 +15,7 @@ z_index = -2
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_ljpcw")
+color_for_score_effect = Color(0.47843137, 0.8509804, 0.21176471, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1852110331]
 position = Vector2(0, -2)

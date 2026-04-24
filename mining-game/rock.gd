@@ -3,6 +3,7 @@ class_name Rock extends StaticBody2D
 const SOUND_EFFECT_PLAYER_SCENE:PackedScene = preload("res://sound_effect_player.tscn")
 
 @export var score_for_breaking:int = 1
+@export var color_for_score_effect:Color = Color.WHITE
 @export var _rock_break_sound_effect_clip:AudioStreamWAV = preload("res://pickaxe_hit.wav")
 @export var _rock_break_sound_effect_base_volume_scale:float = 1.0
 @export var _rock_break_sound_effect_pitch_scale:float = 1.0

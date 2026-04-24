@@ -6,6 +6,7 @@ const MOVEMENT_PATH_POINT_REACHED_MARGIN:float = 16 #4-pixels
 const DIRECT_MOVEMENT_MARGIN:float = 256 #16-pixels
 
 @export var points_for_killed:int = 1
+@export var color_for_score_effect:Color = Color.WHITE
 
 @export var _move_speed:int = 16
 

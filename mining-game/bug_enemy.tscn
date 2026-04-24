@@ -33,6 +33,7 @@ z_index = -2
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_ks6cb")
+color_for_score_effect = Color(0.41568628, 0.74509805, 0.1882353, 1)
 _move_speed = 12
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1010720086]
