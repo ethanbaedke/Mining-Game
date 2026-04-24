@@ -3,6 +3,190 @@
 [ext_resource type="Texture2D" uid="uid://dyo1ggw5xn2gp" path="res://help_screen.png" id="1_he7ji"]
 [ext_resource type="Script" uid="uid://718x6220fj5o" path="res://help_screen.gd" id="1_i44y6"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="1_wl1na"]
+[ext_resource type="Texture2D" uid="uid://cxd22hp4fu3jy" path="res://c_key.png" id="4_ya2oj"]
+[ext_resource type="Texture2D" uid="uid://dc62s8ph6i4le" path="res://x_key.png" id="5_61n73"]
+[ext_resource type="Texture2D" uid="uid://csmvkfb0py2w4" path="res://arrow_keys.png" id="7_qqx30"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ya2oj"]
+atlas = ExtResource("4_ya2oj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ehws"]
+atlas = ExtResource("5_61n73")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v3t00"]
+atlas = ExtResource("7_qqx30")
+region = Rect2(0, 0, 48, 0)
+
+[sub_resource type="Animation" id="Animation_ya2oj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ya2oj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../BombControlRight:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_1ehws")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../BombControlLeft:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_1ehws")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../MoveControl:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_v3t00")]
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdkhy"]
+atlas = ExtResource("4_ya2oj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ya2oj"]
+load_path = "res://.godot/imported/c_key.png-73a559efb72d8db2fb2e2698c9cbe58b.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61n73"]
+atlas = SubResource("CompressedTexture2D_ya2oj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_61n73"]
+load_path = "res://.godot/imported/x_key.png-8f7d8e3554face90fe44d4af2b2d4b61.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqx30"]
+atlas = SubResource("CompressedTexture2D_61n73")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uq8dp"]
+atlas = ExtResource("5_61n73")
+region = Rect2(16, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6t6cw"]
+atlas = ExtResource("5_61n73")
+region = Rect2(0, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_endhf"]
+atlas = ExtResource("5_61n73")
+region = Rect2(16, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfogw"]
+atlas = ExtResource("7_qqx30")
+region = Rect2(0, 0, 48, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80cl7"]
+atlas = ExtResource("7_qqx30")
+region = Rect2(48, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qqx30"]
+load_path = "res://.godot/imported/arrow_keys.png-062d8d0e69835857b7bb766d943c8ef6.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1oqes"]
+atlas = SubResource("CompressedTexture2D_qqx30")
+region = Rect2(96, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uq8dp"]
+load_path = "res://.godot/imported/arrow_keys.png-062d8d0e69835857b7bb766d943c8ef6.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7h214"]
+atlas = SubResource("CompressedTexture2D_uq8dp")
+region = Rect2(144, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i5bip"]
+load_path = "res://.godot/imported/arrow_keys.png-062d8d0e69835857b7bb766d943c8ef6.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tn6b8"]
+atlas = SubResource("CompressedTexture2D_i5bip")
+region = Rect2(192, 0, 48, 0)
+
+[sub_resource type="Animation" id="Animation_61n73"]
+resource_name = "new_animation"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99, 1.49, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_tdkhy"), SubResource("AtlasTexture_61n73"), SubResource("AtlasTexture_tdkhy"), SubResource("AtlasTexture_61n73"), SubResource("AtlasTexture_tdkhy"), SubResource("AtlasTexture_61n73"), SubResource("AtlasTexture_tdkhy"), SubResource("AtlasTexture_61n73")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../BombControlRight:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99, 1.49, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_qqx30"), SubResource("AtlasTexture_uq8dp"), SubResource("AtlasTexture_qqx30"), SubResource("AtlasTexture_uq8dp"), SubResource("AtlasTexture_qqx30"), SubResource("AtlasTexture_uq8dp"), SubResource("AtlasTexture_qqx30"), SubResource("AtlasTexture_uq8dp")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../BombControlLeft:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.99, 1.49, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_6t6cw"), SubResource("AtlasTexture_endhf"), SubResource("AtlasTexture_6t6cw"), SubResource("AtlasTexture_endhf"), SubResource("AtlasTexture_6t6cw"), SubResource("AtlasTexture_endhf"), SubResource("AtlasTexture_6t6cw"), SubResource("AtlasTexture_endhf")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../MoveControl:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 1.98, 2.48, 3.01, 3.51),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_80cl7"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_1oqes"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_7h214"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_tn6b8")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1ehws"]
+_data = {
+&"RESET": SubResource("Animation_ya2oj"),
+&"keyboard_controls": SubResource("Animation_61n73")
+}
 
 [node name="HelpScreen" type="Control" unique_id=409250377]
 layout_mode = 3
@@ -37,3 +221,44 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "PRESS ANY BUTTON TO CONTINUE"
 vertical_alignment = 1
+
+[node name="MineControl" type="TextureRect" parent="." unique_id=1034497753]
+layout_mode = 0
+offset_left = 290.0
+offset_top = 84.0
+offset_right = 306.0
+offset_bottom = 100.0
+texture = SubResource("AtlasTexture_ya2oj")
+stretch_mode = 2
+
+[node name="BombControlRight" type="TextureRect" parent="." unique_id=155956560]
+layout_mode = 0
+offset_left = 437.0
+offset_top = 155.0
+offset_right = 453.0
+offset_bottom = 171.0
+texture = SubResource("AtlasTexture_1ehws")
+stretch_mode = 2
+
+[node name="BombControlLeft" type="TextureRect" parent="." unique_id=554485213]
+layout_mode = 0
+offset_left = 267.505
+offset_top = 155.0
+offset_right = 283.505
+offset_bottom = 171.0
+texture = SubResource("AtlasTexture_1ehws")
+stretch_mode = 2
+
+[node name="MoveControl" type="TextureRect" parent="." unique_id=194651413]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 70.0
+offset_right = 53.0
+offset_bottom = 102.0
+texture = SubResource("AtlasTexture_v3t00")
+stretch_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=713739281]
+root_node = NodePath("../MineControl")
+libraries/ = SubResource("AnimationLibrary_1ehws")
+autoplay = &"keyboard_controls"
