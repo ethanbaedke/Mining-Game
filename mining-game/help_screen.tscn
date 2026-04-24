@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://cxd22hp4fu3jy" path="res://c_key.png" id="4_ya2oj"]
 [ext_resource type="Texture2D" uid="uid://dc62s8ph6i4le" path="res://x_key.png" id="5_61n73"]
 [ext_resource type="Texture2D" uid="uid://csmvkfb0py2w4" path="res://arrow_keys.png" id="7_qqx30"]
+[ext_resource type="Texture2D" uid="uid://dfe367qvhbfxj" path="res://x_button.png" id="7_uq8dp"]
+[ext_resource type="Texture2D" uid="uid://cswgsn52konb2" path="res://y_button.png" id="8_uq8dp"]
+[ext_resource type="Texture2D" uid="uid://cdgnt4hpoyvif" path="res://joystick.png" id="9_tdkhy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ya2oj"]
 atlas = ExtResource("4_ya2oj")
@@ -182,10 +185,109 @@ tracks/3/keys = {
 "values": [SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_80cl7"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_1oqes"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_7h214"), SubResource("AtlasTexture_mfogw"), SubResource("AtlasTexture_tn6b8")]
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_i5bip"]
+atlas = ExtResource("7_uq8dp")
+region = Rect2(0, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bbvk"]
+atlas = ExtResource("7_uq8dp")
+region = Rect2(16, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqfy1"]
+atlas = ExtResource("8_uq8dp")
+region = Rect2(0, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkts1"]
+atlas = ExtResource("8_uq8dp")
+region = Rect2(16, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o0nx7"]
+atlas = ExtResource("9_tdkhy")
+region = Rect2(0, 0, 48, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwu4i"]
+atlas = ExtResource("9_tdkhy")
+region = Rect2(48, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tdkhy"]
+load_path = "res://.godot/imported/joystick.png-83235d9fad11dddbdf80cd4ad1654ec4.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_al5au"]
+atlas = SubResource("CompressedTexture2D_tdkhy")
+region = Rect2(96, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6t6cw"]
+load_path = "res://.godot/imported/joystick.png-83235d9fad11dddbdf80cd4ad1654ec4.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf8r8"]
+atlas = SubResource("CompressedTexture2D_6t6cw")
+region = Rect2(144, 0, 48, 0)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_endhf"]
+load_path = "res://.godot/imported/joystick.png-83235d9fad11dddbdf80cd4ad1654ec4.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0uuu"]
+atlas = SubResource("CompressedTexture2D_endhf")
+region = Rect2(192, 0, 48, 0)
+
+[sub_resource type="Animation" id="Animation_oqfy1"]
+resource_name = "xbox_controls"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_i5bip"), SubResource("AtlasTexture_2bbvk"), SubResource("AtlasTexture_i5bip"), SubResource("AtlasTexture_2bbvk"), SubResource("AtlasTexture_i5bip"), SubResource("AtlasTexture_2bbvk"), SubResource("AtlasTexture_i5bip"), SubResource("AtlasTexture_2bbvk")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../BombControlRight:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../BombControlLeft:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1"), SubResource("AtlasTexture_oqfy1"), SubResource("AtlasTexture_qkts1")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../MoveControl:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"update": 1,
+"values": [SubResource("AtlasTexture_o0nx7"), SubResource("AtlasTexture_rwu4i"), SubResource("AtlasTexture_o0nx7"), SubResource("AtlasTexture_al5au"), SubResource("AtlasTexture_o0nx7"), SubResource("AtlasTexture_nf8r8"), SubResource("AtlasTexture_o0nx7"), SubResource("AtlasTexture_g0uuu")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1ehws"]
 _data = {
 &"RESET": SubResource("Animation_ya2oj"),
-&"keyboard_controls": SubResource("Animation_61n73")
+&"keyboard_controls": SubResource("Animation_61n73"),
+&"xbox_controls": SubResource("Animation_oqfy1")
 }
 
 [node name="HelpScreen" type="Control" unique_id=409250377]

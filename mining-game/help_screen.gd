@@ -1,6 +1,7 @@
 class_name HelpScene extends Control
 
 @onready var _continue_label:Label = $ContinueLabel
+@onready var _anim_player:AnimationPlayer = $AnimationPlayer
 
 const CONTINUE_LABEL_FADE_IN_TIME:float = 1.5
 const CONTINUE_LABEL_WAIT_TIME:float = 1.0
@@ -17,7 +18,14 @@ func make_skip_available() -> void:
 	_continue_label_fade_in_ready = true
 
 func _ready() -> void:
+	
 	_continue_label.modulate.a = 0.0
+	
+	if (Globals.input_type == Globals.InputType.GAMEPAD):
+		_anim_player.play("xbox_controls")
+	else:
+		_anim_player.play("keyboard_controls")
+	Globals.input_type_changed.connect(_on_globals_input_type_changed)
 
 func _process(delta: float) -> void:
 	
@@ -35,3 +43,12 @@ func _process(delta: float) -> void:
 		_continue_label.modulate.a = lerp(0.0, 1.0, _continue_label_alpha_timer / CONTINUE_LABEL_FADE_IN_TIME)
 	else:
 		_continue_label.modulate.a = lerp(0.25, 1.0, (cos((_continue_label_alpha_timer - CONTINUE_LABEL_FADE_IN_TIME) * 3.0) * 0.5) + 0.5)
+
+func _on_globals_input_type_changed(old_type:Globals.InputType) -> void:
+	
+	var anim_time:float = _anim_player.current_animation_position
+	if (Globals.input_type == Globals.InputType.GAMEPAD):
+		_anim_player.play("xbox_controls")
+	else:
+		_anim_player.play("keyboard_controls")
+	_anim_player.seek(anim_time)
