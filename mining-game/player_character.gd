@@ -32,6 +32,9 @@ signal player_killed
 # Reference retrieved on ready.
 var _mine_level:MineLevel = null
 
+# Important for keyboard so pressing a direction while holding another direction works properly.
+var _movement_key_stack:Array[int] = []
+
 enum FacingDirection { LEFT, RIGHT, UP, DOWN }
 var _face_dir:FacingDirection = FacingDirection.DOWN
 
@@ -56,6 +59,39 @@ func kill_player() -> void:
 func _ready() -> void:
 	
 	_mine_level = get_parent()
+	
+	Globals.input_type_changed.connect(func (old_type:Globals.InputType) -> void:
+		if (Globals.input_type == Globals.InputType.GAMEPAD):
+			_movement_key_stack.clear())
+
+func _process(delta: float) -> void:
+	
+	# Handle the movement key stack here to ensure it is always accurate.
+	if (Globals.input_type == Globals.InputType.KEYBOARD):
+		if (Input.is_action_just_pressed("move_right")):
+			_movement_key_stack.append(0)
+		if (Input.is_action_just_pressed("move_up")):
+			_movement_key_stack.append(1)
+		if (Input.is_action_just_pressed("move_left")):
+			_movement_key_stack.append(2)
+		if (Input.is_action_just_pressed("move_down")):
+			_movement_key_stack.append(3)
+		if (Input.is_action_just_released("move_right")):
+			var ind:int = _movement_key_stack.find(0)
+			if (ind != -1):
+				_movement_key_stack.remove_at(ind)
+		if (Input.is_action_just_released("move_up")):
+			var ind:int = _movement_key_stack.find(1)
+			if (ind != -1):
+				_movement_key_stack.remove_at(ind)
+		if (Input.is_action_just_released("move_left")):
+			var ind:int = _movement_key_stack.find(2)
+			if (ind != -1):
+				_movement_key_stack.remove_at(ind)
+		if (Input.is_action_just_released("move_down")):
+			var ind:int = _movement_key_stack.find(3)
+			if (ind != -1):
+				_movement_key_stack.remove_at(ind)
 
 func _physics_process(delta:float) -> void:
 	
@@ -187,13 +223,43 @@ func _set_velocity() -> void:
 		self.velocity = Vector2.ZERO
 		return
 	
+	# NOTE: This is for diagonal movement.
 	# Inputs are only -1, 0, or 1. No partial movement (through joysticks).
-	var input:Vector2 = Vector2.ZERO
-	input.x = sign(Input.get_axis("move_left", "move_right"))
-	input.y = sign(Input.get_axis("move_up", "move_down"))
+	#var input:Vector2 = Vector2.ZERO
+	#input.x = sign(Input.get_axis("move_left", "move_right"))
+	#input.y = sign(Input.get_axis("move_up", "move_down"))
 	
 	# Normalize input to ensure diagonal movement is the same speed as lateral movement.
-	self.velocity = input.normalized() * MOVE_SPEED
+	#self.velocity = input.normalized() * MOVE_SPEED
+	
+	# NOTE: This is for four-directional movement with a gamepad.
+	if (Globals.input_type == Globals.InputType.GAMEPAD):
+		
+		var input:Vector2 = Vector2.ZERO
+		input.x = Input.get_axis("move_left", "move_right")
+		input.y = Input.get_axis("move_up", "move_down")
+	
+		if (abs(input.x) > abs(input.y)):
+			input.y = 0.0
+		else:
+			input.x = 0.0
+			
+		self.velocity = input.normalized() * MOVE_SPEED
+		
+	# NOTE: This is for four-directional movement with a gamepad.
+	else:
+		if (_movement_key_stack.is_empty()):
+			self.velocity = Vector2.ZERO
+		else:
+			match _movement_key_stack.back():
+				0:
+					self.velocity = Vector2.RIGHT * MOVE_SPEED
+				1:
+					self.velocity = Vector2.UP * MOVE_SPEED
+				2:
+					self.velocity = Vector2.LEFT * MOVE_SPEED
+				3:
+					self.velocity = Vector2.DOWN * MOVE_SPEED
 
 # Updates the direction the character is facing based on the players velocity.
 func _update_facing_direction() -> void:
