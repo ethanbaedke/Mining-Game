@@ -80,10 +80,6 @@ layout_mode = 1
 offset_top = 270.0
 offset_bottom = 270.0
 
-[node name="MusicVolumeSlider" parent="SettingsMenu/MarginContainer/VBoxContainer/VBoxContainer/MusicVolume" parent_id_path=PackedInt32Array(1309553969, 444293247) index="1" unique_id=1248912543]
-max_value = 10.0
-value = 10.0
-
 [node name="BackButton" parent="SettingsMenu/MarginContainer/VBoxContainer/Buttons" parent_id_path=PackedInt32Array(1309553969, 1577510161) index="1" unique_id=1280754361]
 focus_mode = 0
 

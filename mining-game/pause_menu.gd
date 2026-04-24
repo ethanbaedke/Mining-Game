@@ -5,6 +5,8 @@ class_name PauseMenu extends CanvasLayer
 
 signal game_paused_changed(paused:bool)
 
+var _just_opened:bool = false
+
 func _ready() -> void:
 	
 	# Set initial visibility (should always be false).
@@ -13,6 +15,15 @@ func _ready() -> void:
 	# Listen for continue button to unpause game.
 	_continue_button.pressed.connect(func() -> void:
 		toggle_game_paused())
+
+func _process(delta: float) -> void:
+	
+	if (Input.is_action_just_pressed("ui_cancel") && self.visible):
+		if (!_just_opened):
+			toggle_game_paused()
+			
+	_just_opened = false
+
 
 func toggle_game_paused() -> void:
 	
@@ -23,5 +34,8 @@ func toggle_game_paused() -> void:
 	# Save settings changes when unpaused.
 	if (!get_tree().paused):
 		Globals.save_game_data()
+	# Set flag when paused.
+	else:
+		_just_opened = true
 		
 	game_paused_changed.emit(get_tree().paused)

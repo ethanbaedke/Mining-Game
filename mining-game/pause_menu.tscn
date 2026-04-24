@@ -48,6 +48,19 @@ layout_mode = 2
 [node name="Panel" parent="Control/MarginContainer/SettingsMenu" index="0" unique_id=2073948390]
 visible = false
 
+[node name="MarginContainer" parent="Control/MarginContainer/SettingsMenu" index="1" unique_id=2111541425]
+z_index = 1
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 167150385, 631224989) index="0" unique_id=627928942]
+text = "RESET SETTINGS TO DEFAULT"
+
+[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 1280754361, 631224989) index="0" unique_id=627928942]
+text = "CONTINUE"
+
 [node name="NinePatchRect" type="NinePatchRect" parent="Control/MarginContainer/SettingsMenu" unique_id=1279251749]
 layout_mode = 1
 anchors_preset = 15
@@ -60,19 +73,6 @@ patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 4
-
-[node name="MarginContainer" parent="Control/MarginContainer/SettingsMenu" index="2" unique_id=2111541425]
-z_index = 1
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 10
-
-[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 167150385, 631224989) index="0" unique_id=627928942]
-text = "RESET SETTINGS TO DEFAULT"
-
-[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 1280754361, 631224989) index="0" unique_id=627928942]
-text = "CONTINUE"
 
 [editable path="Control/MarginContainer/SettingsMenu"]
 [editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]

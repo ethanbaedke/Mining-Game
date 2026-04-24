@@ -52,6 +52,9 @@ func _process(delta: float) -> void:
 		self.position.y = lerp(0.0, -270.0, 1.0)
 	else:
 		self.position.y = lerp(-270.0, 0.0, 1.0)
+		
+	if (Input.is_action_just_pressed("ui_cancel") && _on_settings_menu):
+		_on_settings_back_button_pressed()
 
 func _on_globals_input_type_changed(old_type:Globals.InputType) -> void:
 	
