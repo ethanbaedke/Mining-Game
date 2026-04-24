@@ -126,7 +126,7 @@ func _process(delta: float) -> void:
 		# Handle cursor flashing
 		_name_entry_cursor_flash_timer += delta
 		if (int(_name_entry_cursor_flash_timer * 2.0) % 2 == 1):
-			_name_entry_label.text[_name_entry_character_index] = '+'
+			_name_entry_label.text[_name_entry_character_index] = '^'
 		else:
 			_name_entry_label.text = _entry_to_name.name
 			

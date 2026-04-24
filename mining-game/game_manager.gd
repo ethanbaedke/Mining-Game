@@ -249,15 +249,27 @@ func _on_mine_level_enemy_killed(enemy:Node2D) -> void:
 	
 	var points:int = 0
 	var color_for_score_effect:Color = Color.WHITE
+	var node_to_free:Node2D = null
 	if (enemy is SlimeEnemy):
 		points = enemy.points_for_killed
 		color_for_score_effect = enemy.color_for_score_effect
-	elif (enemy is CannonheadEnemy):
-		points = enemy.points_for_killed
-		color_for_score_effect = enemy.color_for_score_effect
+		node_to_free = enemy
+	elif (enemy.get_parent() is CannonheadEnemy):
+		# Cannonhead enemy hitbox is hit, but the actual enemy is the parent of the hitbox.
+		var enem:CannonheadEnemy = enemy.get_parent()
+		# Since there are two hitboxes, both could be hit. Only handle enemy killed for the first box processed.
+		if (enem.is_queued_for_deletion()):
+			return
+		points = enem.points_for_killed
+		color_for_score_effect = enem.color_for_score_effect
+		node_to_free = enem
 	elif (enemy is BugEnemy):
 		points = enemy.points_for_killed
 		color_for_score_effect = enemy.color_for_score_effect
+		node_to_free = enemy
+	
+	if (node_to_free == null):
+		return
 	
 	# Create a score effect above the enemy.
 	var score_effect:ScoreIncrementEffect = SCORE_INCREMENT_EFFECT_SCENE.instantiate()
@@ -266,7 +278,8 @@ func _on_mine_level_enemy_killed(enemy:Node2D) -> void:
 	score_effect.global_position = enemy.global_position
 	
 	_modify_current_score(points)
-	enemy.queue_free()
+	
+	node_to_free.queue_free()
 
 func _player_focus_to_black() -> void:
 	
