@@ -224,42 +224,41 @@ func _set_velocity() -> void:
 		return
 	
 	# NOTE: This is for diagonal movement.
-	# Inputs are only -1, 0, or 1. No partial movement (through joysticks).
-	#var input:Vector2 = Vector2.ZERO
-	#input.x = sign(Input.get_axis("move_left", "move_right"))
-	#input.y = sign(Input.get_axis("move_up", "move_down"))
+	var input:Vector2 = Vector2.ZERO
+	input.x = Input.get_axis("move_left", "move_right")
+	input.y = Input.get_axis("move_up", "move_down")
 	
 	# Normalize input to ensure diagonal movement is the same speed as lateral movement.
-	#self.velocity = input.normalized() * MOVE_SPEED
+	self.velocity = input.normalized() * MOVE_SPEED
 	
 	# NOTE: This is for four-directional movement with a gamepad.
-	if (Globals.input_type == Globals.InputType.GAMEPAD):
+	#if (Globals.input_type == Globals.InputType.GAMEPAD):
+		#
+		#var input:Vector2 = Vector2.ZERO
+		#input.x = Input.get_axis("move_left", "move_right")
+		#input.y = Input.get_axis("move_up", "move_down")
+	#
+		#if (abs(input.x) > abs(input.y)):
+			#input.y = 0.0
+		#else:
+			#input.x = 0.0
+			#
+		#self.velocity = input.normalized() * MOVE_SPEED
 		
-		var input:Vector2 = Vector2.ZERO
-		input.x = Input.get_axis("move_left", "move_right")
-		input.y = Input.get_axis("move_up", "move_down")
-	
-		if (abs(input.x) > abs(input.y)):
-			input.y = 0.0
-		else:
-			input.x = 0.0
-			
-		self.velocity = input.normalized() * MOVE_SPEED
-		
-	# NOTE: This is for four-directional movement with a gamepad.
-	else:
-		if (_movement_key_stack.is_empty()):
-			self.velocity = Vector2.ZERO
-		else:
-			match _movement_key_stack.back():
-				0:
-					self.velocity = Vector2.RIGHT * MOVE_SPEED
-				1:
-					self.velocity = Vector2.UP * MOVE_SPEED
-				2:
-					self.velocity = Vector2.LEFT * MOVE_SPEED
-				3:
-					self.velocity = Vector2.DOWN * MOVE_SPEED
+	# NOTE: This is for four-directional movement with a keyboard.
+	#else:
+		#if (_movement_key_stack.is_empty()):
+			#self.velocity = Vector2.ZERO
+		#else:
+			#match _movement_key_stack.back():
+				#0:
+					#self.velocity = Vector2.RIGHT * MOVE_SPEED
+				#1:
+					#self.velocity = Vector2.UP * MOVE_SPEED
+				#2:
+					#self.velocity = Vector2.LEFT * MOVE_SPEED
+				#3:
+					#self.velocity = Vector2.DOWN * MOVE_SPEED
 
 # Updates the direction the character is facing based on the players velocity.
 func _update_facing_direction() -> void:
