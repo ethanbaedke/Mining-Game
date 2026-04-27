@@ -67,6 +67,9 @@ func _load_game_data() -> void:
 		# If we couldn't load it, let it set to defaults.
 		if (game_data == null):
 			game_data = SaveData.new()
+	else:
+		# If it doesn't exist, let it set to defaults.
+		game_data = SaveData.new()
 
 func _input(event: InputEvent) -> void:
 	
