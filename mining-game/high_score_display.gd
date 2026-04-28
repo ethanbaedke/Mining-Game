@@ -53,6 +53,7 @@ const NAME_ENTRY_UNICODE_OPTIONS:Array[int] = [
 	56,
 	57, # 9
 	32, # Space
+	60, # <-
 ]
 const NAME_ENTRY_TIME:int = 30
 const DISPLAY_TIME:int = 5
@@ -91,7 +92,7 @@ func _ready() -> void:
 		_name_entry_countdown_complete = true
 	# User made it!
 	else:
-		var space_char:String = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 1])
+		var space_char:String = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 2])
 		_entry_to_name.name = char(NAME_ENTRY_UNICODE_OPTIONS[0]) + space_char + space_char
 		_name_entry_label.text = _entry_to_name.name
 
@@ -157,8 +158,19 @@ func _handle_name_user_input() -> void:
 		# Play letter changed sound effect.
 		_letter_changed_sound_effect.play_effect()
 	elif (Input.is_action_just_pressed("use_pickaxe")):
+		# Return to previous character.
+		if (char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index]) == '<'):
+			if (_name_entry_character_index > 0):
+				_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 2])
+				_name_entry_character_index -= 1
+				_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 1])
+				_name_entry_label.text = _entry_to_name.name
+				# Reset cursor flash timer
+				_name_entry_cursor_flash_timer = 0.0
+				# Play letter input sound effect.
+				_letter_input_sound_effect.play_effect()
 		# Move to next character.
-		if (_name_entry_character_index < 2):
+		elif (_name_entry_character_index < 2):
 			_name_entry_character_index += 1
 			# Move the last input character over to the next spot by default.
 			_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index])
