@@ -2,8 +2,10 @@ class_name PauseMenu extends CanvasLayer
 
 @onready var _settings_menu:SettingsMenu = $Control/MarginContainer/SettingsMenu
 @onready var _continue_button:StylizedButton = $Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton
+@onready var _return_to_menu_button:StylizedButton = $Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ReturnToMenuButton
 
 signal game_paused_changed(paused:bool)
+signal return_to_main_menu_requested()
 
 var _just_opened:bool = false
 
@@ -15,6 +17,10 @@ func _ready() -> void:
 	# Listen for continue button to unpause game.
 	_continue_button.pressed.connect(func() -> void:
 		toggle_game_paused())
+		
+	# Listen for the return to menu button.
+	_return_to_menu_button.pressed.connect(func() -> void:
+		return_to_main_menu_requested.emit())
 
 func _process(delta: float) -> void:
 	
@@ -23,7 +29,6 @@ func _process(delta: float) -> void:
 			toggle_game_paused()
 			
 	_just_opened = false
-
 
 func toggle_game_paused() -> void:
 	

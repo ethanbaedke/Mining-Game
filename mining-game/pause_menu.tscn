@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://e56g5rw70bxt" path="res://settings_menu.tscn" id="1_hdmo1"]
 [ext_resource type="Script" uid="uid://dwfy6xy1je2tf" path="res://pause_menu.gd" id="1_nwcfo"]
 [ext_resource type="Theme" uid="uid://74k1qh542cpk" path="res://global_theme.tres" id="2_05uyy"]
+[ext_resource type="PackedScene" uid="uid://chx8ubxax8nyv" path="res://stylized_button.tscn" id="4_2nc7s"]
 [ext_resource type="Texture2D" uid="uid://dyvsi644of1fm" path="res://ui_border.png" id="4_p81d2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwcfo"]
@@ -55,8 +56,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
+[node name="ReturnToMenuButton" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons" parent_id_path=PackedInt32Array(1309553969, 1577510161) index="0" unique_id=167150385 instance=ExtResource("4_2nc7s")]
+layout_mode = 2
+
+[node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ReturnToMenuButton/MarginContainer" parent_id_path=PackedInt32Array(167150385, 631224989) index="0" unique_id=627928942]
+text = "RETURN TO MENU"
+
 [node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 167150385, 631224989) index="0" unique_id=627928942]
-text = "RESET SETTINGS TO DEFAULT"
+text = "RESET SETTINGS"
 
 [node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 1280754361, 631224989) index="0" unique_id=627928942]
 text = "CONTINUE"
@@ -75,5 +82,6 @@ patch_margin_right = 4
 patch_margin_bottom = 4
 
 [editable path="Control/MarginContainer/SettingsMenu"]
+[editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ReturnToMenuButton"]
 [editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/ResetToDefaultButton"]
 [editable path="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton"]

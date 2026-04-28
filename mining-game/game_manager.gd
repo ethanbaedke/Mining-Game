@@ -1,5 +1,6 @@
 class_name GameManager extends Node
 
+@onready var _loading_ui_canvas_layer:CanvasLayer = $LoadingUI
 @onready var _loading_ui_anim_player:AnimationPlayer = $LoadingUI/AnimationPlayer
 @onready var _screen_mask:ColorRect = $LoadingUI/ScreenMask
 @onready var _music_player:MusicPlayer = $MusicPlayer
@@ -35,6 +36,8 @@ var _high_score_display:HighScoreDisplay = null
 
 func _ready() -> void:
 	
+	_pause_menu.return_to_main_menu_requested.connect(_on_pause_menu_return_to_main_menu_requested)
+	
 	_load_main_menu()
 	
 func _process(delta: float) -> void:
@@ -47,7 +50,7 @@ func _process(delta: float) -> void:
 		_screen_mask.material.set_shader_parameter("player_uv", Vector2(0.5, 0.5))
 		
 	# Handle toggling the pause menu.
-	if (Input.is_action_just_pressed("pause_game") && (_mine_level != null || _high_score_display != null)):
+	if (Input.is_action_just_pressed("pause_game") && (_mine_level != null || _high_score_display != null) && !_loading_ui_anim_player.is_playing() && (_mine_level == null || !_mine_level.level_cleanup_imminent) && _pause_menu.process_mode == PROCESS_MODE_ALWAYS):
 		_pause_menu.toggle_game_paused()
 
 func _load_main_menu() -> void:
@@ -78,6 +81,36 @@ func _on_main_menu_start_game_requested() -> void:
 func _on_main_menu_quit_game_requested() -> void:
 	get_tree().quit()
 
+func _on_pause_menu_return_to_main_menu_requested() -> void:
+	
+	
+	# Don't allow any interaction with the pause menu
+	_pause_menu.process_mode = Node.PROCESS_MODE_DISABLED
+	# Must set this so the load animation can happen while the game is paused.
+	_loading_ui_canvas_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	# Ensure loading ui covers the pause menu.
+	_loading_ui_canvas_layer.layer = 4
+	
+	# Fade the screen to black.
+	_loading_ui_anim_player.play("full_visible_to_black")
+	await _loading_ui_anim_player.animation_finished
+	
+	if (_mine_level != null):
+		_free_mine_level()
+	else:
+		_high_score_display.queue_free()
+	
+	# Reset to defaults.
+	_pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
+	_loading_ui_canvas_layer.process_mode = Node.PROCESS_MODE_PAUSABLE
+	_loading_ui_canvas_layer.layer = 2
+	
+	# Hide pause menu and manually unpause the game.
+	_pause_menu.visible = false
+	get_tree().paused = false
+	
+	_load_main_menu()
+
 func _start_new_game() -> void:
 	
 	current_floor = 1
@@ -85,7 +118,7 @@ func _start_new_game() -> void:
 	current_coal = 0
 	
 	# TESTING: Reset to 3.
-	lives_remaining = 3
+	lives_remaining = 1
 	
 	await _show_help_screen()
 	
