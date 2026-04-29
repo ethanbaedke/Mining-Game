@@ -167,6 +167,8 @@ func _handle_name_user_input() -> void:
 				_name_entry_label.text = _entry_to_name.name
 				# Reset cursor flash timer
 				_name_entry_cursor_flash_timer = 0.0
+				# Reset name entry timer
+				_name_entry_countdown = NAME_ENTRY_TIME
 				# Play letter input sound effect.
 				_letter_input_sound_effect.play_effect()
 		# Move to next character.
@@ -177,6 +179,8 @@ func _handle_name_user_input() -> void:
 			_name_entry_label.text = _entry_to_name.name
 			# Reset cursor flash timer
 			_name_entry_cursor_flash_timer = 0.0
+			# Reset name entry timer
+			_name_entry_countdown = NAME_ENTRY_TIME
 			# Play letter input sound effect.
 			_letter_input_sound_effect.play_effect()
 		# Finished
