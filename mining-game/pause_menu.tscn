@@ -68,6 +68,9 @@ text = "RESET SETTINGS"
 [node name="Label" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton/MarginContainer" parent_id_path=PackedInt32Array(1309553969, 1280754361, 631224989) index="0" unique_id=627928942]
 text = "CONTINUE"
 
+[node name="ClickSoundEffect" parent="Control/MarginContainer/SettingsMenu/MarginContainer/VBoxContainer/Buttons/BackButton" parent_id_path=PackedInt32Array(1309553969, 1280754361) index="2" unique_id=21644789]
+base_volume_scale = 0.0
+
 [node name="NinePatchRect" type="NinePatchRect" parent="Control/MarginContainer/SettingsMenu" unique_id=1279251749]
 layout_mode = 1
 anchors_preset = 15
