@@ -135,7 +135,7 @@ func _process(delta: float) -> void:
 
 func _handle_name_user_input() -> void:
 	
-	if (Input.is_action_just_pressed("move_up")):
+	if (Input.is_action_just_pressed("ui_up") || Input.is_action_just_pressed("ui_right")):
 		# Increment unicode character from list.
 		_name_entry_unicode_index = (_name_entry_unicode_index + 1) % NAME_ENTRY_UNICODE_OPTIONS.size()
 		# Update name.
@@ -145,7 +145,7 @@ func _handle_name_user_input() -> void:
 		_name_entry_cursor_flash_timer = 0.0
 		# Play letter changed sound effect.
 		_letter_changed_sound_effect.play_effect()
-	elif (Input.is_action_just_pressed("move_down")):
+	elif (Input.is_action_just_pressed("ui_down") || Input.is_action_just_pressed("ui_left")):
 		# Decrement unicode character from list.
 		_name_entry_unicode_index -= 1
 		if (_name_entry_unicode_index == -1):
@@ -157,7 +157,7 @@ func _handle_name_user_input() -> void:
 		_name_entry_cursor_flash_timer = 0.0
 		# Play letter changed sound effect.
 		_letter_changed_sound_effect.play_effect()
-	elif (Input.is_action_just_pressed("use_pickaxe")):
+	elif (Input.is_action_just_pressed("ui_accept")):
 		# Return to previous character.
 		if (char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index]) == '<'):
 			if (_name_entry_character_index > 0):
@@ -183,7 +183,7 @@ func _handle_name_user_input() -> void:
 			_name_entry_label.text = _entry_to_name.name
 			# Play letter input sound effect.
 			_letter_input_sound_effect.play_effect()
-	elif (Input.is_action_just_pressed("place_bomb")):
+	elif (Input.is_action_just_pressed("ui_cancel")):
 		if (_name_entry_character_index > 0):
 			_return_to_previous_character()
 
