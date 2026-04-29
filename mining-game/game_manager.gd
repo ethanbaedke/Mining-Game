@@ -174,7 +174,7 @@ func _modify_current_score(amount:int) -> void:
 	
 	current_score += amount
 	current_score = max(0, current_score)
-	current_score = min(999, current_score)
+	current_score = min(9999, current_score)
 	
 	current_score_changed.emit()
 
