@@ -83,7 +83,6 @@ func _on_main_menu_quit_game_requested() -> void:
 
 func _on_pause_menu_return_to_main_menu_requested() -> void:
 	
-	
 	# Don't allow any interaction with the pause menu
 	_pause_menu.process_mode = Node.PROCESS_MODE_DISABLED
 	# Must set this so the load animation can happen while the game is paused.

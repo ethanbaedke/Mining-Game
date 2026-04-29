@@ -28,6 +28,15 @@ func set_input_available(available:bool) -> void:
 
 func _ready() -> void:
 	
+	_reset_to_default_button.pressed.connect(func () -> void:
+		Globals.reset_settings_to_default())
+		
+	Globals.music_volume_changed.connect(func (new_value:float) -> void:
+		_music_volume_slider.value = new_value * _music_volume_slider.max_value)
+		
+	Globals.sound_effect_volume_changed.connect(func (new_value:float) -> void:
+		_sound_effect_volume_slider.value = new_value * _sound_effect_volume_slider.max_value)
+	
 	_music_volume_slider.value = Globals.game_data.music_volume * _music_volume_slider.max_value
 	_music_volume_slider.value_changed.connect(func (value:float) -> void:
 		_slider_moved_sound_effect.play_effect()

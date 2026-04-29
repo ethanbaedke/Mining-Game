@@ -22,6 +22,10 @@ func save_game_data() -> void:
 	ResourceSaver.save(game_data, "user://save_data.res")
 	print("Data saved to " + OS.get_user_data_dir())
 
+func reset_settings_to_default() -> void:
+	set_music_volume(1.0)
+	set_sound_effect_volume(1.0)
+
 func set_music_volume(value:float) -> void:
 	game_data.music_volume = clampf(value, 0.0, 1.0)
 	music_volume_changed.emit(game_data.music_volume)
