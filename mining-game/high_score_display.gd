@@ -161,16 +161,7 @@ func _handle_name_user_input() -> void:
 		# Return to previous character.
 		if (char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index]) == '<'):
 			if (_name_entry_character_index > 0):
-				_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 2])
-				_name_entry_character_index -= 1
-				_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 1])
-				_name_entry_label.text = _entry_to_name.name
-				# Reset cursor flash timer
-				_name_entry_cursor_flash_timer = 0.0
-				# Reset name entry timer
-				_name_entry_countdown = NAME_ENTRY_TIME
-				# Play letter input sound effect.
-				_letter_input_sound_effect.play_effect()
+				_return_to_previous_character()
 		# Move to next character.
 		elif (_name_entry_character_index < 2):
 			_name_entry_character_index += 1
@@ -192,6 +183,21 @@ func _handle_name_user_input() -> void:
 			_name_entry_label.text = _entry_to_name.name
 			# Play letter input sound effect.
 			_letter_input_sound_effect.play_effect()
+	elif (Input.is_action_just_pressed("place_bomb")):
+		if (_name_entry_character_index > 0):
+			_return_to_previous_character()
+
+func _return_to_previous_character() -> void:
+	_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[NAME_ENTRY_UNICODE_OPTIONS.size() - 2])
+	_name_entry_character_index -= 1
+	_entry_to_name.name[_name_entry_character_index] = char(NAME_ENTRY_UNICODE_OPTIONS[_name_entry_unicode_index])
+	_name_entry_label.text = _entry_to_name.name
+	# Reset cursor flash timer
+	_name_entry_cursor_flash_timer = 0.0
+	# Reset name entry timer
+	_name_entry_countdown = NAME_ENTRY_TIME
+	# Play letter input sound effect.
+	_letter_input_sound_effect.play_effect()
 
 func _fillout_high_score_ui() -> void:
 	
