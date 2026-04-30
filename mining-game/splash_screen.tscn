@@ -1,0 +1,120 @@
+[gd_scene format=4 uid="uid://ciadr0h6na2rw"]
+
+[ext_resource type="Script" uid="uid://d25df5hpvcwe4" path="res://splash_screen.gd" id="1_el3v4"]
+[ext_resource type="TileSet" uid="uid://cedbq7dlya52b" path="res://mine_tile_set.tres" id="1_ty3ja"]
+[ext_resource type="Texture2D" uid="uid://bo6yd31ekmbqv" path="res://cave_floor_sprite.png" id="3_arguk"]
+[ext_resource type="Texture2D" uid="uid://b1gaywheebgc3" path="res://splash_screen.png" id="4_74eti"]
+[ext_resource type="PackedScene" uid="uid://dipbxatn3wekf" path="res://sound_effect_player.tscn" id="5_r8bb4"]
+[ext_resource type="AudioStream" uid="uid://ccxufrbux5kjl" path="res://rock_break.wav" id="6_spqux"]
+
+[sub_resource type="Gradient" id="Gradient_74eti"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r8bb4"]
+gradient = SubResource("Gradient_74eti")
+
+[sub_resource type="Animation" id="Animation_r8bb4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Logo:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_74eti"]
+resource_name = "logo"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Logo:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r8bb4"]
+_data = {
+&"RESET": SubResource("Animation_r8bb4"),
+&"logo": SubResource("Animation_74eti")
+}
+
+[node name="SplashScreen" type="Node2D" unique_id=359322289]
+script = ExtResource("1_el3v4")
+
+[node name="VisualTiles" type="TileMapLayer" parent="." unique_id=924739163]
+tile_set = ExtResource("1_ty3ja")
+
+[node name="FloorSprite" type="Sprite2D" parent="." unique_id=251719120]
+z_index = -4
+texture_repeat = 2
+position = Vector2(240, 135)
+texture = ExtResource("3_arguk")
+region_enabled = true
+region_rect = Rect2(0, 0, 480, 270)
+
+[node name="TerrainTiles" type="TileMapLayer" parent="." unique_id=1748473878]
+visible = false
+tile_map_data = PackedByteArray("AAADAAYAAAADAAEAAAADAAcAAAADAAEAAAADAAgAAAADAAEAAAADAAkAAAADAAEAAAADAAoAAAADAAEAAAAEAAYAAAAEAAEAAAAEAAcAAAAEAAEAAAAEAAgAAAAEAAEAAAAEAAkAAAAEAAEAAAAEAAoAAAAEAAEAAAAFAAYAAAAEAAEAAAAFAAcAAAAEAAEAAAAFAAgAAAAEAAEAAAAFAAkAAAAEAAEAAAAFAAoAAAAEAAEAAAAHAAYAAAAEAAEAAAAHAAcAAAAEAAEAAAAHAAgAAAAEAAEAAAAHAAkAAAAEAAEAAAAHAAoAAAAEAAEAAAAIAAYAAAAEAAEAAAAIAAcAAAAEAAEAAAAIAAgAAAAEAAEAAAAIAAkAAAAEAAEAAAAIAAoAAAAEAAEAAAAJAAYAAAAEAAEAAAAJAAcAAAAEAAEAAAAJAAgAAAAEAAEAAAAJAAkAAAAEAAEAAAAJAAoAAAAEAAEAAAALAAYAAAAEAAEAAAALAAcAAAAEAAEAAAALAAgAAAAEAAEAAAALAAkAAAAEAAEAAAALAAoAAAAEAAEAAAAMAAYAAAAEAAEAAAAMAAcAAAAEAAEAAAAMAAgAAAAEAAEAAAAMAAkAAAAEAAEAAAAMAAoAAAAEAAEAAAANAAYAAAAEAAEAAAANAAcAAAAEAAEAAAANAAgAAAAEAAEAAAANAAkAAAAEAAEAAAANAAoAAAAEAAEAAAAQAAYAAAAEAAEAAAAQAAcAAAAEAAEAAAAQAAgAAAAEAAEAAAAQAAkAAAAEAAEAAAAQAAoAAAAEAAEAAAARAAYAAAAEAAEAAAARAAcAAAAEAAEAAAARAAgAAAAEAAEAAAARAAkAAAAEAAEAAAARAAoAAAAEAAEAAAASAAYAAAAEAAEAAAASAAcAAAAEAAEAAAASAAgAAAAEAAEAAAASAAkAAAAEAAEAAAASAAoAAAAEAAEAAAAUAAYAAAAEAAEAAAAUAAcAAAAEAAEAAAAUAAgAAAAEAAEAAAAUAAkAAAAEAAEAAAAUAAoAAAAEAAEAAAAVAAYAAAAEAAEAAAAVAAcAAAAEAAEAAAAVAAgAAAAEAAEAAAAVAAkAAAAEAAEAAAAVAAoAAAAEAAEAAAAWAAYAAAAEAAEAAAAWAAcAAAAEAAEAAAAWAAgAAAAEAAEAAAAWAAkAAAAEAAEAAAAWAAoAAAAEAAEAAAAYAAYAAAAEAAEAAAAYAAcAAAAEAAEAAAAYAAgAAAAEAAEAAAAYAAkAAAAEAAEAAAAYAAoAAAAEAAEAAAAZAAYAAAAEAAEAAAAZAAcAAAAEAAEAAAAZAAgAAAAEAAEAAAAZAAkAAAAEAAEAAAAZAAoAAAAEAAEAAAAaAAYAAAAFAAEAAAAaAAcAAAAFAAEAAAAaAAgAAAAFAAEAAAAaAAkAAAAFAAEAAAAaAAoAAAAFAAEAAAAaAAsAAAAFAAIAAAAaAAUAAAAFAAAAAAAZAAsAAAAEAAIAAAAZAAUAAAAEAAAAAAAYAAsAAAAEAAIAAAAYAAUAAAAEAAAAAAAXAAsAAAAEAAIAAAAXAAoAAAAEAAEAAAAXAAkAAAAEAAEAAAAXAAgAAAAEAAEAAAAXAAcAAAAEAAEAAAAXAAYAAAAEAAEAAAAXAAUAAAAEAAAAAAAWAAsAAAAEAAIAAAAWAAUAAAAEAAAAAAAVAAsAAAAEAAIAAAAVAAUAAAAEAAAAAAAUAAsAAAAEAAIAAAAUAAUAAAAEAAAAAAATAAsAAAAEAAIAAAATAAoAAAAEAAEAAAATAAkAAAAEAAEAAAATAAgAAAAEAAEAAAATAAcAAAAEAAEAAAATAAYAAAAEAAEAAAATAAUAAAAEAAAAAAASAAsAAAAEAAIAAAASAAUAAAAEAAAAAAARAAsAAAAEAAIAAAARAAUAAAAEAAAAAAAQAAsAAAAEAAIAAAAQAAUAAAAEAAAAAAAPAAsAAAAEAAIAAAAPAAoAAAAEAAEAAAAPAAkAAAAEAAEAAAAPAAgAAAAEAAEAAAAPAAcAAAAEAAEAAAAPAAYAAAAEAAEAAAAPAAUAAAAEAAAAAAAOAAsAAAAEAAIAAAAOAAoAAAAEAAEAAAAOAAkAAAAEAAEAAAAOAAgAAAAEAAEAAAAOAAcAAAAEAAEAAAAOAAYAAAAEAAEAAAAOAAUAAAAEAAAAAAANAAsAAAAEAAIAAAANAAUAAAAEAAAAAAAMAAsAAAAEAAIAAAAMAAUAAAAEAAAAAAALAAsAAAAEAAIAAAALAAUAAAAEAAAAAAAKAAsAAAAEAAIAAAAKAAoAAAAEAAEAAAAKAAkAAAAEAAEAAAAKAAgAAAAEAAEAAAAKAAcAAAAEAAEAAAAKAAYAAAAEAAEAAAAKAAUAAAAEAAAAAAAJAAsAAAAEAAIAAAAJAAUAAAAEAAAAAAAIAAsAAAAEAAIAAAAIAAUAAAAEAAAAAAAHAAsAAAAEAAIAAAAHAAUAAAAEAAAAAAAGAAsAAAAEAAIAAAAGAAoAAAAEAAEAAAAGAAkAAAAEAAEAAAAGAAgAAAAEAAEAAAAGAAcAAAAEAAEAAAAGAAYAAAAEAAEAAAAGAAUAAAAEAAAAAAAFAAsAAAAEAAIAAAAFAAUAAAAEAAAAAAAEAAsAAAAEAAIAAAAEAAUAAAAEAAAAAAADAAsAAAADAAIAAAADAAUAAAADAAAAAAA=")
+tile_set = ExtResource("1_ty3ja")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1333629125]
+
+[node name="Background" type="TextureRect" parent="CanvasLayer" unique_id=309753348]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_r8bb4")
+
+[node name="Logo" type="TextureRect" parent="CanvasLayer" unique_id=1627255598]
+modulate = Color(1, 1, 1, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("4_74eti")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2014280060]
+root_node = NodePath("../CanvasLayer")
+libraries/ = SubResource("AnimationLibrary_r8bb4")
+
+[node name="WallBreakSoundEffect" parent="." unique_id=811159807 instance=ExtResource("5_r8bb4")]
+stream = ExtResource("6_spqux")
+attenuation = 0.0
+panning_strength = 0.0

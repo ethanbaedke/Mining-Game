@@ -106,6 +106,7 @@ script = ExtResource("1_70yv6")
 
 [node name="PauseMenu" parent="." unique_id=1540041217 instance=ExtResource("2_vk86k")]
 layer = 3
+visible = false
 
 [node name="LoadingUI" type="CanvasLayer" parent="." unique_id=258859855]
 process_mode = 1

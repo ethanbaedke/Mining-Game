@@ -8,6 +8,7 @@ class_name GameManager extends Node
 @onready var _load_in_sound_effect:SoundEffectPlayer = $LoadInSoundEffect
 @onready var _load_out_sound_effect:SoundEffectPlayer = $LoadOutSoundEffect
 
+const SPLASH_SCREEN_SCENE:PackedScene = preload("res://splash_screen.tscn")
 const MAIN_MENU_SCENE:PackedScene = preload("res://main_menu.tscn")
 const HELP_SCREEN_SCENE:PackedScene = preload("res://help_screen.tscn")
 const MINE_LEVEL_SCENE:PackedScene = preload("res://mine_level.tscn")
@@ -37,6 +38,15 @@ var _high_score_display:HighScoreDisplay = null
 func _ready() -> void:
 	
 	_pause_menu.return_to_main_menu_requested.connect(_on_pause_menu_return_to_main_menu_requested)
+	
+	var splash:SplashScreen = SPLASH_SCREEN_SCENE.instantiate()
+	self.add_child(splash)
+	await splash.finished
+	
+	_loading_ui_anim_player.play("full_visible_to_black")
+	await _loading_ui_anim_player.animation_finished
+	
+	splash.queue_free()
 	
 	_load_main_menu()
 	
