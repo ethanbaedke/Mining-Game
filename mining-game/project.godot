@@ -10,17 +10,21 @@ config_version=5
 
 [application]
 
-config/name="Mining-Game"
+config/name="PIKPOP"
+config/version="1.0.0"
 run/main_scene="uid://bw3qxilyjwca5"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+config/windows_native_icon="res://app_icon.ico"
 
 [autoload]
 
 Globals="*uid://70qt4jwpshy1"
+Steamworks="*uid://beucsvboubtn8"
 
 [debug]
 
+file_logging/enable_file_logging=true
 gdscript/warnings/unused_parameter=0
 gdscript/warnings/shadowed_variable=2
 gdscript/warnings/shadowed_variable_base_class=2
@@ -32,6 +36,7 @@ gdscript/warnings/inferred_declaration=2
 
 window/size/viewport_width=480
 window/size/viewport_height=270
+window/size/mode=3
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
@@ -123,3 +128,10 @@ pause_game={
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
+
+[steam]
+
+initialization/app_id=4642760
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
+multiplayer_peer/max_channels=4

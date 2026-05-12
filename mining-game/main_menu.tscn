@@ -28,13 +28,14 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7vrkn")
 
 [node name="Title" type="Label" parent="." unique_id=118894228]
+modulate = Color(0.83137256, 0.6666667, 0.18431373, 1)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -90.0
+offset_left = -84.0
 offset_top = 30.0
-offset_right = 90.0
+offset_right = 96.0
 offset_bottom = 80.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 40

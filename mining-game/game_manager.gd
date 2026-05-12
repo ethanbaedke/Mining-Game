@@ -35,6 +35,9 @@ var _main_menu:MainMenu = null
 var _mine_level:MineLevel = null
 var _high_score_display:HighScoreDisplay = null
 
+# STEAM SPECIFIC
+var _steam_overlay_active:bool = false
+
 func _ready() -> void:
 	
 	_pause_menu.return_to_main_menu_requested.connect(_on_pause_menu_return_to_main_menu_requested)
@@ -50,6 +53,13 @@ func _ready() -> void:
 	
 	_load_main_menu()
 	
+	# Pause the game when the steam user opens the overlay.
+	if (Steamworks.initialized):
+		Steam.overlay_toggled.connect(func (active:bool, user_initiated:bool, app_id:int) -> void:
+			_steam_overlay_active = active
+			if (active):
+				_pause_menu.toggle_game_paused())
+	
 func _process(delta: float) -> void:
 	
 	# Handle parameter setting for load screen shader.
@@ -60,8 +70,12 @@ func _process(delta: float) -> void:
 		_screen_mask.material.set_shader_parameter("player_uv", Vector2(0.5, 0.5))
 		
 	# Handle toggling the pause menu.
-	if (Input.is_action_just_pressed("pause_game") && (_mine_level != null || _high_score_display != null) && !_loading_ui_anim_player.is_playing() && (_mine_level == null || !_mine_level.level_cleanup_imminent) && _pause_menu.process_mode == PROCESS_MODE_ALWAYS):
+	_update_pause_menu_allowed_to_pause()
+	if (Input.is_action_just_pressed("pause_game")):
 		_pause_menu.toggle_game_paused()
+
+func _update_pause_menu_allowed_to_pause() -> void:
+	_pause_menu.allowed_to_pause = (_mine_level != null || _high_score_display != null) && !_loading_ui_anim_player.is_playing() && (_mine_level == null || !_mine_level.level_cleanup_imminent) && _pause_menu.process_mode == PROCESS_MODE_ALWAYS
 
 func _load_main_menu() -> void:
 	
@@ -127,7 +141,7 @@ func _start_new_game() -> void:
 	current_coal = 0
 	
 	# TESTING: Reset to 3.
-	lives_remaining = 1
+	lives_remaining = 3
 	
 	await _show_help_screen()
 	
@@ -149,6 +163,13 @@ func _instantiate_mine_level() -> void:
 	
 	_loading_ui_anim_player.play("black_to_full_visible")
 	_load_in_sound_effect.play_effect()
+	
+	# If the user loads into the level while the steam overlay is opened, pause right away.
+	if (Steamworks.initialized):
+		await _loading_ui_anim_player.animation_finished
+		if (_steam_overlay_active):
+			_update_pause_menu_allowed_to_pause()
+			_pause_menu.toggle_game_paused()
 
 func _show_help_screen() -> void:
 	
@@ -256,6 +277,13 @@ func _instantiate_high_score_display() -> void:
 	# Load out of our black screen.
 	_loading_ui_anim_player.play("black_to_full_visible")
 	_load_in_sound_effect.play_effect()
+	
+	# If the user loads into the level while the steam overlay is opened, pause right away.
+	if (Steamworks.initialized):
+		await _loading_ui_anim_player.animation_finished
+		if (_steam_overlay_active):
+			_update_pause_menu_allowed_to_pause()
+			_pause_menu.toggle_game_paused()
 
 func _on_high_score_display_display_finished() -> void:
 	

@@ -29,6 +29,10 @@ const CAMERA_TRAUMA_ON_PICKAXE_BREAK_OBJECT:float = 0.2
 
 signal player_killed
 
+# Attempt to fix the release build bug where two high score scenes are instantiated instead of one.
+# My belief is that the player is being killed by two enemies at once. Hopefully this fixes that case.
+var _has_been_killed:bool = false
+
 # Reference retrieved on ready.
 var _mine_level:MineLevel = null
 
@@ -47,6 +51,11 @@ var _pickaxe_thrust_time:float = 0.25
 var _pickaxe_anim_time:float = 0.0
 
 func kill_player() -> void:
+	
+	if (_has_been_killed):
+		return
+	else:
+		_has_been_killed = true
 	
 	# Disable hitbox.
 	_player_collision_shape.set_disabled.call_deferred(true)

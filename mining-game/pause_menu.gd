@@ -7,6 +7,8 @@ class_name PauseMenu extends CanvasLayer
 signal game_paused_changed(paused:bool)
 signal return_to_main_menu_requested()
 
+var allowed_to_pause:bool = false
+
 var _just_opened:bool = false
 
 func _ready() -> void:
@@ -31,6 +33,9 @@ func _process(delta: float) -> void:
 	_just_opened = false
 
 func toggle_game_paused() -> void:
+	
+	if (!allowed_to_pause):
+		return
 	
 	get_tree().paused = !get_tree().paused
 	_settings_menu.set_input_available(get_tree().paused)
