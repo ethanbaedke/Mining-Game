@@ -23,6 +23,10 @@ func _ready() -> void:
 	# Listen for the return to menu button.
 	_return_to_menu_button.pressed.connect(func() -> void:
 		return_to_main_menu_requested.emit())
+		
+	Globals.input_device_disconnected.connect(func () -> void:
+		if (!self.visible):
+			toggle_game_paused())
 
 func _process(delta: float) -> void:
 	

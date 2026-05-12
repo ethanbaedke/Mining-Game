@@ -12,6 +12,7 @@ signal music_volume_changed(new_value:float)
 signal sound_effect_volume_changed(new_value:float)
 
 signal input_type_changed(old_type:InputType)
+signal input_device_disconnected
 
 var input_type:InputType = InputType.GAMEPAD
 
@@ -61,6 +62,10 @@ func _ready() -> void:
 	_load_game_data()
 	
 	_update_cursor_state()
+	
+	Input.joy_connection_changed.connect(func (device:int, connected:bool) -> void:
+		if (!connected):
+			input_device_disconnected.emit())
 
 func _load_game_data() -> void:
 	
