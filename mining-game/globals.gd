@@ -83,7 +83,10 @@ func _load_game_data() -> void:
 func _input(event: InputEvent) -> void:
 	
 	if (event is InputEventMouseMotion):
-		switch_input_type(InputType.MOUSE)
+		# Mouse must be moved a few pixels to count as motion.
+		# Fixes background OS processes that focus the mouse from signaling mouse motion.
+		if (event.relative.length() > 1):
+			switch_input_type(InputType.MOUSE)
 	elif (event is InputEventKey):
 		switch_input_type(InputType.KEYBOARD)
 	elif (event is InputEventJoypadMotion):
